@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="dff-cordova-plugin-camera"
-        version="0.0.1">
+        version="0.0.3">
 
     <name>Camera Plugin</name>
     <description>Camera Plugin</description>
@@ -35,13 +35,13 @@
 
         <source-file
             src="src/android/com/dff/cordova/plugin/camera/CameraPlugin.java"
-            target-dir="src/android/com/dff/cordova/plugin/camera"/>
+            target-dir="src/com/dff/cordova/plugin/camera"/>
         <source-file
             src="src/android/com/dff/cordova/plugin/camera/activities/CameraActivity.java"
-            target-dir="src/android/com/dff/cordova/plugin/camera/activities"/>
+            target-dir="src/com/dff/cordova/plugin/camera/activities"/>
         <source-file
             src="src/android/com/dff/cordova/plugin/camera/R/R.java"
-            target-dir="src/android/com/dff/cordova/plugin/camera/R"/>
+            target-dir="src/com/dff/cordova/plugin/camera/R"/>
 
         <source-file
             src="src/android/res/layout/activity_camera.xml"
