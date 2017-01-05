@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="dff-cordova-plugin-camera"
+        version="0.0.1">
+
+    <name>Camera Plugin</name>
+    <description>Camera Plugin</description>
+    <author>dff solutions</author>
+
+    <js-module src="www/CameraPlugin.js" name="CameraPlugin">
+        <clobbers target="CameraPlugin"/>
+    </js-module>
+
+    <!--Android-->
+    <platforn name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="CameraPlugin">
+                <param name="android-package" value="com.dff.cordova.plugin.camera.CameraPlugin"/>
+                <param name="onload" value="true"/>
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-feature android:name="android.hardware.camera"/>
+            <uses-permission android:name="android.permission.CAMERA"/>
+            <uses-feature android:name="android.hardware.camera.autofocus"/>
+
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <uses-permission
+                android:name="android.permission.FLASHLIGHT"
+                android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
+                android:protectionLevel="normal"/>
+        </config-file>
+
+        <source-file
+            src="src/android/com/dff/cordova/plugin/camera/CameraPlugin.java"
+            target-dir="src/android/com/dff/cordova/plugin/camera"/>
+        <source-file
+            src="src/android/com/dff/cordova/plugin/camera/activities/CameraActivity.java"
+            target-dir="src/android/com/dff/cordova/plugin/camera/activities"/>
+        <source-file
+            src="src/android/com/dff/cordova/plugin/camera/R/R.java"
+            target-dir="src/android/com/dff/cordova/plugin/camera/R"/>
+
+        <source-file
+            src="src/android/res/layout/activity_camera.xml"
+            target-dir="res/layout"/>
+
+    </platforn>
+
+</plugin>
