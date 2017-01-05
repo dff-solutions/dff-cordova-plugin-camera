@@ -1,7 +1,7 @@
 package com.dff.cordova.plugin.camera;
 
 import android.content.Context;
-import android.content.res.Resources;
+import com.dff.cordova.plugin.camera.R.R;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONException;
@@ -13,15 +13,15 @@ public class CameraPlugin extends CordovaPlugin {
 
     private static final String TAG = "CameraPlugin";
     private Context mContext;
-    public static String sPACKAGE_NAME;
-    public static Resources sRESOURCES;
+    //public static String sPACKAGE_NAME;
+    //public static Resources sRESOURCES;
 
     @Override
     protected void pluginInitialize() {
         super.pluginInitialize();
         mContext = cordova.getActivity().getApplicationContext();
-        sPACKAGE_NAME = mContext.getPackageName();
-        sRESOURCES = mContext.getResources();
+        R.PACKAGE_NAME = mContext.getPackageName();
+        R.RESOURCES = mContext.getResources();
     }
 
     @Override

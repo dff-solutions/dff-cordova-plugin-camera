@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.widget.Toast;
+import com.dff.cordova.plugin.camera.R.R;
 //import org.apache.cordova.R;
 
 import java.io.*;
@@ -49,6 +50,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_camera);
+        setContentView(R.RESOURCES.getIdentifier(R.CAMERA_ACTIVITY_LAYOUT, R.LYOUT, R.PACKAGE_NAME));
         mContext = this;
 
         //on creating the surface view
@@ -109,6 +111,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mCamera.release();
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private boolean openCamera(int id) {
         boolean result = false;
         mCameraID = id;
@@ -155,7 +158,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void setUpCamera(Camera c) {
         try {
             Camera.CameraInfo info = new Camera.CameraInfo();
