@@ -10,8 +10,15 @@ public class R {
     public static String PACKAGE_NAME;
     public static Resources RESOURCES;
 
-    public static final String LYOUT = "layout";
+    public static final String LAYOUT = "layout";
+    public static final String ID = "id";
 
     public static final String CAMERA_ACTIVITY_LAYOUT = "activity_camera";
+    public static final String CAMERA_SURFACE_ID = "camera_surface_view";
+    public static final String BUTTON_TAKE_PHOTO = "take_photo";
+
+
+    public static final String ACTION_TAKE_PHOTO = "takephoto";
+
 
 }

@@ -50,12 +50,14 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_camera);
-        setContentView(R.RESOURCES.getIdentifier(R.CAMERA_ACTIVITY_LAYOUT, R.LYOUT, R.PACKAGE_NAME));
+        setContentView(R.RESOURCES.getIdentifier(R.CAMERA_ACTIVITY_LAYOUT, R.LAYOUT, R.PACKAGE_NAME));
         mContext = this;
 
         //on creating the surface view
         mCameraID = android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
-        //mSurfaceView = (SurfaceView) findViewById(R.id.camera_surface_view);
+        //mSurfaceView = (SurfaceView) findViewById(android.R.id.camera_surface_view);
+        mSurfaceView = (SurfaceView) findViewById(R.RESOURCES.getIdentifier(R.CAMERA_SURFACE_ID, R.ID, R.PACKAGE_NAME));
+        mCaputeImage = (Button) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_TAKE_PHOTO, R.ID, R.PACKAGE_NAME));
         //mCaputeImage = (Button) findViewById(R.id.take_image);
 
         //mCamera = getCameraInstance();

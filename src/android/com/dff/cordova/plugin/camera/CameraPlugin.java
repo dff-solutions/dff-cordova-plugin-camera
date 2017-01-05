@@ -1,9 +1,13 @@
 package com.dff.cordova.plugin.camera;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import com.dff.cordova.plugin.camera.R.R;
+import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
+import org.json.JSONArray;
 import org.json.JSONException;
 
 /**
@@ -25,7 +29,24 @@ public class CameraPlugin extends CordovaPlugin {
     }
 
     @Override
-    public boolean execute(String action, String rawArgs, CallbackContext callbackContext) throws JSONException {
-        return super.execute(action, rawArgs, callbackContext);
+    public boolean execute(final String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+
+        if (action != null) {
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d(TAG, "Action = " + action);
+                    if (action.equals(R.ACTION_TAKE_PHOTO)) {
+                        Intent intent = new Intent(mContext, CameraActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        cordova.getActivity().startActivity(intent);
+                    } else {
+                        Log.d(TAG, "Action not found 404");
+                    }
+                }
+            });
+        }
+
+        return false;
     }
 }

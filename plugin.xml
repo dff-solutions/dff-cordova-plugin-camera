@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="dff-cordova-plugin-camera"
-        version="0.0.3">
+        version="0.2.0">
 
     <name>Camera Plugin</name>
     <description>Camera Plugin</description>
@@ -13,7 +13,7 @@
     </js-module>
 
     <!--Android-->
-    <platforn name="android">
+    <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="CameraPlugin">
                 <param name="android-package" value="com.dff.cordova.plugin.camera.CameraPlugin"/>
@@ -27,10 +27,21 @@
             <uses-feature android:name="android.hardware.camera.autofocus"/>
 
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <!--
             <uses-permission
                 android:name="android.permission.FLASHLIGHT"
                 android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
-                android:protectionLevel="normal"/>
+                android:protectionLevel="normal"/> -->
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <!-- <activity android:name="src/com/dff/cordova/plugin/camera/activities/CameraActivity"></activity> -->
+            <activity android:name="com.dff.cordova.plugin.camera.activities.CameraActivity">
+                <intent-filter>
+                    <!--<action android:name="ACTION_PLAY_VIDEO"/>-->
+                    <category android:name="android.intent.category.DEFAULT"/>
+                </intent-filter>
+            </activity>
         </config-file>
 
         <source-file
@@ -47,6 +58,6 @@
             src="src/android/res/layout/activity_camera.xml"
             target-dir="res/layout"/>
 
-    </platforn>
+    </platform>
 
 </plugin>
