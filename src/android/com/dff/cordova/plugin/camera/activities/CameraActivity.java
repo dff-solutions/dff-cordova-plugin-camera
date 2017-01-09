@@ -4,7 +4,7 @@ package com.dff.cordova.plugin.camera.activities;
  * Created by anahas on 05.01.2017.
  *
  * @author Anthony Nahas
- * @version 0.4
+ * @version 0.4.1
  * @since 05.01.2017
  */
 
@@ -20,13 +20,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-//import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.*;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import com.dff.cordova.plugin.camera.R.R;
-//import org.apache.cordova.R;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -34,6 +32,9 @@ import java.util.Date;
 import java.util.List;
 
 import static android.R.attr.rotation;
+
+//import android.support.v7.app.AppCompatActivity;
+//import org.apache.cordova.R;
 
 //import java.security.Timestamp;
 
@@ -44,7 +45,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private SurfaceView mSurfaceView;
     private SurfaceHolder mSurfaceHolder;
     private Camera mCamera;
-    private Button mCaputeImage;
+    private ImageButton mCaputeImage;
     private int mCameraID;
     private boolean mFlashMode = false;
     private int mRotation;
@@ -61,7 +62,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mCameraID = android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
         //mSurfaceView = (SurfaceView) findViewById(android.R.id.camera_surface_view);
         mSurfaceView = (SurfaceView) findViewById(R.RESOURCES.getIdentifier(R.CAMERA_SURFACE_ID, R.ID, R.PACKAGE_NAME));
-        mCaputeImage = (Button) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_TAKE_IMAGE, R.ID, R.PACKAGE_NAME));
+        mCaputeImage = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_TAKE_IMAGE, R.ID, R.PACKAGE_NAME));
         //mCaputeImage = (Button) findViewById(R.id.take_image);
 
         //mCamera = getCameraInstance();
