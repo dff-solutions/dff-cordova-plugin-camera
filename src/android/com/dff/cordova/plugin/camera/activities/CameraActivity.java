@@ -284,7 +284,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                     e.printStackTrace();
                     Log.e(TAG, "Error: ", e);
                 }
-
             }
         });
     }
