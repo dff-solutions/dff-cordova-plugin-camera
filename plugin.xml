@@ -70,6 +70,9 @@
         <source-file
             src="src/android/res/drawable/ic_switch_camera_white_24px.xml"
             target-dir="res/drawable"/>
+        <source-file
+            src="src/android/res/values/dimens.xml"
+            target-dir="res/values"/>
 
     </platform>
 
