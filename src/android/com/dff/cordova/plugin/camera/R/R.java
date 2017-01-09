@@ -4,6 +4,11 @@ import android.content.res.Resources;
 
 /**
  * Created by anahas on 05.01.2017.
+ *
+ *
+ * @author Anthony Nahas
+ * @since 05.01.2017
+ * @version 0.4
  */
 public class R {
 
@@ -15,7 +20,7 @@ public class R {
 
     public static final String CAMERA_ACTIVITY_LAYOUT = "activity_camera";
     public static final String CAMERA_SURFACE_ID = "camera_surface_view";
-    public static final String BUTTON_TAKE_PHOTO = "take_photo";
+    public static final String BUTTON_TAKE_IMAGE = "take_image";
 
 
     public static final String ACTION_TAKE_PHOTO = "takephoto";

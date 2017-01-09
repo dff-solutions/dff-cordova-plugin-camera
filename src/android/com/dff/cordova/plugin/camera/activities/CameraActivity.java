@@ -2,6 +2,10 @@ package com.dff.cordova.plugin.camera.activities;
 
 /**
  * Created by anahas on 05.01.2017.
+ *
+ * @author Anthony Nahas
+ * @version 0.4
+ * @since 05.01.2017
  */
 
 import android.annotation.TargetApi;
@@ -57,7 +61,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mCameraID = android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
         //mSurfaceView = (SurfaceView) findViewById(android.R.id.camera_surface_view);
         mSurfaceView = (SurfaceView) findViewById(R.RESOURCES.getIdentifier(R.CAMERA_SURFACE_ID, R.ID, R.PACKAGE_NAME));
-        mCaputeImage = (Button) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_TAKE_PHOTO, R.ID, R.PACKAGE_NAME));
+        mCaputeImage = (Button) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_TAKE_IMAGE, R.ID, R.PACKAGE_NAME));
         //mCaputeImage = (Button) findViewById(R.id.take_image);
 
         //mCamera = getCameraInstance();

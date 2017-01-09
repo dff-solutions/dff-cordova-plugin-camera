@@ -12,6 +12,10 @@ import org.json.JSONException;
 
 /**
  * Created by anahas on 05.01.2017.
+ *
+ * @author Anthony Nahas
+ * @version 0.4
+ * @since 05.01.2017
  */
 public class CameraPlugin extends CordovaPlugin {
 
