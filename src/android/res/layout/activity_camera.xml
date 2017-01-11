@@ -57,6 +57,6 @@
         android:gravity="start"
         android:paddingLeft="20dp"
         android:paddingStart="20dp"
-        android:src="@drawable/ic_flash_on_white_24px" />
+        android:src="@drawable/ic_flash_auto_white_24px" />
 
 </RelativeLayout>

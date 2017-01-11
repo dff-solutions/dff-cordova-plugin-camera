@@ -46,8 +46,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private SurfaceHolder mSurfaceHolder;
     private Camera mCamera;
     private ImageButton mCaputeImage;
+    private ImageButton mFlashButton;
+    private static int sFlashMode = 0;
     private int mCameraID;
-    private boolean mFlashMode = false;
     private int mRotation;
     private Context mContext;
 
@@ -63,6 +64,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         //mSurfaceView = (SurfaceView) findViewById(android.R.id.camera_surface_view);
         mSurfaceView = (SurfaceView) findViewById(R.RESOURCES.getIdentifier(R.CAMERA_SURFACE_ID, R.ID, R.PACKAGE_NAME));
         mCaputeImage = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_TAKE_IMAGE, R.ID, R.PACKAGE_NAME));
+        mFlashButton = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_CHANGE_FLASH_MODE, R.ID, R.PACKAGE_NAME));
         //mCaputeImage = (Button) findViewById(R.id.take_image);
 
         //mCamera = getCameraInstance();
@@ -75,6 +77,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 takeImage();
                 //mCamera.takePicture(null, null, mPicture);
                 Toast.makeText(mContext, "took photo", Toast.LENGTH_LONG).show();
+            }
+        });
+        mFlashButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 
