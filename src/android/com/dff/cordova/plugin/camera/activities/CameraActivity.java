@@ -32,8 +32,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static android.R.attr.rotation;
-
 //import android.support.v7.app.AppCompatActivity;
 //import org.apache.cordova.R;
 
@@ -214,8 +212,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
             if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
                 // frontFacing
-                mRotation = (info.orientation + degree) % 330;
-                mRotation = (360 - rotation) % 360;
+                mRotation = (info.orientation + degree) % 360;
+                mRotation = (360 - mRotation) % 360;
             } else {
                 // Back-facing
                 mRotation = (info.orientation - degree + 360) % 360;
@@ -234,7 +232,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 }
             }
             params.setRotation(mRotation);
-
         } catch (Exception e) {
             Log.e(TAG, "Error: ", e);
         }
@@ -406,19 +403,19 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private void changeFlashMode() {
         switch (sFlashMode) {
             case 0:
-                //
-                refreshParams(Camera.Parameters.FLASH_MODE_AUTO);
+                mFlashButton.setImageResource(R.RESOURCES.getIdentifier(R.IC_FLASH_AUTO, R.DRAWABLE, R.PACKAGE_NAME));
                 sFlashMode = 1;
+                refreshParams(Camera.Parameters.FLASH_MODE_AUTO);
                 break;
             case 1:
-                //
-                refreshParams(Camera.Parameters.FLASH_MODE_OFF);
+                mFlashButton.setImageResource(R.RESOURCES.getIdentifier(R.IC_FLASH_OFF, R.DRAWABLE, R.PACKAGE_NAME));
                 sFlashMode = 2;
+                refreshParams(Camera.Parameters.FLASH_MODE_OFF);
                 break;
             case 2:
-                //
-                refreshParams(Camera.Parameters.FLASH_MODE_ON);
+                mFlashButton.setImageResource(R.RESOURCES.getIdentifier(R.IC_FLASH_ON, R.DRAWABLE, R.PACKAGE_NAME));
                 sFlashMode = 0;
+                refreshParams(Camera.Parameters.FLASH_MODE_ON);
                 break;
         }
     }

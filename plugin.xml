@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="dff-cordova-plugin-camera"
-        version="0.4.0">
+        version="0.7.0">
 
     <name>Camera Plugin</name>
     <description>Camera Plugin</description>
@@ -72,6 +72,12 @@
             target-dir="res/drawable"/>
         <source-file
             src="src/android/res/drawable/ic_switch_camera_white_24px.xml"
+            target-dir="res/drawable"/>
+        <source-file
+            src="src/android/res/drawable/ic_switch_cam_back.xml"
+            target-dir="res/drawable"/>
+        <source-file
+            src="src/android/res/drawable/ic_switch_cam_front.xml"
             target-dir="res/drawable"/>
         <source-file
             src="src/android/res/values/dimens.xml"
