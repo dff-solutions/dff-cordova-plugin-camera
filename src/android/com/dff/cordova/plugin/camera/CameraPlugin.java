@@ -43,7 +43,7 @@ public class CameraPlugin extends CordovaPlugin {
                     if (action.equals(R.ACTION_TAKE_PHOTO)) {
                         Intent intent = new Intent(mContext, CameraActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        cordova.getActivity().startActivity(intent);
+                        cordova.getActivity().startActivityForResult(intent, R.RESULT_CODE);
                     } else {
                         Log.d(TAG, "Action not found 404");
                     }
@@ -52,5 +52,12 @@ public class CameraPlugin extends CordovaPlugin {
         }
 
         return false;
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        Log.d(TAG, "the request code = " + requestCode);
     }
 }

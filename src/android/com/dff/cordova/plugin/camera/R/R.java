@@ -14,13 +14,19 @@ public class R {
     public static String PACKAGE_NAME;
     public static Resources RESOURCES;
 
+
     public static final String LAYOUT = "layout";
     public static final String ID = "id";
+
+    public static boolean sSaveInGallery;
+
+    public static final int RESULT_CODE = 12;
 
     public static final String CAMERA_ACTIVITY_LAYOUT = "activity_camera";
     public static final String CAMERA_SURFACE_ID = "camera_surface_view";
     public static final String BUTTON_TAKE_IMAGE = "take_image";
     public static final String BUTTON_CHANGE_FLASH_MODE = "button_flash";
+    public static final String BUTTON_FLIP_CAMERA = "button_flip_camera";
 
 
     public static final String ACTION_TAKE_PHOTO = "takephoto";

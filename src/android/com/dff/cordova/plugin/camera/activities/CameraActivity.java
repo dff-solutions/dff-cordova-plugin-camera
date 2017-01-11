@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.*;
 import android.widget.ImageButton;
@@ -47,6 +48,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private Camera mCamera;
     private ImageButton mCaputeImage;
     private ImageButton mFlashButton;
+    private ImageButton mFlipCamera;
     private static int sFlashMode = 0;
     private int mCameraID;
     private int mRotation;
@@ -65,6 +67,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mSurfaceView = (SurfaceView) findViewById(R.RESOURCES.getIdentifier(R.CAMERA_SURFACE_ID, R.ID, R.PACKAGE_NAME));
         mCaputeImage = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_TAKE_IMAGE, R.ID, R.PACKAGE_NAME));
         mFlashButton = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_CHANGE_FLASH_MODE, R.ID, R.PACKAGE_NAME));
+        mFlipCamera = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_FLIP_CAMERA, R.ID, R.PACKAGE_NAME));
         //mCaputeImage = (Button) findViewById(R.id.take_image);
 
         //mCamera = getCameraInstance();
@@ -82,7 +85,25 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mFlashButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                changeFlashMode();
+            }
+        });
+        mFlipCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //releaseCamera();
+                mCamera.release();
+                if (mCameraID == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                    mCameraID = Camera.CameraInfo.CAMERA_FACING_FRONT;
+                } else {
+                    mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
+                }
+                if (!openCamera(mCameraID)) {
+                    //alertCameraDialog ();
+                    Log.d(TAG, "On surface created : camera could not be opened");
+                } else {
+                    Log.d(TAG, " camera opened");
+                }
             }
         });
 
@@ -229,64 +250,70 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             public void onPictureTaken(byte[] data, Camera camera) {
                 try {
                     // convert byte array into bitmap
-                    Bitmap loadedImage = BitmapFactory.decodeByteArray(data, 0,
-                        data.length);
-
-                    // rotate Image
-                    Matrix rotateMatrix = new Matrix();
-                    rotateMatrix.postRotate(mRotation);
-                    Bitmap rotatedBitmap = Bitmap.createBitmap(loadedImage, 0,
-                        0, loadedImage.getWidth(), loadedImage.getHeight(),
-                        rotateMatrix, false);
-                    String state = Environment.getExternalStorageState();
-                    File folder = null;
-                    if (state.contains(Environment.MEDIA_MOUNTED)) {
-                        folder = new File(Environment
-                            .getExternalStorageDirectory() + "/Demo");
+                    if (!R.sSaveInGallery) {
+                        Log.d(TAG, "data in base64");
+                        String base64Image = Base64.encodeToString(data, Base64.DEFAULT);
+                        Log.d(TAG, base64Image);
                     } else {
-                        folder = new File(Environment
-                            .getExternalStorageDirectory() + "/Demo");
+                        Bitmap loadedImage = BitmapFactory.decodeByteArray(data, 0,
+                            data.length);
+
+                        // rotate Image
+                        Matrix rotateMatrix = new Matrix();
+                        rotateMatrix.postRotate(mRotation);
+                        Bitmap rotatedBitmap = Bitmap.createBitmap(loadedImage, 0,
+                            0, loadedImage.getWidth(), loadedImage.getHeight(),
+                            rotateMatrix, false);
+                        String state = Environment.getExternalStorageState();
+                        File folder = null;
+                        if (state.contains(Environment.MEDIA_MOUNTED)) {
+                            folder = new File(Environment
+                                .getExternalStorageDirectory() + "/Demo");
+                        } else {
+                            folder = new File(Environment
+                                .getExternalStorageDirectory() + "/Demo");
+                        }
+
+                        boolean success = true;
+                        if (!folder.exists()) {
+                            success = folder.mkdirs();
+                        }
+                        if (success) {
+                            java.util.Date date = new java.util.Date();
+                            imageFile = new File(folder.getAbsolutePath()
+                                + File.separator
+                                //+ new Timestamp(date.getTime()).toString()
+                                + new Date()
+                                + "Image.jpg");
+
+                            Boolean resOfCreatingImage = imageFile.createNewFile();
+                            Log.d(TAG, "Result of creating an new image = " + resOfCreatingImage);
+                        } else {
+                            Toast.makeText(getBaseContext(), "Image Not saved",
+                                Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+
+                        // save image into gallery
+                        rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+
+                        FileOutputStream fout = new FileOutputStream(imageFile);
+                        fout.write(ostream.toByteArray());
+                        fout.close();
+                        ContentValues values = new ContentValues();
+
+                        values.put(MediaStore.Images.Media.DATE_TAKEN,
+                            System.currentTimeMillis());
+                        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                        values.put(MediaStore.MediaColumns.DATA,
+                            imageFile.getAbsolutePath());
+
+                        CameraActivity.this.getContentResolver().insert(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
                     }
-
-                    boolean success = true;
-                    if (!folder.exists()) {
-                        success = folder.mkdirs();
-                    }
-                    if (success) {
-                        java.util.Date date = new java.util.Date();
-                        imageFile = new File(folder.getAbsolutePath()
-                            + File.separator
-                            //+ new Timestamp(date.getTime()).toString()
-                            + new Date()
-                            + "Image.jpg");
-
-                        Boolean resOfCreatingImage = imageFile.createNewFile();
-                        Log.d(TAG, "Result of creating an new image = " + resOfCreatingImage);
-                    } else {
-                        Toast.makeText(getBaseContext(), "Image Not saved",
-                            Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    ByteArrayOutputStream ostream = new ByteArrayOutputStream();
-
-                    // save image into gallery
-                    rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
-
-                    FileOutputStream fout = new FileOutputStream(imageFile);
-                    fout.write(ostream.toByteArray());
-                    fout.close();
-                    ContentValues values = new ContentValues();
-
-                    values.put(MediaStore.Images.Media.DATE_TAKEN,
-                        System.currentTimeMillis());
-                    values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-                    values.put(MediaStore.MediaColumns.DATA,
-                        imageFile.getAbsolutePath());
-
-                    CameraActivity.this.getContentResolver().insert(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(TAG, "Error: ", e);
