@@ -99,13 +99,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         } else {
             Log.d(TAG, " camera opened");
         }
-        /*
-        try {
-            mCamera.setPreviewDisplay(surfaceHolder);
-            mCamera.startPreview();
-        } catch (Exception e) {
-            Log.e(TAG, "Error: ", e);
-        }*/
     }
 
     @Override
@@ -122,8 +115,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-        mCamera.stopPreview();
-        mCamera.release();
+        //mCamera.stopPreview();
+        //mCamera.release();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -215,7 +208,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             if (focusModes != null) {
                 if (focusModes
                     .contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
-                    params.setFlashMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+                    //params.setFlashMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+                    params.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
                 }
             }
             params.setRotation(mRotation);
@@ -367,7 +361,39 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     @Override
     protected void onPause() {
         super.onPause();
-        mCamera.release();
+        releaseCamera();
+    }
+
+    private void refreshParams(String mode) {
+        if (mCamera != null) {
+            Log.d(TAG, "supported flash mode");
+            Log.d(TAG, mCamera.getParameters().getSupportedFlashModes().toString());
+            Camera.Parameters parameters = mCamera.getParameters();
+            //parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+            parameters.setFlashMode(mode);
+            mCamera.setParameters(parameters);
+            Log.d(TAG, "flash mode = " + mCamera.getParameters().getFlashMode());
+        }
+    }
+
+    private void changeFlashMode() {
+        switch (sFlashMode) {
+            case 0:
+                //
+                refreshParams(Camera.Parameters.FLASH_MODE_AUTO);
+                sFlashMode = 1;
+                break;
+            case 1:
+                //
+                refreshParams(Camera.Parameters.FLASH_MODE_OFF);
+                sFlashMode = 2;
+                break;
+            case 2:
+                //
+                refreshParams(Camera.Parameters.FLASH_MODE_ON);
+                sFlashMode = 0;
+                break;
+        }
     }
 
 }
