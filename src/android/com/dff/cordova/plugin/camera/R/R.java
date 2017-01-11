@@ -19,9 +19,9 @@ public class R {
     public static final String ID = "id";
     public static final String DRAWABLE = "drawable";
 
-    public static boolean sSaveInGallery;
+    public static boolean sSaveInGallery = false;
 
-    public static final int RESULT_CODE = 12;
+    public static final int ACTIVITY_RESULT_OK = 1;
 
     public static final String CAMERA_ACTIVITY_LAYOUT = "activity_camera";
     public static final String CAMERA_SURFACE_ID = "camera_surface_view";
@@ -34,7 +34,9 @@ public class R {
     public static final String IC_CAMERA_FRONT = "ic_switch_cam_front";
     public static final String IC_CAMERA_BACK = "ic_switch_cam_back";
 
+    public static final String RESULT_KEY_BASE64_IMG = "base64img";
 
+    public static final String CAMERA_ACTIVITY_PATH = "com.dff.cordova.plugin.camera.CameraPlugin";
     public static final String ACTION_TAKE_PHOTO = "takephoto";
 
 

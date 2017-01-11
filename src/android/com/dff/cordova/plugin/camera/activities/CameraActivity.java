@@ -1,17 +1,11 @@
 package com.dff.cordova.plugin.camera.activities;
 
-/**
- * Created by anahas on 05.01.2017.
- *
- * @author Anthony Nahas
- * @version 0.4.1
- * @since 05.01.2017
- */
 
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -37,6 +31,13 @@ import java.util.List;
 
 //import java.security.Timestamp;
 
+/**
+ * Created by anahas on 05.01.2017.
+ *
+ * @author Anthony Nahas
+ * @version 0.7.3
+ * @since 05.01.2017
+ */
 public class CameraActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener {
 
     private static final String TAG = CameraActivity.class.getSimpleName();
@@ -76,8 +77,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             @Override
             public void onClick(View view) {
                 takeImage();
-                //mCamera.takePicture(null, null, mPicture);
-                Toast.makeText(mContext, "took photo", Toast.LENGTH_LONG).show();
+                //Toast.makeText(mContext, "took photo", Toast.LENGTH_LONG).show();
             }
         });
         mFlashButton.setOnClickListener(new View.OnClickListener() {
@@ -93,8 +93,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 mCamera.release();
                 if (mCameraID == Camera.CameraInfo.CAMERA_FACING_BACK) {
                     mCameraID = Camera.CameraInfo.CAMERA_FACING_FRONT;
+                    mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_FRONT, R.DRAWABLE, R.PACKAGE_NAME));
                 } else {
                     mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
+                    mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_BACK, R.DRAWABLE, R.PACKAGE_NAME));
                 }
                 if (!openCamera(mCameraID)) {
                     //alertCameraDialog ();
@@ -251,6 +253,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                         Log.d(TAG, "data in base64");
                         String base64Image = Base64.encodeToString(data, Base64.DEFAULT);
                         Log.d(TAG, base64Image);
+                        Intent intent = new Intent();
+                        intent.putExtra(R.RESULT_KEY_BASE64_IMG, base64Image);
+                        setResult(RESULT_OK, intent);
+                        finish();
                     } else {
                         Bitmap loadedImage = BitmapFactory.decodeByteArray(data, 0,
                             data.length);
