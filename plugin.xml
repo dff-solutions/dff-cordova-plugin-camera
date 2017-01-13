@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="dff-cordova-plugin-camera"
-        version="0.7.0">
+        version="1.0.3">
 
     <name>Camera Plugin</name>
     <description>Camera Plugin</description>
@@ -22,21 +22,25 @@
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest">
+            <!--
             <uses-feature android:name="android.hardware.camera"/>
+            -->
             <uses-permission android:name="android.permission.CAMERA"/>
             <uses-feature android:name="android.hardware.camera.autofocus"/>
-
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
             <!--
             <uses-permission
                 android:name="android.permission.FLASHLIGHT"
                 android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
-                android:protectionLevel="normal"/> -->
+                android:protectionLevel="normal"/>
+                -->
+
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <!-- <activity android:name="src/com/dff/cordova/plugin/camera/activities/CameraActivity"></activity> -->
-            <activity android:name="com.dff.cordova.plugin.camera.activities.CameraActivity">
+            <activity android:name="com.dff.cordova.plugin.camera.activities.CameraActivity"
+                      android:theme="@android:style/Theme.NoTitleBar">
                 <intent-filter>
                     <!--<action android:name="ACTION_PLAY_VIDEO"/>-->
                     <category android:name="android.intent.category.DEFAULT"/>
@@ -79,9 +83,11 @@
         <source-file
             src="src/android/res/drawable/ic_switch_cam_front.xml"
             target-dir="res/drawable"/>
+        <!--
         <source-file
             src="src/android/res/values/dimens.xml"
             target-dir="res/values"/>
+        -->
 
     </platform>
 

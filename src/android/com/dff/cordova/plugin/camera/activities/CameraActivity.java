@@ -5,7 +5,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -35,7 +34,7 @@ import java.util.List;
  * Created by anahas on 05.01.2017.
  *
  * @author Anthony Nahas
- * @version 0.7.3
+ * @version 1.0.2
  * @since 05.01.2017
  */
 public class CameraActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener {
@@ -62,12 +61,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
         //on creating the surface view
         mCameraID = android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
-        //mSurfaceView = (SurfaceView) findViewById(android.R.id.camera_surface_view);
         mSurfaceView = (SurfaceView) findViewById(R.RESOURCES.getIdentifier(R.CAMERA_SURFACE_ID, R.ID, R.PACKAGE_NAME));
         mCaputeImage = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_TAKE_IMAGE, R.ID, R.PACKAGE_NAME));
         mFlashButton = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_CHANGE_FLASH_MODE, R.ID, R.PACKAGE_NAME));
         mFlipCamera = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_FLIP_CAMERA, R.ID, R.PACKAGE_NAME));
-        //mCaputeImage = (Button) findViewById(R.id.take_image);
 
         //mCamera = getCameraInstance();
         mSurfaceHolder = mSurfaceView.getHolder();
@@ -94,9 +91,13 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 if (mCameraID == Camera.CameraInfo.CAMERA_FACING_BACK) {
                     mCameraID = Camera.CameraInfo.CAMERA_FACING_FRONT;
                     mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_FRONT, R.DRAWABLE, R.PACKAGE_NAME));
+                    mFlashButton.setEnabled(false);
+                    mFlashButton.setVisibility(View.GONE);
                 } else {
                     mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
                     mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_BACK, R.DRAWABLE, R.PACKAGE_NAME));
+                    mFlashButton.setEnabled(true);
+                    mFlashButton.setVisibility(View.VISIBLE);
                 }
                 if (!openCamera(mCameraID)) {
                     //alertCameraDialog ();
@@ -157,7 +158,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
                     @Override
                     public void onError(int error, Camera camera) {
-                        //to show the error message.
+                        R.sCallBackContext.error("Error: cannot open camera. Please make sure that the permission " +
+                            "is granted");
                     }
                 });
                 mCamera.setPreviewDisplay(mSurfaceHolder);
@@ -228,12 +230,14 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             List<String> focusModes = params.getSupportedFlashModes();
             if (focusModes != null) {
                 if (focusModes
-                    .contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
-                    //params.setFlashMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+                    .contains(Camera.Parameters.FLASH_MODE_AUTO)) {
                     params.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
                 }
             }
+            params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
             params.setRotation(mRotation);
+            c.setParameters(params);
+            c.enableShutterSound(true);
         } catch (Exception e) {
             Log.e(TAG, "Error: ", e);
         }
@@ -241,7 +245,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
 
     private void takeImage() {
-        mCamera.takePicture(null, null, new Camera.PictureCallback() {
+        mCamera.takePicture(new Camera.ShutterCallback() {
+            @Override
+            public void onShutter() {
+
+            }
+        }, null, new Camera.PictureCallback() {
 
             private File imageFile;
 
@@ -253,9 +262,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                         Log.d(TAG, "data in base64");
                         String base64Image = Base64.encodeToString(data, Base64.DEFAULT);
                         Log.d(TAG, base64Image);
-                        Intent intent = new Intent();
-                        intent.putExtra(R.RESULT_KEY_BASE64_IMG, base64Image);
-                        setResult(RESULT_OK, intent);
+                        R.sCallBackContext.success(base64Image);
                         finish();
                     } else {
                         Bitmap loadedImage = BitmapFactory.decodeByteArray(data, 0,

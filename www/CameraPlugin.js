@@ -20,12 +20,8 @@ function CameraPlugin() {
 }
 
 
-CameraPlugin.prototype.takePhoto = function () {
-    exec(function () {
-        console.log("on camera success");
-    }, function (errMsg) {
-        console.log("On camera error: " + errMsg);
-    }, FEATURE, ACTION_TAKE_PHOTO, []);
+CameraPlugin.prototype.takePhoto = function (success, error) {
+    exec(success, error, FEATURE, ACTION_TAKE_PHOTO, []);
 };
 
 

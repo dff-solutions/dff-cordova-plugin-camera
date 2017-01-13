@@ -1,6 +1,7 @@
 package com.dff.cordova.plugin.camera.R;
 
 import android.content.res.Resources;
+import org.apache.cordova.CallbackContext;
 
 /**
  * Created by anahas on 05.01.2017.
@@ -21,8 +22,6 @@ public class R {
 
     public static boolean sSaveInGallery = false;
 
-    public static final int ACTIVITY_RESULT_OK = 1;
-
     public static final String CAMERA_ACTIVITY_LAYOUT = "activity_camera";
     public static final String CAMERA_SURFACE_ID = "camera_surface_view";
     public static final String BUTTON_TAKE_IMAGE = "take_image";
@@ -38,6 +37,8 @@ public class R {
 
     public static final String CAMERA_ACTIVITY_PATH = "com.dff.cordova.plugin.camera.CameraPlugin";
     public static final String ACTION_TAKE_PHOTO = "takephoto";
+
+    public static CallbackContext sCallBackContext;
 
 
 }
