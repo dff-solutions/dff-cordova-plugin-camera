@@ -28,7 +28,7 @@ import java.util.List;
 
 
 /**
- * Created by anahas on 05.01.2017.
+ * Class to create a surface view for the camera.
  *
  * @author Anthony Nahas
  * @version 1.0.7
@@ -49,20 +49,24 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
     private int mRotation;
 
 
+    /**
+     * Iinitialize used components on create the activity.
+     *
+     * @param savedInstanceState - saved state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
         setContentView(R.RESOURCES.getIdentifier(R.CAMERA_ACTIVITY_LAYOUT, R.LAYOUT, R.PACKAGE_NAME));
 
-        //on creating the surface view
+
         mCameraID = android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
         mSurfaceView = (SurfaceView) findViewById(R.RESOURCES.getIdentifier(R.CAMERA_SURFACE_ID, R.ID, R.PACKAGE_NAME));
         mCaptureImage = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_TAKE_IMAGE, R.ID, R.PACKAGE_NAME));
         mFlashButton = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_CHANGE_FLASH_MODE, R.ID, R.PACKAGE_NAME));
         mFlipCamera = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_FLIP_CAMERA, R.ID, R.PACKAGE_NAME));
 
-        //mCamera = getCameraInstance();
         mSurfaceHolder = mSurfaceView.getHolder();
         mSurfaceHolder.addCallback(this);
         mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -80,6 +84,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
             }
         });
         mFlipCamera.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 //releaseCamera();
@@ -108,6 +113,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
+    /**
+     * Release the camera when leaving the activity.
+     */
     @Override
     protected void onPause() {
         super.onPause();
@@ -115,6 +123,11 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
         releaseCamera();
     }
 
+    /**
+     * Try to open the camera when the surface is created.
+     *
+     * @param surfaceHolder - the assigned surface holder.
+     */
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         if (!openCamera(android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK)) {
@@ -124,9 +137,17 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
         }
     }
 
+    /**
+     * Start preview with new settings.
+     *
+     * @param surfaceHolder
+     * @param i
+     * @param i1
+     * @param i2
+     */
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        // start preview with new settings
+
         try {
             mCamera.setPreviewDisplay(surfaceHolder);
             mCamera.startPreview();
@@ -135,6 +156,11 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
         }
     }
 
+    /**
+     * Try to release the camera when the surface is destroyed.
+     *
+     * @param surfaceHolder - the assigned surfaceholder
+     */
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         if (mCamera != null) {
@@ -147,6 +173,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
         }
     }
 
+    /**
+     * Try to open the camera with params.
+     *
+     * @param id - whether front or back camera.
+     * @return
+     */
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private boolean openCamera(int id) {
         boolean result = false;
@@ -181,6 +213,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
         return result;
     }
 
+    /**
+     * Release the camera.
+     */
     private void releaseCamera() {
         try {
             if (mCamera != null) {
@@ -196,6 +231,11 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
         }
     }
 
+    /**
+     * Setup the caemra with the correct params and rotation.
+     *
+     * @param c - the camera used.
+     */
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void setUpCamera(Camera c) {
         try {
@@ -251,6 +291,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
     }
 
 
+    /**
+     * Take a photo and return/save it.
+     * <p>
+     * Return: Base64
+     * other options: to be saved in the file system as JPG.
+     */
     private void takeImage() {
         mCamera.takePicture(new Camera.ShutterCallback() {
             @Override
@@ -340,6 +386,11 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
     }
 
 
+    /**
+     * Refresh params: ex: when changing the flash mode.
+     *
+     * @param mode - the assigned mode to be set.
+     */
     private void refreshParams(String mode) {
         if (mCamera != null) {
             Log.d(TAG, "supported flash mode");
@@ -352,6 +403,13 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
         }
     }
 
+    /**
+     * Change the flash mode:
+     * <p>
+     * 0: auto
+     * 1: off
+     * 2: on
+     */
     private void changeFlashMode() {
         switch (sFlashMode) {
             case 0:

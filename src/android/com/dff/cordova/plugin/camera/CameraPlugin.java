@@ -11,7 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 /**
- * Created by anahas on 05.01.2017.
+ * Plugin that handle the process to take a photo: opening and releasing a camera instance.
  *
  * @author Anthony Nahas
  * @version 1.0.7
@@ -22,6 +22,9 @@ public class CameraPlugin extends CordovaPlugin {
     private static final String TAG = "CameraPlugin";
     private Context mContext;
 
+    /**
+     * Initializing the plugin by setting and allocating important information and objects.
+     */
     @Override
     protected void pluginInitialize() {
         super.pluginInitialize();
@@ -31,6 +34,15 @@ public class CameraPlugin extends CordovaPlugin {
         R.RESOURCES = mContext.getResources();
     }
 
+    /**
+     * Executes an action called by JavaScript
+     *
+     * @param action          The action to execute.
+     * @param args            The exec() arguments.
+     * @param callbackContext The callback context used when calling back into JavaScript.
+     * @return
+     * @throws JSONException
+     */
     @Override
     public boolean execute(final String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 
@@ -45,7 +57,7 @@ public class CameraPlugin extends CordovaPlugin {
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         cordova.getActivity().startActivity(intent);
                     } else {
-                        Log.d(TAG, "Action not found 404");
+                        Log.d(TAG, "Action not found");
                     }
                 }
             });

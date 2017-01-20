@@ -4,10 +4,10 @@ import android.content.res.Resources;
 import org.apache.cordova.CallbackContext;
 
 /**
- * Created by anahas on 05.01.2017.
+ * Class to hold and allocate needed resources.
  *
  * @author Anthony Nahas
- * @version 0.6
+ * @version 0.7
  * @since 05.01.2017
  */
 public class R {
