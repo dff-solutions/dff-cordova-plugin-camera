@@ -4,7 +4,6 @@ package com.dff.cordova.plugin.camera.activities;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -20,49 +19,46 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import com.dff.cordova.plugin.camera.R.R;
 
-import java.io.*;
-import java.text.SimpleDateFormat;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-//import android.support.v7.app.AppCompatActivity;
-//import org.apache.cordova.R;
-
-//import java.security.Timestamp;
 
 /**
  * Created by anahas on 05.01.2017.
  *
  * @author Anthony Nahas
- * @version 1.0.2
+ * @version 1.0.7
  * @since 05.01.2017
  */
-public class CameraActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener {
+public class CameraActivity extends Activity implements SurfaceHolder.Callback {
 
     private static final String TAG = CameraActivity.class.getSimpleName();
 
     private SurfaceView mSurfaceView;
     private SurfaceHolder mSurfaceHolder;
     private Camera mCamera;
-    private ImageButton mCaputeImage;
+    private ImageButton mCaptureImage;
     private ImageButton mFlashButton;
     private ImageButton mFlipCamera;
     private static int sFlashMode = 0;
     private int mCameraID;
     private int mRotation;
-    private Context mContext;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_camera);
+        Log.d(TAG, "onCreate()");
         setContentView(R.RESOURCES.getIdentifier(R.CAMERA_ACTIVITY_LAYOUT, R.LAYOUT, R.PACKAGE_NAME));
-        mContext = this;
 
         //on creating the surface view
         mCameraID = android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
         mSurfaceView = (SurfaceView) findViewById(R.RESOURCES.getIdentifier(R.CAMERA_SURFACE_ID, R.ID, R.PACKAGE_NAME));
-        mCaputeImage = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_TAKE_IMAGE, R.ID, R.PACKAGE_NAME));
+        mCaptureImage = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_TAKE_IMAGE, R.ID, R.PACKAGE_NAME));
         mFlashButton = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_CHANGE_FLASH_MODE, R.ID, R.PACKAGE_NAME));
         mFlipCamera = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_FLIP_CAMERA, R.ID, R.PACKAGE_NAME));
 
@@ -70,7 +66,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mSurfaceHolder = mSurfaceView.getHolder();
         mSurfaceHolder.addCallback(this);
         mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        mCaputeImage.setOnClickListener(new View.OnClickListener() {
+        mCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 takeImage();
@@ -110,13 +106,18 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
         //keep the screen on until the activity is running.
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause()");
+        releaseCamera();
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         if (!openCamera(android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK)) {
-            //alertCameraDialog ();
             Log.d(TAG, "On surface created : camera could not be opened");
         } else {
             Log.d(TAG, " camera opened");
@@ -130,26 +131,31 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             mCamera.setPreviewDisplay(surfaceHolder);
             mCamera.startPreview();
         } catch (Exception e) {
-            // intentionally left blank for a test
             Log.e(TAG, "Error: ", e);
         }
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-        //mCamera.stopPreview();
-        //mCamera.release();
+        if (mCamera != null) {
+            //stop the preview
+            mCamera.stopPreview();
+            //release the camera
+            mCamera.release();
+            //unbind the camera from this object
+            mCamera = null;
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private boolean openCamera(int id) {
         boolean result = false;
         mCameraID = id;
-        //releaseCamera();
+        releaseCamera(); //imp
         try {
             mCamera = Camera.open(mCameraID);
         } catch (Exception e) {
-            Log.e(TAG, "Error while opeing the camera", e);
+            Log.e(TAG, "Error while opening the camera", e);
         }
         if (mCamera != null) {
             try {
@@ -181,6 +187,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 mCamera.setPreviewCallback(null);
                 mCamera.setErrorCallback(null);
                 mCamera.stopPreview();
+                mCamera.release();
                 mCamera = null;
             }
         } catch (Exception e) {
@@ -332,74 +339,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         });
     }
 
-    private Camera getCameraInstance() {
-        Camera camera = null;
-        try {
-            camera = Camera.open();
-        } catch (Exception e) {
-            Log.e(TAG, "Error: ", e);
-            // cannot get camera or does not exist
-        }
-        return camera;
-    }
-
-    Camera.PictureCallback mPicture = new Camera.PictureCallback() {
-        @Override
-        public void onPictureTaken(byte[] data, Camera camera) {
-            File pictureFile = getOutputMediaFile();
-            if (pictureFile == null) {
-                Log.d(TAG, "picture == null");
-                return;
-            }
-            try {
-                FileOutputStream fos = new FileOutputStream(pictureFile);
-                fos.write(data);
-                fos.close();
-                Log.d(TAG, "img written");
-            } catch (FileNotFoundException e) {
-                Log.e(TAG, "Error: ", e);
-
-            } catch (IOException e) {
-                Log.e(TAG, "Error: ", e);
-            }
-        }
-    };
-
-    private static File getOutputMediaFile() {
-        File mediaStorageDir = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.FROYO) {
-            mediaStorageDir = new File(
-                Environment
-                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                "MyCameraApp");
-        }
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                Log.d("MyCameraApp", "failed to create directory");
-                return null;
-            }
-        }
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
-            .format(new Date());
-        File mediaFile;
-        mediaFile = new File(mediaStorageDir.getPath() + File.separator
-            + "IMG_" + timeStamp + ".jpg");
-
-        return mediaFile;
-    }
-
-    @Override
-    public void onClick(View view) {
-
-    }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        releaseCamera();
-    }
 
     private void refreshParams(String mode) {
         if (mCamera != null) {
@@ -432,5 +371,4 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 break;
         }
     }
-
 }
