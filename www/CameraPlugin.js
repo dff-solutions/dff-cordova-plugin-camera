@@ -3,6 +3,8 @@
  */
 
 /**
+ * JS in order to open the camera activity
+ *
  * @author Anthony Nahas
  * @version 0.0.2
  * @since 5.1.2017
@@ -20,6 +22,12 @@ function CameraPlugin() {
 }
 
 
+/**
+ * Open the camera activity in order to take a photo.
+ *
+ * @param success - the success callback function.
+ * @param error - the error callback function.
+ */
 CameraPlugin.prototype.takePhoto = function (success, error) {
     exec(success, error, FEATURE, ACTION_TAKE_PHOTO, []);
 };
