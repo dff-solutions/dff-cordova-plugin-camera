@@ -44,9 +44,9 @@ var error = function(errorMsg) {
 ```
 
 
-##--------------------------------------------------------------------------------
+----
 
-1. #### takePhoto
+#### takePhoto
 ```js
 /**
  * Call the camera activity in order to take a photo.
