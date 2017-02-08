@@ -54,4 +54,5 @@ var error = function(errorMsg) {
  * @param success - Success callback function with an image as base64
  * @param error - Error callback function
  */
-CameraSergice.takePhoto(success,error);
+
+CameraPlugin.takePhoto(success,error);
