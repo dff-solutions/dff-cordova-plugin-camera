@@ -27,7 +27,7 @@ public class RotationHelper {
             RotateAnimation.RELATIVE_TO_SELF, 0.5f,
             RotateAnimation.RELATIVE_TO_SELF, 0.5f);
 
-        rotateAnim.setDuration(1000);
+        rotateAnim.setDuration(250);
         rotateAnim.setFillAfter(true);
 
         for (ImageButton imageButton : list) {

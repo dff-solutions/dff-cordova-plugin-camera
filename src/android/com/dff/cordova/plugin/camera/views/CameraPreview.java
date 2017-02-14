@@ -167,7 +167,7 @@ public class CameraPreview implements SurfaceHolder.Callback {
             List<String> focusModes = mParams.getSupportedFlashModes();
             if (focusModes != null) {
                 if (focusModes
-                    .contains(Camera.Parameters.FLASH_MODE_AUTO)) {
+                        .contains(Camera.Parameters.FLASH_MODE_AUTO)) {
                     mParams.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
                 }
             }
@@ -346,89 +346,98 @@ public class CameraPreview implements SurfaceHolder.Callback {
      * other options: to be saved in the file system as JPG.
      */
     private void takeImage() {
-        mCamera.takePicture(new Camera.ShutterCallback() {
-            @Override
-            public void onShutter() {
-                // to enable shutter sound
-            }
-        }, null, new Camera.PictureCallback() {
-
-            private File imageFile;
-
-            @Override
-            public void onPictureTaken(byte[] data, Camera camera) {
-                try {
-                    // convert byte array into bitmap
-                    if (!sSaveInGallery) {
-                        Log.d(TAG, "data in base64");
-                        String base64Image = Base64.encodeToString(data, Base64.DEFAULT);
-                        Log.d(TAG, base64Image);
-                        R.sCallBackContext.success(base64Image);
-                        ((Activity) mContext).finish();
-                    } else {
-                        Bitmap loadedImage = BitmapFactory.decodeByteArray(data, 0,
-                            data.length);
-
-                        // rotate Image
-                        Matrix rotateMatrix = new Matrix();
-                        rotateMatrix.postRotate(mRotation);
-                        Bitmap rotatedBitmap = Bitmap.createBitmap(loadedImage, 0,
-                            0, loadedImage.getWidth(), loadedImage.getHeight(),
-                            rotateMatrix, false);
-                        String state = Environment.getExternalStorageState();
-                        File folder = null;
-                        if (state.contains(Environment.MEDIA_MOUNTED)) {
-                            folder = new File(Environment
-                                .getExternalStorageDirectory() + "/Demo");
-                        } else {
-                            folder = new File(Environment
-                                .getExternalStorageDirectory() + "/Demo");
-                        }
-
-                        boolean success = true;
-                        if (!folder.exists()) {
-                            success = folder.mkdirs();
-                        }
-                        if (success) {
-                            Date date = new Date();
-                            imageFile = new File(folder.getAbsolutePath()
-                                + File.separator
-                                //+ new Timestamp(date.getTime()).toString()
-                                + new Date()
-                                + "Image.jpg");
-
-                            Boolean resOfCreatingImage = imageFile.createNewFile();
-                            Log.d(TAG, "Result of creating an new image = " + resOfCreatingImage);
-                        } else {
-                            return;
-                        }
-
-                        ByteArrayOutputStream ostream = new ByteArrayOutputStream();
-
-                        // save image into gallery
-                        rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
-
-                        FileOutputStream fout = new FileOutputStream(imageFile);
-                        fout.write(ostream.toByteArray());
-                        fout.close();
-                        ContentValues values = new ContentValues();
-
-                        values.put(MediaStore.Images.Media.DATE_TAKEN,
-                            System.currentTimeMillis());
-                        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-                        values.put(MediaStore.MediaColumns.DATA,
-                            imageFile.getAbsolutePath());
-
-                        mContext.getContentResolver().insert(
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        if (mCamera != null) {
+            try {
+                mCaptureImage.setVisibility(View.GONE);
+                mFlashButton.setVisibility(View.GONE);
+                mFlipCamera.setVisibility(View.GONE);
+                mCamera.takePicture(new Camera.ShutterCallback() {
+                    @Override
+                    public void onShutter() {
+                        // to enable shutter sound
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(TAG, "Error: ", e);
-                }
+                }, null, new Camera.PictureCallback() {
 
+                    private File imageFile;
+
+                    @Override
+                    public void onPictureTaken(byte[] data, Camera camera) {
+                        try {
+                            // convert byte array into bitmap
+                            if (!sSaveInGallery) {
+                                Log.d(TAG, "data in base64");
+                                String base64Image = Base64.encodeToString(data, Base64.DEFAULT);
+                                Log.d(TAG, base64Image);
+                                R.sCallBackContext.success(base64Image);
+                                ((Activity) mContext).finish();
+                            } else {
+                                Bitmap loadedImage = BitmapFactory.decodeByteArray(data, 0,
+                                        data.length);
+
+                                // rotate Image
+                                Matrix rotateMatrix = new Matrix();
+                                rotateMatrix.postRotate(mRotation);
+                                Bitmap rotatedBitmap = Bitmap.createBitmap(loadedImage, 0,
+                                        0, loadedImage.getWidth(), loadedImage.getHeight(),
+                                        rotateMatrix, false);
+                                String state = Environment.getExternalStorageState();
+                                File folder = null;
+                                if (state.contains(Environment.MEDIA_MOUNTED)) {
+                                    folder = new File(Environment
+                                            .getExternalStorageDirectory() + "/Demo");
+                                } else {
+                                    folder = new File(Environment
+                                            .getExternalStorageDirectory() + "/Demo");
+                                }
+
+                                boolean success = true;
+                                if (!folder.exists()) {
+                                    success = folder.mkdirs();
+                                }
+                                if (success) {
+                                    Date date = new Date();
+                                    imageFile = new File(folder.getAbsolutePath()
+                                            + File.separator
+                                            //+ new Timestamp(date.getTime()).toString()
+                                            + new Date()
+                                            + "Image.jpg");
+
+                                    Boolean resOfCreatingImage = imageFile.createNewFile();
+                                    Log.d(TAG, "Result of creating an new image = " + resOfCreatingImage);
+                                } else {
+                                    return;
+                                }
+
+                                ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+
+                                // save image into gallery
+                                rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+
+                                FileOutputStream fout = new FileOutputStream(imageFile);
+                                fout.write(ostream.toByteArray());
+                                fout.close();
+                                ContentValues values = new ContentValues();
+
+                                values.put(MediaStore.Images.Media.DATE_TAKEN,
+                                        System.currentTimeMillis());
+                                values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                                values.put(MediaStore.MediaColumns.DATA,
+                                        imageFile.getAbsolutePath());
+
+                                mContext.getContentResolver().insert(
+                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(TAG, "Error: ", e);
+                        }
+
+                    }
+                });
+            } catch (RuntimeException e) {
+                Log.e(TAG, "Error while taking picture.. ", e);
             }
-        });
+        }
     }
 
     /**
@@ -439,10 +448,10 @@ public class CameraPreview implements SurfaceHolder.Callback {
      */
     private void setCameraDisplayOrientation(Activity activity, int cameraId) {
         android.hardware.Camera.CameraInfo info =
-            new android.hardware.Camera.CameraInfo();
+                new android.hardware.Camera.CameraInfo();
         android.hardware.Camera.getCameraInfo(cameraId, info);
         int rotation = activity.getWindowManager().getDefaultDisplay()
-            .getRotation();
+                .getRotation();
         int degrees = 0;
         switch (rotation) {
             case Surface.ROTATION_0:
@@ -479,7 +488,7 @@ public class CameraPreview implements SurfaceHolder.Callback {
     public void onOrientationChanged(int orientation) {
         if (orientation == ORIENTATION_UNKNOWN) return;
         Camera.CameraInfo info =
-            new Camera.CameraInfo();
+                new Camera.CameraInfo();
         Camera.getCameraInfo(mCameraID, info);
         orientation = (orientation + 45) / 90 * 90;
         int rotation = 0;
@@ -499,70 +508,70 @@ public class CameraPreview implements SurfaceHolder.Callback {
     private void printParameters() {
         String space = " ";
         Log.d(TAG, "Camera params: "
-            + "Antibanding: "
-            + mParams.getAntibanding()
-            + space
-            + "ExposureCompensation "
-            + mParams.getExposureCompensation()
-            + space
-            + "MinExposureCompensation "
-            + mParams.getMinExposureCompensation()
-            + space
-            + "MaxExposureCompensation "
-            + mParams.getMaxExposureCompensation()
-            + space
-            + "MaxNumFocusAreas "
-            + mParams.getMaxNumFocusAreas()
-            + space
-            + "MaxNumMeteringAreas "
-            + mParams.getMaxNumMeteringAreas()
-            + space
-            //+ "MeteringAreas "
-            //+ mParams.getMeteringAreas()
-            + "FocusAreas "
-            + mParams.getFocusAreas()
-            + space
-            + "FocalLength "
-            + mParams.getFocalLength()
-            + space
-            + "MaxZoom "
-            + mParams.getMaxZoom()
-            + space
-            + "PictureFormat"
-            + mParams.getPictureFormat()
-            + space
-            + "PreviewFormat "
-            + mParams.getPreviewFormat()
-            + space
-            + "MaxZoom "
-            + mParams.getMaxZoom()
-            + space
-            + "FlashMode "
-            + mParams.getFlashMode()
-            + space
-            + "ZoomRatios "
-            + mParams.getZoomRatios()
-            + space
-            + "WhiteBalance "
-            + mParams.getWhiteBalance()
-            + space
-            + "SceneMode "
-            + mParams.getSceneMode()
-            + space
-            + "AutoExposureLock "
-            + mParams.getAutoExposureLock()
-            + space
-            + "ExposureCompensationStep "
-            + mParams.getExposureCompensationStep()
-            + space
-            + "HorizontalViewAngle "
-            + mParams.getHorizontalViewAngle()
-            + space
-            + "VerticalViewAngle "
-            + mParams.getVerticalViewAngle()
-            + space
-            + "rotation "
-            + mRotation);
+                + "Antibanding: "
+                + mParams.getAntibanding()
+                + space
+                + "ExposureCompensation "
+                + mParams.getExposureCompensation()
+                + space
+                + "MinExposureCompensation "
+                + mParams.getMinExposureCompensation()
+                + space
+                + "MaxExposureCompensation "
+                + mParams.getMaxExposureCompensation()
+                + space
+                + "MaxNumFocusAreas "
+                + mParams.getMaxNumFocusAreas()
+                + space
+                + "MaxNumMeteringAreas "
+                + mParams.getMaxNumMeteringAreas()
+                + space
+                //+ "MeteringAreas "
+                //+ mParams.getMeteringAreas()
+                + "FocusAreas "
+                + mParams.getFocusAreas()
+                + space
+                + "FocalLength "
+                + mParams.getFocalLength()
+                + space
+                + "MaxZoom "
+                + mParams.getMaxZoom()
+                + space
+                + "PictureFormat"
+                + mParams.getPictureFormat()
+                + space
+                + "PreviewFormat "
+                + mParams.getPreviewFormat()
+                + space
+                + "MaxZoom "
+                + mParams.getMaxZoom()
+                + space
+                + "FlashMode "
+                + mParams.getFlashMode()
+                + space
+                + "ZoomRatios "
+                + mParams.getZoomRatios()
+                + space
+                + "WhiteBalance "
+                + mParams.getWhiteBalance()
+                + space
+                + "SceneMode "
+                + mParams.getSceneMode()
+                + space
+                + "AutoExposureLock "
+                + mParams.getAutoExposureLock()
+                + space
+                + "ExposureCompensationStep "
+                + mParams.getExposureCompensationStep()
+                + space
+                + "HorizontalViewAngle "
+                + mParams.getHorizontalViewAngle()
+                + space
+                + "VerticalViewAngle "
+                + mParams.getVerticalViewAngle()
+                + space
+                + "rotation "
+                + mRotation);
 
     }
 
