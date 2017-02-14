@@ -24,7 +24,7 @@ import java.util.List;
  * Class to create a preview for the camera (including focus mechanism).
  *
  * @author Anthony Nahas
- * @version 1.0.7
+ * @version 2.0.1
  * @since 05.01.2017
  */
 public class CameraActivity extends Activity {
