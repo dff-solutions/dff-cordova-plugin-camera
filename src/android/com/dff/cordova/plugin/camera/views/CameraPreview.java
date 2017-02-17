@@ -34,7 +34,7 @@ import static android.view.OrientationEventListener.ORIENTATION_UNKNOWN;
  * Class to preview the camera.
  *
  * @author Anthony Nahas
- * @version 1.0.0
+ * @version 2.0.2
  * @since 2.2.2017
  */
 public class CameraPreview implements SurfaceHolder.Callback {
@@ -55,7 +55,7 @@ public class CameraPreview implements SurfaceHolder.Callback {
 
 
     /**
-     * Custom contructor
+     * Custom constructor
      *
      * @param context
      * @param flashButton
@@ -92,8 +92,8 @@ public class CameraPreview implements SurfaceHolder.Callback {
 
             @Override
             public void onClick(View view) {
-                //releaseCamera();
-                mCamera.release();
+                releaseCamera();
+                //mCamera.release();
                 if (mCameraID == Camera.CameraInfo.CAMERA_FACING_BACK) {
                     mCameraID = Camera.CameraInfo.CAMERA_FACING_FRONT;
                     mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_FRONT, R.DRAWABLE, R.PACKAGE_NAME));
@@ -130,6 +130,7 @@ public class CameraPreview implements SurfaceHolder.Callback {
             mCamera = Camera.open(mCameraID);
         } catch (Exception e) {
             Log.e(TAG, "Error while opeing the camera", e);
+            return result;
         }
         if (mCamera != null) {
             try {
@@ -241,13 +242,13 @@ public class CameraPreview implements SurfaceHolder.Callback {
     /**
      * Called from PreviewSurfaceView to set touch focus.
      *
-     * @param - Rect - new area for auto focus
+     * @param focusRect - new area for auto focus
      */
-    public void doTouchFocus(final Rect tfocusRect) {
+    public void doTouchFocus(final Rect focusRect) {
         Log.i(TAG, "TouchFocus");
         try {
             final List<Camera.Area> focusList = new ArrayList<Camera.Area>();
-            Camera.Area focusArea = new Camera.Area(tfocusRect, 1000);
+            Camera.Area focusArea = new Camera.Area(focusRect, 1000);
             focusList.add(focusArea);
 
             Camera.Parameters para = mCamera.getParameters();
@@ -497,8 +498,12 @@ public class CameraPreview implements SurfaceHolder.Callback {
         } else {  // back-facing camera
             rotation = (info.orientation + orientation) % 360;
         }
-        mParams.setRotation(rotation);
-        mCamera.setParameters(mParams);
+        try {
+            mParams.setRotation(rotation);
+            mCamera.setParameters(mParams);
+        } catch (NullPointerException e) {
+            Log.e(TAG, "Error while setting the rotation params for the camera: ", e);
+        }
     }
 
     /**
