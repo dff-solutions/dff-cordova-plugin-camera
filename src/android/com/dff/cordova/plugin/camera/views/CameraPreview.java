@@ -3,6 +3,7 @@ package com.dff.cordova.plugin.camera.views;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -18,6 +19,7 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.ImageButton;
 import com.dff.cordova.plugin.camera.R.R;
+import com.dff.cordova.plugin.camera.activities.PreviewActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -34,7 +36,7 @@ import static android.view.OrientationEventListener.ORIENTATION_UNKNOWN;
  * Class to preview the camera.
  *
  * @author Anthony Nahas
- * @version 2.0.2
+ * @version 2.1.0
  * @since 2.2.2017
  */
 public class CameraPreview implements SurfaceHolder.Callback {
@@ -48,6 +50,7 @@ public class CameraPreview implements SurfaceHolder.Callback {
     private ImageButton mFlashButton;
     private ImageButton mCaptureImage;
     private ImageButton mFlipCamera;
+    private Boolean mWithPreview;
 
     private int mRotation;
     private int mCameraID;
@@ -63,10 +66,14 @@ public class CameraPreview implements SurfaceHolder.Callback {
      * @param flipCamera
      */
     public CameraPreview(Context context,
-                         ImageButton flashButton, ImageButton captureImage, ImageButton flipCamera) {
+                         Boolean withPreview,
+                         ImageButton flashButton,
+                         ImageButton captureImage,
+                         ImageButton flipCamera) {
 
         mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
         mContext = context;
+        mWithPreview = withPreview;
         mFlashButton = flashButton;
         mCaptureImage = captureImage;
         mFlipCamera = flipCamera;
@@ -168,7 +175,7 @@ public class CameraPreview implements SurfaceHolder.Callback {
             List<String> focusModes = mParams.getSupportedFlashModes();
             if (focusModes != null) {
                 if (focusModes
-                        .contains(Camera.Parameters.FLASH_MODE_AUTO)) {
+                    .contains(Camera.Parameters.FLASH_MODE_AUTO)) {
                     mParams.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
                 }
             }
@@ -343,7 +350,7 @@ public class CameraPreview implements SurfaceHolder.Callback {
     /**
      * Take a photo and return/save it.
      * <p>
-     * Return: Base64
+     * Forwarding: image as Base64
      * other options: to be saved in the file system as JPG.
      */
     private void takeImage() {
@@ -365,30 +372,39 @@ public class CameraPreview implements SurfaceHolder.Callback {
                     public void onPictureTaken(byte[] data, Camera camera) {
                         try {
                             // convert byte array into bitmap
+                            R.sBase64Image = Base64.encodeToString(data, Base64.DEFAULT);
                             if (!sSaveInGallery) {
-                                Log.d(TAG, "data in base64");
-                                String base64Image = Base64.encodeToString(data, Base64.DEFAULT);
-                                Log.d(TAG, base64Image);
-                                R.sCallBackContext.success(base64Image);
-                                ((Activity) mContext).finish();
+                                if (mWithPreview) {
+                                    R.sBitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                    Intent intent = new Intent((Activity) mContext, PreviewActivity.class);
+                                    ((Activity) mContext).startActivityForResult(intent, R.IMAGE_PREVIEW_REQUEST);
+                                } else {
+                                    if (R.sBase64Image != null && !R.sBase64Image.isEmpty()) {
+                                        Log.d(TAG, R.sBase64Image);
+                                        R.sCallBackContext.success(R.sBase64Image);
+                                    } else {
+                                        R.sCallBackContext.error("Error: the base64 image is empty or null");
+                                    }
+                                    ((Activity) mContext).finish();
+                                }
                             } else {
                                 Bitmap loadedImage = BitmapFactory.decodeByteArray(data, 0,
-                                        data.length);
+                                    data.length);
 
                                 // rotate Image
                                 Matrix rotateMatrix = new Matrix();
                                 rotateMatrix.postRotate(mRotation);
                                 Bitmap rotatedBitmap = Bitmap.createBitmap(loadedImage, 0,
-                                        0, loadedImage.getWidth(), loadedImage.getHeight(),
-                                        rotateMatrix, false);
+                                    0, loadedImage.getWidth(), loadedImage.getHeight(),
+                                    rotateMatrix, false);
                                 String state = Environment.getExternalStorageState();
                                 File folder = null;
                                 if (state.contains(Environment.MEDIA_MOUNTED)) {
                                     folder = new File(Environment
-                                            .getExternalStorageDirectory() + "/Demo");
+                                        .getExternalStorageDirectory() + "/Demo");
                                 } else {
                                     folder = new File(Environment
-                                            .getExternalStorageDirectory() + "/Demo");
+                                        .getExternalStorageDirectory() + "/Demo");
                                 }
 
                                 boolean success = true;
@@ -398,10 +414,10 @@ public class CameraPreview implements SurfaceHolder.Callback {
                                 if (success) {
                                     Date date = new Date();
                                     imageFile = new File(folder.getAbsolutePath()
-                                            + File.separator
-                                            //+ new Timestamp(date.getTime()).toString()
-                                            + new Date()
-                                            + "Image.jpg");
+                                        + File.separator
+                                        //+ new Timestamp(date.getTime()).toString()
+                                        + new Date()
+                                        + "Image.jpg");
 
                                     Boolean resOfCreatingImage = imageFile.createNewFile();
                                     Log.d(TAG, "Result of creating an new image = " + resOfCreatingImage);
@@ -420,13 +436,13 @@ public class CameraPreview implements SurfaceHolder.Callback {
                                 ContentValues values = new ContentValues();
 
                                 values.put(MediaStore.Images.Media.DATE_TAKEN,
-                                        System.currentTimeMillis());
+                                    System.currentTimeMillis());
                                 values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
                                 values.put(MediaStore.MediaColumns.DATA,
-                                        imageFile.getAbsolutePath());
+                                    imageFile.getAbsolutePath());
 
                                 mContext.getContentResolver().insert(
-                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -449,10 +465,10 @@ public class CameraPreview implements SurfaceHolder.Callback {
      */
     private void setCameraDisplayOrientation(Activity activity, int cameraId) {
         android.hardware.Camera.CameraInfo info =
-                new android.hardware.Camera.CameraInfo();
+            new android.hardware.Camera.CameraInfo();
         android.hardware.Camera.getCameraInfo(cameraId, info);
         int rotation = activity.getWindowManager().getDefaultDisplay()
-                .getRotation();
+            .getRotation();
         int degrees = 0;
         switch (rotation) {
             case Surface.ROTATION_0:
@@ -489,7 +505,7 @@ public class CameraPreview implements SurfaceHolder.Callback {
     public void onOrientationChanged(int orientation) {
         if (orientation == ORIENTATION_UNKNOWN) return;
         Camera.CameraInfo info =
-                new Camera.CameraInfo();
+            new Camera.CameraInfo();
         Camera.getCameraInfo(mCameraID, info);
         orientation = (orientation + 45) / 90 * 90;
         int rotation = 0;
@@ -513,70 +529,70 @@ public class CameraPreview implements SurfaceHolder.Callback {
     private void printParameters() {
         String space = " ";
         Log.d(TAG, "Camera params: "
-                + "Antibanding: "
-                + mParams.getAntibanding()
-                + space
-                + "ExposureCompensation "
-                + mParams.getExposureCompensation()
-                + space
-                + "MinExposureCompensation "
-                + mParams.getMinExposureCompensation()
-                + space
-                + "MaxExposureCompensation "
-                + mParams.getMaxExposureCompensation()
-                + space
-                + "MaxNumFocusAreas "
-                + mParams.getMaxNumFocusAreas()
-                + space
-                + "MaxNumMeteringAreas "
-                + mParams.getMaxNumMeteringAreas()
-                + space
-                //+ "MeteringAreas "
-                //+ mParams.getMeteringAreas()
-                + "FocusAreas "
-                + mParams.getFocusAreas()
-                + space
-                + "FocalLength "
-                + mParams.getFocalLength()
-                + space
-                + "MaxZoom "
-                + mParams.getMaxZoom()
-                + space
-                + "PictureFormat"
-                + mParams.getPictureFormat()
-                + space
-                + "PreviewFormat "
-                + mParams.getPreviewFormat()
-                + space
-                + "MaxZoom "
-                + mParams.getMaxZoom()
-                + space
-                + "FlashMode "
-                + mParams.getFlashMode()
-                + space
-                + "ZoomRatios "
-                + mParams.getZoomRatios()
-                + space
-                + "WhiteBalance "
-                + mParams.getWhiteBalance()
-                + space
-                + "SceneMode "
-                + mParams.getSceneMode()
-                + space
-                + "AutoExposureLock "
-                + mParams.getAutoExposureLock()
-                + space
-                + "ExposureCompensationStep "
-                + mParams.getExposureCompensationStep()
-                + space
-                + "HorizontalViewAngle "
-                + mParams.getHorizontalViewAngle()
-                + space
-                + "VerticalViewAngle "
-                + mParams.getVerticalViewAngle()
-                + space
-                + "rotation "
-                + mRotation);
+            + "Antibanding: "
+            + mParams.getAntibanding()
+            + space
+            + "ExposureCompensation "
+            + mParams.getExposureCompensation()
+            + space
+            + "MinExposureCompensation "
+            + mParams.getMinExposureCompensation()
+            + space
+            + "MaxExposureCompensation "
+            + mParams.getMaxExposureCompensation()
+            + space
+            + "MaxNumFocusAreas "
+            + mParams.getMaxNumFocusAreas()
+            + space
+            + "MaxNumMeteringAreas "
+            + mParams.getMaxNumMeteringAreas()
+            + space
+            //+ "MeteringAreas "
+            //+ mParams.getMeteringAreas()
+            + "FocusAreas "
+            + mParams.getFocusAreas()
+            + space
+            + "FocalLength "
+            + mParams.getFocalLength()
+            + space
+            + "MaxZoom "
+            + mParams.getMaxZoom()
+            + space
+            + "PictureFormat"
+            + mParams.getPictureFormat()
+            + space
+            + "PreviewFormat "
+            + mParams.getPreviewFormat()
+            + space
+            + "MaxZoom "
+            + mParams.getMaxZoom()
+            + space
+            + "FlashMode "
+            + mParams.getFlashMode()
+            + space
+            + "ZoomRatios "
+            + mParams.getZoomRatios()
+            + space
+            + "WhiteBalance "
+            + mParams.getWhiteBalance()
+            + space
+            + "SceneMode "
+            + mParams.getSceneMode()
+            + space
+            + "AutoExposureLock "
+            + mParams.getAutoExposureLock()
+            + space
+            + "ExposureCompensationStep "
+            + mParams.getExposureCompensationStep()
+            + space
+            + "HorizontalViewAngle "
+            + mParams.getHorizontalViewAngle()
+            + space
+            + "VerticalViewAngle "
+            + mParams.getVerticalViewAngle()
+            + space
+            + "rotation "
+            + mRotation);
 
     }
 

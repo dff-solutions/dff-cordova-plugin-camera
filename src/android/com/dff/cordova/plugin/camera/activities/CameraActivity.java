@@ -2,12 +2,14 @@ package com.dff.cordova.plugin.camera.activities;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.OrientationEventListener;
 import android.view.SurfaceHolder;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import com.dff.cordova.plugin.camera.R.R;
@@ -24,7 +26,7 @@ import java.util.List;
  * Class to create a preview for the camera (including focus mechanism).
  *
  * @author Anthony Nahas
- * @version 2.0.1
+ * @version 2.1.0
  * @since 05.01.2017
  */
 public class CameraActivity extends Activity {
@@ -52,6 +54,8 @@ public class CameraActivity extends Activity {
         Log.d(TAG, "onCreate()");
         setContentView(R.RESOURCES.getIdentifier(R.CAMERA_ACTIVITY_LAYOUT, R.LAYOUT, R.PACKAGE_NAME));
 
+        Boolean withPreview = getIntent().getExtras().getBoolean(R.WITH_PREVIEW_KEY);
+
         //on creating the surface view
         mSurfaceView = (PreviewSurfaceView) findViewById(R.RESOURCES.getIdentifier(R.CAMERA_SURFACE_ID, R.ID, R.PACKAGE_NAME));
         mCaptureImage = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_TAKE_IMAGE, R.ID, R.PACKAGE_NAME));
@@ -60,7 +64,7 @@ public class CameraActivity extends Activity {
         mDrawingView = (DrawingView) findViewById(R.RESOURCES.getIdentifier(R.CAMERA_DRAWING_SURFACE_ID, R.ID, R.PACKAGE_NAME));
 
         mSurfaceHolder = mSurfaceView.getHolder();
-        mCameraPreview = new CameraPreview(this, mFlashButton, mCaptureImage, mFlipCamera);
+        mCameraPreview = new CameraPreview(this, withPreview, mFlashButton, mCaptureImage, mFlipCamera);
         mSurfaceHolder.addCallback(mCameraPreview);
         mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
@@ -182,5 +186,36 @@ public class CameraActivity extends Activity {
     protected void onResume() {
         super.onResume();
         mOrientationEventListener.enable();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Log.d(TAG, "requestCode = " + requestCode);
+        Log.d(TAG, "resultCode = " + resultCode);
+
+        switch (resultCode) {
+            case RESULT_OK:
+                Log.d(TAG, "resultCode2 = " + resultCode);
+                if (R.sBase64Image != null && !R.sBase64Image.isEmpty()) {
+                    Log.d(TAG, R.sBase64Image);
+                    R.sCallBackContext.success(R.sBase64Image);
+                } else {
+                    R.sCallBackContext.error("Error: the base64 image is empty or null");
+                }
+                finish();
+                break;
+            case RESULT_CANCELED:
+                Log.d(TAG, "resultCode2 = " + resultCode);
+                setResult(RESULT_OK);
+                finish();
+                break;
+            case R.RESULT_REPEAT:
+                mCaptureImage.setVisibility(View.VISIBLE);
+                mFlashButton.setVisibility(View.VISIBLE);
+                mFlipCamera.setVisibility(View.VISIBLE);
+                break;
+        }
+
     }
 }

@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="dff-cordova-plugin-camera"
-        version="2.0.2">
+        version="2.1.0">
 
     <name>Camera Plugin</name>
     <description>Camera Plugin</description>
@@ -46,6 +46,9 @@
                     <category android:name="android.intent.category.DEFAULT"/>
                 </intent-filter>
             </activity>
+            <activity
+                android:name="com.dff.cordova.plugin.camera.activities.PreviewActivity"
+                android:theme="@android:style/Theme.NoTitleBar"></activity>
         </config-file>
 
         <source-file
@@ -53,6 +56,9 @@
             target-dir="src/com/dff/cordova/plugin/camera"/>
         <source-file
             src="src/android/com/dff/cordova/plugin/camera/activities/CameraActivity.java"
+            target-dir="src/com/dff/cordova/plugin/camera/activities"/>
+        <source-file
+            src="src/android/com/dff/cordova/plugin/camera/activities/PreviewActivity.java"
             target-dir="src/com/dff/cordova/plugin/camera/activities"/>
         <source-file
             src="src/android/com/dff/cordova/plugin/camera/R/R.java"
@@ -76,6 +82,9 @@
             src="src/android/res/layout/activity_camera.xml"
             target-dir="res/layout"/>
         <source-file
+            src="src/android/res/layout/activity_preview.xml"
+            target-dir="res/layout"/>
+        <source-file
             src="src/android/res/drawable/ic_flash_off_white_24px.xml"
             target-dir="res/drawable"/>
         <source-file
@@ -95,6 +104,15 @@
             target-dir="res/drawable"/>
         <source-file
             src="src/android/res/drawable/ic_switch_cam_front.xml"
+            target-dir="res/drawable"/>
+        <source-file
+            src="src/android/res/drawable/ic_arrow_forward_white_48px.xml"
+            target-dir="res/drawable"/>
+        <source-file
+            src="src/android/res/drawable/ic_close_white_48px.xml"
+            target-dir="res/drawable"/>
+        <source-file
+            src="src/android/res/drawable/ic_refresh_white_48px.xml"
             target-dir="res/drawable"/>
         <!--
         <source-file
