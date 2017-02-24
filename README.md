@@ -1,7 +1,8 @@
 # dff-cordova-plugin-camera
 
+###Outlook
 1. open camera
-2. take photo
+2. take photo (and Preview)
 3. return photo as base64
 
 
@@ -11,7 +12,14 @@
 
 ## Plugin version
 
-- Android: 1.0.7
+- Android: 2.1.0
+
+## Releases:
+- 2.1.0: FEAT: The ability to preview a taken image
+- 2.0.2: FIX: handling camera activity and preview if the app does not have the right permissions
+- 2.0.1: FIX: handling runtime exceptions while taking a picture | the duration of the ratotion of the icons has been decreased to 250
+- 2.0.0: FEAT: implementation of manual focus
+- 1.0.7: FEAT: take a picture and forward it to js as BASE64
 
 ##Installation
 
@@ -53,6 +61,8 @@ var error = function(errorMsg) {
  *
  * @param success - Success callback function with an image as base64
  * @param error - Error callback function
+ * @param withPreview - whether a preview for the taken image is to provide
  */
 
-CameraPlugin.takePhoto(success,error);
+CameraPlugin.takePhoto(success,error,withPreview);
+
