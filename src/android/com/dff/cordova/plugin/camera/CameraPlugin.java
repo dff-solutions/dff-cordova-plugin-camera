@@ -1,7 +1,9 @@
 package com.dff.cordova.plugin.camera;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.util.Log;
 import com.dff.cordova.plugin.camera.R.R;
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
@@ -14,12 +16,14 @@ import org.json.JSONException;
  * Plugin that handle the process to take a photo: opening and releasing a camera instance.
  *
  * @author Anthony Nahas
- * @version 2.1.0
+ * @version 2.2.0
  * @since 05.01.2017
  */
 public class CameraPlugin extends CordovaPlugin {
 
     private static final String TAG = "CameraPlugin";
+    private static final String CAMERA = Manifest.permission.CAMERA;
+    public static final int CAMERA_PERMISSION_CODE = 0;
     private Context mContext;
 
     /**
@@ -32,6 +36,28 @@ public class CameraPlugin extends CordovaPlugin {
         cordova.setActivityResultCallback(this);
         R.PACKAGE_NAME = mContext.getPackageName();
         R.RESOURCES = mContext.getResources();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!cordova.hasPermission(CAMERA)) {
+            getCameraPermission(CAMERA_PERMISSION_CODE);
+        }
+    }
+
+    private void getCameraPermission(int requestCode) {
+        cordova.requestPermission(this, requestCode, CAMERA);
+    }
+
+    public void onRequestPermissionResult(int requestCode, String[] permissions,
+                                          int[] grantResults) throws JSONException {
+        for (int r : grantResults) {
+            if (r == PackageManager.PERMISSION_DENIED) {
+                Log.e(TAG, "CAMERA PERMISSION DENIED");
+                return;
+            }
+        }
     }
 
     /**

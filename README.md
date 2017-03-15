@@ -15,6 +15,7 @@
 - Android: 2.1.0
 
 ## Releases:
+- 2.2.0: FEAT: @Target Android version starting with API 23: Requesting Camera Permission!
 - 2.1.0: FEAT: The ability to preview a taken image
 - 2.0.2: FIX: handling camera activity and preview if the app does not have the right permissions
 - 2.0.1: FIX: handling runtime exceptions while taking a picture | the duration of the ratotion of the icons has been decreased to 250
