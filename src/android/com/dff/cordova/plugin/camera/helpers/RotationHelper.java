@@ -1,5 +1,6 @@
 package com.dff.cordova.plugin.camera.helpers;
 
+import android.view.View;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * Helper class to rotate a image button with a specific target degree
  *
  * @author Anthony Nahas
- * @version 1.0
+ * @version 1.1
  * @since 8.2.2017
  */
 public class RotationHelper {
@@ -31,7 +32,9 @@ public class RotationHelper {
         rotateAnim.setFillAfter(true);
 
         for (ImageButton imageButton : list) {
-            imageButton.startAnimation(rotateAnim);
+            if (imageButton.getVisibility() != View.GONE) {
+                imageButton.startAnimation(rotateAnim);
+            }
         }
     }
 }

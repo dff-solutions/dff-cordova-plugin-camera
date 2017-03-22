@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import com.dff.cordova.plugin.camera.R.R;
+import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
 import com.dff.cordova.plugin.camera.helpers.RotationHelper;
 import com.dff.cordova.plugin.camera.views.CameraPreview;
 import com.dff.cordova.plugin.camera.views.DrawingView;
@@ -26,7 +27,7 @@ import java.util.List;
  * Class to create a preview for the camera (including focus mechanism).
  *
  * @author Anthony Nahas
- * @version 2.1.0
+ * @version 2.2.2
  * @since 05.01.2017
  */
 public class CameraActivity extends Activity {
@@ -212,8 +213,10 @@ public class CameraActivity extends Activity {
                 break;
             case R.RESULT_REPEAT:
                 mCaptureImage.setVisibility(View.VISIBLE);
-                mFlashButton.setVisibility(View.VISIBLE);
                 mFlipCamera.setVisibility(View.VISIBLE);
+                if (!CameraInfoHelper.isFrontCameraOn(mCameraPreview.getCameraID())) {
+                    mFlashButton.setVisibility(View.VISIBLE);
+                }
                 break;
         }
 

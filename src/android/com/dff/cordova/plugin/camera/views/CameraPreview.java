@@ -104,8 +104,9 @@ public class CameraPreview implements SurfaceHolder.Callback {
                 if (mCameraID == Camera.CameraInfo.CAMERA_FACING_BACK) {
                     mCameraID = Camera.CameraInfo.CAMERA_FACING_FRONT;
                     mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_FRONT, R.DRAWABLE, R.PACKAGE_NAME));
-                    mFlashButton.setEnabled(false);
+                    mFlashButton.clearAnimation();
                     mFlashButton.setVisibility(View.GONE);
+                    mFlashButton.setEnabled(false);
                 } else {
                     mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
                     mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_BACK, R.DRAWABLE, R.PACKAGE_NAME));
@@ -120,6 +121,16 @@ public class CameraPreview implements SurfaceHolder.Callback {
                 }
             }
         });
+    }
+
+    /**
+     * Get the camera id in order to prepare additional information concerning
+     * the camera using the CameraInfoHelper class.
+     *
+     * @return - the id of the opened camera
+     */
+    public int getCameraID() {
+        return mCameraID;
     }
 
 

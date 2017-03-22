@@ -10,11 +10,12 @@
 
 - Android 
 
-## Plugin version
+## @latest
 
-- Android: 2.1.0
+- Android: 2.2.2
 
 ## Releases:
+- 2.2.2: Fix: flash button is set as View.GONE after animations
 - 2.2.1: Fix: Handling runtimeException on setting parameters to the camera while the orientation is on change (@Target: front-camera)
 - 2.2.0: FEAT: @Target Android version starting with API 23: Requesting Camera Permission!
 - 2.1.0: FEAT: The ability to preview a taken image
@@ -52,9 +53,6 @@ var error = function(errorMsg) {
   // (Y) do what every you want...! 
 }
 ```
-
-
-----
 
 #### takePhoto
 ```js
