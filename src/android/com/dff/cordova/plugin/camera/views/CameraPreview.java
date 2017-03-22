@@ -36,7 +36,7 @@ import static android.view.OrientationEventListener.ORIENTATION_UNKNOWN;
  * Class to preview the camera.
  *
  * @author Anthony Nahas
- * @version 2.1.0
+ * @version 2.1.1
  * @since 2.2.2017
  */
 public class CameraPreview implements SurfaceHolder.Callback {
@@ -517,7 +517,7 @@ public class CameraPreview implements SurfaceHolder.Callback {
         try {
             mParams.setRotation(rotation);
             mCamera.setParameters(mParams);
-        } catch (NullPointerException e) {
+        } catch (RuntimeException e) {
             Log.e(TAG, "Error while setting the rotation params for the camera: ", e);
         }
     }

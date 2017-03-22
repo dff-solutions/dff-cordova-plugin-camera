@@ -78,7 +78,7 @@ public class CameraActivity extends Activity {
         mOrientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL) {
             @Override
             public void onOrientationChanged(int orientation) {
-                //Log.d(TAG, "orientation changed: " + orientation);
+                Log.d(TAG, "orientation changed: " + orientation);
 
                 switch (orientation) {
                     case 0:
