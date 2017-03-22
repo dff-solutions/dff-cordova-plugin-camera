@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import com.dff.cordova.plugin.camera.R.R;
 import com.dff.cordova.plugin.camera.activities.PreviewActivity;
+import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -285,8 +286,7 @@ public class CameraPreview implements SurfaceHolder.Callback {
     /**
      * AutoFocus callback
      */
-    AutoFocusCallback myAutoFocusCallback = new AutoFocusCallback() {
-
+    private AutoFocusCallback myAutoFocusCallback = new AutoFocusCallback() {
         @Override
         public void onAutoFocus(boolean arg0, Camera arg1) {
             if (arg0) {
@@ -475,9 +475,6 @@ public class CameraPreview implements SurfaceHolder.Callback {
      * @param cameraId - the id of the camera - back or front camera
      */
     private void setCameraDisplayOrientation(Activity activity, int cameraId) {
-        android.hardware.Camera.CameraInfo info =
-            new android.hardware.Camera.CameraInfo();
-        android.hardware.Camera.getCameraInfo(cameraId, info);
         int rotation = activity.getWindowManager().getDefaultDisplay()
             .getRotation();
         int degrees = 0;
@@ -497,7 +494,8 @@ public class CameraPreview implements SurfaceHolder.Callback {
         }
 
         int result;
-        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+        Camera.CameraInfo info = CameraInfoHelper.getCameraInfo(cameraId);
+        if (CameraInfoHelper.isFrontCameraOn(cameraId)) {
             result = (info.orientation + degrees) % 360;
             result = (360 - result) % 360;  // compensate the mirror
         } else {  // back-facing
@@ -532,79 +530,4 @@ public class CameraPreview implements SurfaceHolder.Callback {
             Log.e(TAG, "Error while setting the rotation params for the camera: ", e);
         }
     }
-
-    /**
-     * Print all params of the camera.
-     * This method is implemented for test and debug purposes
-     */
-    private void printParameters() {
-        String space = " ";
-        Log.d(TAG, "Camera params: "
-            + "Antibanding: "
-            + mParams.getAntibanding()
-            + space
-            + "ExposureCompensation "
-            + mParams.getExposureCompensation()
-            + space
-            + "MinExposureCompensation "
-            + mParams.getMinExposureCompensation()
-            + space
-            + "MaxExposureCompensation "
-            + mParams.getMaxExposureCompensation()
-            + space
-            + "MaxNumFocusAreas "
-            + mParams.getMaxNumFocusAreas()
-            + space
-            + "MaxNumMeteringAreas "
-            + mParams.getMaxNumMeteringAreas()
-            + space
-            //+ "MeteringAreas "
-            //+ mParams.getMeteringAreas()
-            + "FocusAreas "
-            + mParams.getFocusAreas()
-            + space
-            + "FocalLength "
-            + mParams.getFocalLength()
-            + space
-            + "MaxZoom "
-            + mParams.getMaxZoom()
-            + space
-            + "PictureFormat"
-            + mParams.getPictureFormat()
-            + space
-            + "PreviewFormat "
-            + mParams.getPreviewFormat()
-            + space
-            + "MaxZoom "
-            + mParams.getMaxZoom()
-            + space
-            + "FlashMode "
-            + mParams.getFlashMode()
-            + space
-            + "ZoomRatios "
-            + mParams.getZoomRatios()
-            + space
-            + "WhiteBalance "
-            + mParams.getWhiteBalance()
-            + space
-            + "SceneMode "
-            + mParams.getSceneMode()
-            + space
-            + "AutoExposureLock "
-            + mParams.getAutoExposureLock()
-            + space
-            + "ExposureCompensationStep "
-            + mParams.getExposureCompensationStep()
-            + space
-            + "HorizontalViewAngle "
-            + mParams.getHorizontalViewAngle()
-            + space
-            + "VerticalViewAngle "
-            + mParams.getVerticalViewAngle()
-            + space
-            + "rotation "
-            + mRotation);
-
-    }
-
 }
