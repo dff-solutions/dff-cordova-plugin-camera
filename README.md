@@ -30,6 +30,10 @@
 - or
 - ionic plugin add [https://github.com/dff-solutions/dff-cordova-plugin-camera.git]()
 
+## Documentation
+- <a href="https://dff-solutions.github.io/dff-cordova-plugin-camera/" target="_blank" >JAVA DOC</a>
+
+
 ## Usage
 
 The plugin is available via the global variable `**CameraPlugin**`
