@@ -29,12 +29,12 @@ public class CameraPlugin extends CommonPlugin {
      */
     @Override
     public void pluginInitialize() {
+        requestCameraPermission();
         super.pluginInitialize();
         mContext = cordova.getActivity().getApplicationContext();
         cordova.setActivityResultCallback(this);
         R.PACKAGE_NAME = mContext.getPackageName();
         R.RESOURCES = mContext.getResources();
-        requestCameraPermission();
     }
 
     private void requestCameraPermission() {

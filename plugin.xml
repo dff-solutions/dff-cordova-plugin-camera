@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="dff-cordova-plugin-camera"
-        version="2.3.0">
+        version="2.3.1">
 
     <name>Camera Plugin</name>
     <description>Camera Plugin</description>
@@ -12,6 +12,8 @@
     <js-module src="www/CameraPlugin.js" name="CameraPlugin">
         <clobbers target="CameraPlugin"/>
     </js-module>
+
+    <dependency id="dff-cordova-plugin-common" url="https://github.com/dff-solutions/dff.CordovaPlugin.Common.git"/>
 
     <!--Android-->
     <platform name="android">
