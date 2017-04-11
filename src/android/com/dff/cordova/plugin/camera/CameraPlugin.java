@@ -3,12 +3,11 @@ package com.dff.cordova.plugin.camera;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.util.Log;
 import com.dff.cordova.plugin.camera.R.R;
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
+import com.dff.cordova.plugin.common.CommonPlugin;
 import org.apache.cordova.CallbackContext;
-import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -16,48 +15,30 @@ import org.json.JSONException;
  * Plugin that handle the process to take a photo: opening and releasing a camera instance.
  *
  * @author Anthony Nahas
- * @version 2.2.0
+ * @version 2.3.0
  * @since 05.01.2017
  */
-public class CameraPlugin extends CordovaPlugin {
+public class CameraPlugin extends CommonPlugin {
 
     private static final String TAG = "CameraPlugin";
-    private static final String CAMERA = Manifest.permission.CAMERA;
-    public static final int CAMERA_PERMISSION_CODE = 0;
+    private static final String CAMERA_PERMISSION = Manifest.permission.CAMERA;
     private Context mContext;
 
     /**
      * Initializing the plugin by setting and allocating important information and objects.
      */
     @Override
-    protected void pluginInitialize() {
+    public void pluginInitialize() {
         super.pluginInitialize();
         mContext = cordova.getActivity().getApplicationContext();
         cordova.setActivityResultCallback(this);
         R.PACKAGE_NAME = mContext.getPackageName();
         R.RESOURCES = mContext.getResources();
+        requestCameraPermission();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (!cordova.hasPermission(CAMERA)) {
-            getCameraPermission(CAMERA_PERMISSION_CODE);
-        }
-    }
-
-    private void getCameraPermission(int requestCode) {
-        cordova.requestPermission(this, requestCode, CAMERA);
-    }
-
-    public void onRequestPermissionResult(int requestCode, String[] permissions,
-                                          int[] grantResults) throws JSONException {
-        for (int r : grantResults) {
-            if (r == PackageManager.PERMISSION_DENIED) {
-                Log.e(TAG, "CAMERA PERMISSION DENIED");
-                return;
-            }
-        }
+    private void requestCameraPermission() {
+        CommonPlugin.addPermission(CAMERA_PERMISSION);
     }
 
     /**

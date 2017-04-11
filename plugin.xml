@@ -2,10 +2,11 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="dff-cordova-plugin-camera"
-        version="2.2.2">
+        version="2.3.0">
 
     <name>Camera Plugin</name>
     <description>Camera Plugin</description>
+    <keywords>cordova,device,Camera, autofocus,manual focus,preview,android</keywords>
     <author>dff solutions</author>
 
     <js-module src="www/CameraPlugin.js" name="CameraPlugin">

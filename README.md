@@ -10,11 +10,12 @@
 
 - Android 
 
-## @latest
+## Plugin@latest
 
-- Android: 2.2.2
+- Android: 2.3.0
 
 ## Releases:
+- 2.3.0: Ref: requesting permissions will be performed by the common plugin @TargetAPI(21)
 - 2.2.2: Fix: flash button is set as View.GONE after animations
 - 2.2.1: Fix: Handling runtimeException on setting parameters to the camera while the orientation is on change (@Target: front-camera)
 - 2.2.0: FEAT: @Target Android version starting with API 23: Requesting Camera Permission!
