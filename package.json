@@ -1,0 +1,25 @@
+{
+  "name": "dff-cordova-plugin-camera",
+  "version": "1.0.0",
+  "description": "Camera Plugin",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dff-solutions/dff-cordova-plugin-camera.git"
+  },
+  "keywords": [
+    "Camera"
+  ],
+  "author": "Anthony Nahas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dff-solutions/dff-cordova-plugin-camera/issues"
+  },
+  "homepage": "https://github.com/dff-solutions/dff-cordova-plugin-camera#readme"
+}
