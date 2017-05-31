@@ -12,9 +12,10 @@
 
 ## Plugin@latest
 
-- Android: 2.3.0
+- Android: 3.0.0
 
 ## Releases:
+- 3.0.0: Ref: converted the Camera plugin as well as android module library @Instrumental Tests! RELEASE 3.0.0
 - 2.3.0: Ref: requesting permissions will be performed by the common plugin @TargetAPI(21)
 - 2.2.2: Fix: flash button is set as View.GONE after animations
 - 2.2.1: Fix: Handling runtimeException on setting parameters to the camera while the orientation is on change (@Target: front-camera)
@@ -66,8 +67,8 @@ var error = function(errorMsg) {
  *
  * @param success - Success callback function with an image as base64
  * @param error - Error callback function
- * @param withPreview - whether a preview for the taken image is to provide
+ * @param withPreview - whether a preview for the taken image is to provide | true or false
  */
 
-CameraPlugin.takePhoto(success,error,withPreview);
+CameraPlugin.takePhoto(success,error,withPreview); // withPreview == true
 

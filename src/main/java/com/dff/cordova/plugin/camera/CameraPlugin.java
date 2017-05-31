@@ -15,7 +15,7 @@ import org.json.JSONException;
  * Plugin that handle the process to take a photo: opening and releasing a camera instance.
  *
  * @author Anthony Nahas
- * @version 2.3.0
+ * @version 3.0.0
  * @since 05.01.2017
  */
 public class CameraPlugin extends CommonPlugin {

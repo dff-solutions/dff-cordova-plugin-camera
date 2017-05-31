@@ -1,8 +1,7 @@
 {
   "name": "dff-cordova-plugin-camera",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "description": "Camera Plugin",
-  "main": "index.js",
   "directories": {
     "doc": "docs"
   },

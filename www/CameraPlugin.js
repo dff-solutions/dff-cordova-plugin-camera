@@ -6,7 +6,7 @@
  * JS in order to open and use the camera activity
  *
  * @author Anthony Nahas
- * @version 2.1.0
+ * @version 3.0.0
  * @since 5.1.2017
  */
 
@@ -27,7 +27,7 @@ function CameraPlugin() {
  *
  * @param success - the success callback function.
  * @param error - the error callback function.
- * @param withPreview - whether a preview for the taken image is to provide
+ * @param withPreview - whether a preview for the taken image is to provide //true or false
  */
 CameraPlugin.prototype.takePhoto = function (success, error, withPreview) {
     exec(success, error, FEATURE, ACTION_TAKE_PHOTO, [withPreview]);
