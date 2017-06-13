@@ -18,7 +18,7 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.ImageButton;
-import com.dff.cordova.plugin.camera.R.R;
+import com.dff.cordova.plugin.camera.Res.R;
 import com.dff.cordova.plugin.camera.activities.PreviewActivity;
 import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
 

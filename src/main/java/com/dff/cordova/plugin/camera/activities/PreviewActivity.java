@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import com.dff.cordova.plugin.camera.R.R;
+import com.dff.cordova.plugin.camera.Res.R;
 
 
 /**

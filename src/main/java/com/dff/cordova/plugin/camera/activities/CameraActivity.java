@@ -12,7 +12,7 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-import com.dff.cordova.plugin.camera.R.R;
+import com.dff.cordova.plugin.camera.Res.R;
 import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
 import com.dff.cordova.plugin.camera.helpers.RotationHelper;
 import com.dff.cordova.plugin.camera.views.CameraPreview;

@@ -1,14 +1,15 @@
-package com.dff.cordova.plugin.camera.R;
+package com.dff.cordova.plugin.camera.Res;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+
 import org.apache.cordova.CallbackContext;
 
 /**
  * Class to hold and allocate needed resources.
  *
  * @author Anthony Nahas
- * @version 2.1.0
+ * @version 3.0.1
  * @since 05.01.2017
  */
 public class R {
