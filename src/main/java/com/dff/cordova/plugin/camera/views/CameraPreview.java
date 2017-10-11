@@ -126,7 +126,7 @@ public class CameraPreview implements SurfaceHolder.Callback {
 
     /**
      * Get the camera id in order to prepare additional information concerning
-     * the camera using the CameraInfoHelper class.
+     * the camera using the CameraInfoHelper classes.
      *
      * @return - the id of the opened camera
      */

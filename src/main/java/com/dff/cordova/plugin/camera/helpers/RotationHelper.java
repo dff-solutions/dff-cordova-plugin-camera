@@ -7,7 +7,7 @@ import android.widget.ImageButton;
 import java.util.List;
 
 /**
- * Helper class to rotate a image button with a specific target degree
+ * Helper classes to rotate a image button with a specific target degree
  *
  * @author Anthony Nahas
  * @version 1.1

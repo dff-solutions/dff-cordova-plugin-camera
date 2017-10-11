@@ -66,7 +66,7 @@ public class CameraPlugin extends CommonPlugin {
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         cordova.getActivity().startActivity(intent);
                     } else {
-                        Log.d(TAG, "Action not found");
+                        Log.e(TAG, "Action not found");
                     }
                 }
             });
