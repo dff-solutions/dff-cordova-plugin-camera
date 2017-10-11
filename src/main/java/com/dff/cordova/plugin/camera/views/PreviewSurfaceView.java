@@ -2,43 +2,35 @@ package com.dff.cordova.plugin.camera.views;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 
-
 /**
  * Class that implements a custom surfaceview
  *
  * @author Anthony Nahas
- * @version 1.0
+ * @version 3.0.2
  * @since 2.2.2017
  */
 public class PreviewSurfaceView extends SurfaceView {
 
-    private CameraPreview camPreview;
-    private boolean listenerSet = false;
-    public Paint paint;
-    private DrawingView drawingView;
-    private boolean drawingViewSet = false;
+    private CameraPreview mCamPreview;
+    private boolean isListening = false;
+    private DrawingView mDrawingView;
+    private boolean isInDrawingViewSet = false;
 
     /**
      * Custom custructor
      *
      * @param context - the used context
-     * @param attrs -  the used attrubutset
+     * @param attrs   -  the used attrubutset
      */
     public PreviewSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Paint paint = new Paint();
-        paint.setColor(Color.GREEN);
-        paint.setStrokeWidth(3);
-        paint.setStyle(Paint.Style.STROKE);
     }
-
 
     /**
      * @param widthMeasureSpec
@@ -59,7 +51,7 @@ public class PreviewSurfaceView extends SurfaceView {
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!listenerSet) {
+        if (!isListening) {
             return false;
         }
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -78,10 +70,10 @@ public class PreviewSurfaceView extends SurfaceView {
                 touchRect.right * 2000 / this.getWidth() - 1000,
                 touchRect.bottom * 2000 / this.getHeight() - 1000);
 
-            camPreview.doTouchFocus(targetFocusRect);
-            if (drawingViewSet) {
-                drawingView.setHaveTouch(true, touchRect);
-                drawingView.invalidate();
+            mCamPreview.doTouchFocus(targetFocusRect);
+            if (isInDrawingViewSet) {
+                mDrawingView.setHaveTouch(true, touchRect);
+                mDrawingView.invalidate();
 
                 // Remove the square after some time
                 Handler handler = new Handler();
@@ -89,12 +81,20 @@ public class PreviewSurfaceView extends SurfaceView {
 
                     @Override
                     public void run() {
-                        drawingView.setHaveTouch(false, new Rect(0, 0, 0, 0));
-                        drawingView.invalidate();
+                        mDrawingView.getPaint().setColor(Color.GREEN);
+                        mDrawingView.invalidate();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mDrawingView.getPaint().setColor(Color.YELLOW);
+                                mDrawingView.setHaveTouch(false, null);
+                                mDrawingView.invalidate();
+                            }
+                        }, 1000);
                     }
                 }, 1000);
             }
-
         }
         return false;
     }
@@ -105,18 +105,18 @@ public class PreviewSurfaceView extends SurfaceView {
      * @param camPreview - CameraPreview
      */
     public void setListener(CameraPreview camPreview) {
-        this.camPreview = camPreview;
-        listenerSet = true;
+        this.mCamPreview = camPreview;
+        isListening = true;
     }
 
     /**
      * set DrawingView instance for touch focus indication.
      *
-     * @param dView
+     * @param drawingView
      */
-    public void setDrawingView(DrawingView dView) {
-        drawingView = dView;
-        drawingViewSet = true;
+    public void setDrawingView(DrawingView drawingView) {
+        mDrawingView = drawingView;
+        isInDrawingViewSet = true;
     }
 
 

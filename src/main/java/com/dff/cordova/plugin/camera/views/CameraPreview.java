@@ -32,7 +32,6 @@ import java.util.List;
 
 import static android.view.OrientationEventListener.ORIENTATION_UNKNOWN;
 
-
 /**
  * Class to preview the camera.
  *
@@ -40,7 +39,7 @@ import static android.view.OrientationEventListener.ORIENTATION_UNKNOWN;
  * @version 2.1.1
  * @since 2.2.2017
  */
-public class CameraPreview implements SurfaceHolder.Callback {
+public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback {
 
     private final static String TAG = "CameraPreview";
     private static int sFlashMode;
@@ -149,7 +148,7 @@ public class CameraPreview implements SurfaceHolder.Callback {
             mCamera = Camera.open(mCameraID);
         } catch (Exception e) {
             Log.e(TAG, "Error while opeing the camera", e);
-            return result;
+            return false;
         }
         if (mCamera != null) {
             try {
@@ -181,9 +180,6 @@ public class CameraPreview implements SurfaceHolder.Callback {
         try {
 
             mParams = mCamera.getParameters();
-
-            //showFlashButton(mParams);
-
             List<String> focusModes = mParams.getSupportedFlashModes();
             if (focusModes != null) {
                 if (focusModes
@@ -275,25 +271,12 @@ public class CameraPreview implements SurfaceHolder.Callback {
             para.setMeteringAreas(focusList);
             mCamera.setParameters(para);
 
-            mCamera.autoFocus(myAutoFocusCallback);
+            mCamera.autoFocus(this);
         } catch (Exception e) {
-            e.printStackTrace();
-            Log.i(TAG, "Unable to autofocus");
+            Log.i(TAG, "Unable to autofocus", e);
         }
 
     }
-
-    /**
-     * AutoFocus callback
-     */
-    private AutoFocusCallback myAutoFocusCallback = new AutoFocusCallback() {
-        @Override
-        public void onAutoFocus(boolean arg0, Camera arg1) {
-            if (arg0) {
-                mCamera.cancelAutoFocus();
-            }
-        }
-    };
 
     /**
      * Refresh params: ex: when changing the flash mode.
@@ -305,7 +288,6 @@ public class CameraPreview implements SurfaceHolder.Callback {
             Log.d(TAG, "supported flash mode");
             Log.d(TAG, mCamera.getParameters().getSupportedFlashModes().toString());
             Camera.Parameters parameters = mCamera.getParameters();
-            //parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
             parameters.setFlashMode(mode);
             mCamera.setParameters(parameters);
             Log.d(TAG, "flash mode = " + mCamera.getParameters().getFlashMode());
@@ -387,7 +369,7 @@ public class CameraPreview implements SurfaceHolder.Callback {
                             if (!sSaveInGallery) {
                                 if (mWithPreview) {
                                     R.sBitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                                    Intent intent = new Intent((Activity) mContext, PreviewActivity.class);
+                                    Intent intent = new Intent(mContext, PreviewActivity.class);
                                     ((Activity) mContext).startActivityForResult(intent, R.IMAGE_PREVIEW_REQUEST);
                                 } else {
                                     if (R.sBase64Image != null && !R.sBase64Image.isEmpty()) {
@@ -517,17 +499,21 @@ public class CameraPreview implements SurfaceHolder.Callback {
             new Camera.CameraInfo();
         Camera.getCameraInfo(mCameraID, info);
         orientation = (orientation + 45) / 90 * 90;
-        int rotation = 0;
-        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-            rotation = (info.orientation - orientation + 360) % 360;
-        } else {  // back-facing camera
-            rotation = (info.orientation + orientation) % 360;
-        }
+        int rotation = info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT ?
+            (info.orientation - orientation + 360)
+                % 360 : (info.orientation + orientation) % 360;
         try {
             mParams.setRotation(rotation);
             mCamera.setParameters(mParams);
         } catch (RuntimeException e) {
             Log.e(TAG, "Error while setting the rotation params for the camera: ", e);
+        }
+    }
+
+    @Override
+    public void onAutoFocus(boolean success, Camera camera) {
+        if (success) {
+            camera.cancelAutoFocus();
         }
     }
 }

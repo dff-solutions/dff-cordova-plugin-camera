@@ -2,6 +2,7 @@ package com.dff.cordova.plugin.camera.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
@@ -12,7 +13,7 @@ import android.view.View;
  * Class to draw a custom rec that indicate the touch event on the preview surface.
  *
  * @author Anthony Nahas
- * @version 1.0
+ * @version 3.0.2
  * @since 2.2.2017
  */
 public class DrawingView extends View {
@@ -30,9 +31,9 @@ public class DrawingView extends View {
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mPaint = new Paint();
-        mPaint.setColor(0xeed7d7d7);
+        mPaint.setColor(Color.YELLOW);
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeWidth(2);
+        mPaint.setStrokeWidth(3);
         mTouched = false;
     }
 
@@ -56,9 +57,19 @@ public class DrawingView extends View {
     public void onDraw(Canvas canvas) {
         if (mTouched) {
             canvas.drawRect(
-                mRectArea.left, mRectArea.top, mRectArea.right, mRectArea.bottom,
+                mRectArea.left,
+                mRectArea.top,
+                mRectArea.right,
+                mRectArea.bottom,
                 mPaint);
         }
     }
 
+    public Paint getPaint() {
+        return mPaint;
+    }
+
+    public void setPaint(Paint mPaint) {
+        this.mPaint = mPaint;
+    }
 }
