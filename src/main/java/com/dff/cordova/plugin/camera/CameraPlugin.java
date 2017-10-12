@@ -6,10 +6,14 @@ import android.content.Intent;
 import android.util.Log;
 import com.dff.cordova.plugin.camera.Res.R;
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
+import com.dff.cordova.plugin.camera.dagger.DaggerManager;
+import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 import com.dff.cordova.plugin.common.CommonPlugin;
 import org.apache.cordova.CallbackContext;
 import org.json.JSONArray;
 import org.json.JSONException;
+
+import javax.inject.Inject;
 
 /**
  * Plugin that handle the process to take a photo: opening and releasing a camera instance.
@@ -22,13 +26,23 @@ public class CameraPlugin extends CommonPlugin {
 
     private static final String TAG = "CameraPlugin";
     private static final String CAMERA_PERMISSION = Manifest.permission.CAMERA;
-    private Context mContext;
+
+
+    @Inject
+    @ApplicationContext
+    Context mContext;
 
     /**
      * Initializing the plugin by setting and allocating important information and objects.
      */
     @Override
     public void pluginInitialize() {
+
+        DaggerManager
+            .getInstance()
+            .in(cordova.getActivity().getApplication())
+            .inject(this);
+
         requestCameraPermission();
         super.pluginInitialize();
         mContext = cordova.getActivity().getApplicationContext();
@@ -64,7 +78,7 @@ public class CameraPlugin extends CommonPlugin {
                         Intent intent = new Intent(mContext, CameraActivity.class);
                         intent.putExtra(R.WITH_PREVIEW_KEY, withPreview);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        cordova.getActivity().startActivity(intent);
+                        mContext.startActivity(intent);
                     } else {
                         Log.e(TAG, "Action not found");
                     }
