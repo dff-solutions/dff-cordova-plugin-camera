@@ -30,8 +30,8 @@ public class DaggerManager {
         return this;
     }
 
-    public void inject(CameraPlugin cameraPlugin){
-        if(mCameraPluginComponent == null){
+    public void inject(CameraPlugin cameraPlugin) {
+        if (mCameraPluginComponent == null) {
             mCameraPluginComponent = DaggerCameraPluginComponent
                 .builder()
                 .appModule(mAppModule)

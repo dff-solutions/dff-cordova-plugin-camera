@@ -3,6 +3,9 @@ package com.dff.cordova.plugin.camera.helpers;
 import android.hardware.Camera;
 import android.util.Log;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 /**
  * Created by anahas on 22.03.2017.
  *
@@ -10,9 +13,14 @@ import android.util.Log;
  * @version 1.2
  * @since 22.03.2017
  */
+@Singleton
 public class CameraInfoHelper {
 
     private static final String TAG = CameraInfoHelper.class.getSimpleName();
+
+    @Inject
+    public CameraInfoHelper() {
+    }
 
     /**
      * Method that returns whether the front or back camera is in use
@@ -20,18 +28,17 @@ public class CameraInfoHelper {
      * @param cameraID - the used camera id
      * @return - whether the front or back camera is in use
      */
-    public static boolean isFrontCameraOn(int cameraID) {
+    public boolean isFrontCameraOn(int cameraID) {
         Camera.CameraInfo info = new Camera.CameraInfo();
         Camera.getCameraInfo(cameraID, info);
         return info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT;
     }
 
     /**
-     *
      * @param cameraID
      * @return
      */
-    public static Camera.CameraInfo getCameraInfo(int cameraID) {
+    public Camera.CameraInfo getCameraInfo(int cameraID) {
         Camera.CameraInfo info = new Camera.CameraInfo();
         Camera.getCameraInfo(cameraID, info);
         return info;
