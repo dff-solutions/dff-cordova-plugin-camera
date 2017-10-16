@@ -1,6 +1,7 @@
 package com.dff.cordova.plugin.camera;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -9,6 +10,9 @@ import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 import com.dff.cordova.plugin.common.CommonPlugin;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
 import org.apache.cordova.CallbackContext;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,11 +26,13 @@ import javax.inject.Inject;
  * @version 3.0.2
  * @since 05.01.2017
  */
-public class CameraPlugin extends CommonPlugin {
+public class CameraPlugin extends CommonPlugin implements HasActivityInjector {
 
     private static final String TAG = "CameraPlugin";
     private static final String CAMERA_PERMISSION = Manifest.permission.CAMERA;
 
+    @Inject
+    DispatchingAndroidInjector<Activity> dispatchingActivityInjector;
 
     @Inject
     @ApplicationContext
@@ -37,6 +43,9 @@ public class CameraPlugin extends CommonPlugin {
      */
     @Override
     public void pluginInitialize() {
+
+//        DaggerYourApplicationComponent.create()
+//            .inject(this);
 
         DaggerManager
             .getInstance()
@@ -87,5 +96,10 @@ public class CameraPlugin extends CommonPlugin {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public AndroidInjector<Activity> activityInjector() {
+        return dispatchingActivityInjector;
     }
 }

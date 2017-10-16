@@ -18,7 +18,9 @@ import com.dff.cordova.plugin.camera.helpers.RotationHelper;
 import com.dff.cordova.plugin.camera.views.CameraPreview;
 import com.dff.cordova.plugin.camera.views.DrawingView;
 import com.dff.cordova.plugin.camera.views.PreviewSurfaceView;
+import dagger.android.AndroidInjection;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,9 +36,14 @@ public class CameraActivity extends Activity {
 
     private static final String TAG = CameraActivity.class.getSimpleName();
 
+    @Inject
+    CameraInfoHelper mCameraInfoHelper;
+
+    @Inject
+    CameraPreview mCameraPreview;
+
     private PreviewSurfaceView mSurfaceView;
     private DrawingView mDrawingView;
-    private CameraPreview mCameraPreview;
     private SurfaceHolder mSurfaceHolder;
     private ImageButton mCaptureImage;
     private ImageButton mFlashButton;
@@ -53,6 +60,7 @@ public class CameraActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
+        AndroidInjection.inject(this);
         setContentView(R.RESOURCES.getIdentifier(R.CAMERA_ACTIVITY_LAYOUT, R.LAYOUT, R.PACKAGE_NAME));
 
         Boolean withPreview = getIntent().getExtras().getBoolean(R.WITH_PREVIEW_KEY);
@@ -65,7 +73,7 @@ public class CameraActivity extends Activity {
         mDrawingView = (DrawingView) findViewById(R.RESOURCES.getIdentifier(R.CAMERA_DRAWING_SURFACE_ID, R.ID, R.PACKAGE_NAME));
 
         mSurfaceHolder = mSurfaceView.getHolder();
-        mCameraPreview = new CameraPreview(this, withPreview, mFlashButton, mCaptureImage, mFlipCamera);
+//        mCameraPreview = new CameraPreview(this, withPreview, mFlashButton, mCaptureImage, mFlipCamera);
         mSurfaceHolder.addCallback(mCameraPreview);
         mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
@@ -214,7 +222,7 @@ public class CameraActivity extends Activity {
             case R.RESULT_REPEAT:
                 mCaptureImage.setVisibility(View.VISIBLE);
                 mFlipCamera.setVisibility(View.VISIBLE);
-                if (!CameraInfoHelper.isFrontCameraOn(mCameraPreview.getCameraID())) {
+                if (!mCameraInfoHelper.isFrontCameraOn(mCameraPreview.getCameraID())) {
                     mFlashButton.setVisibility(View.VISIBLE);
                 }
                 break;

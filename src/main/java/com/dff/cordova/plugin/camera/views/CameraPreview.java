@@ -20,8 +20,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import com.dff.cordova.plugin.camera.Res.R;
 import com.dff.cordova.plugin.camera.activities.PreviewActivity;
+import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
 
+import javax.inject.Inject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -44,9 +46,11 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
     private final static String TAG = "CameraPreview";
     private static int sFlashMode;
     private static boolean sSaveInGallery;
+
     private Camera mCamera = null;
     private Camera.Parameters mParams;
     private SurfaceHolder mSurfaceHolder;
+    private CameraInfoHelper mCameraInfoHelper;
     private ImageButton mFlashButton;
     private ImageButton mCaptureImage;
     private ImageButton mFlipCamera;
@@ -60,42 +64,36 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
     /**
      * Custom constructor
      *
-     * @param context
-     * @param flashButton
-     * @param captureImage
-     * @param flipCamera
+     * @param mContext
      */
-    public CameraPreview(Context context,
-                         Boolean withPreview,
-                         ImageButton flashButton,
-                         ImageButton captureImage,
-                         ImageButton flipCamera) {
+    @Inject
+    public CameraPreview(@ApplicationContext Context mContext,
+                         CameraInfoHelper mCameraInfoHelper,
+                         Boolean mWithPreview) {
 
         mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
-        mContext = context;
-        mWithPreview = withPreview;
-        mFlashButton = flashButton;
-        mCaptureImage = captureImage;
-        mFlipCamera = flipCamera;
+        this.mContext = mContext;
+        this.mCameraInfoHelper = mCameraInfoHelper;
+        this.mWithPreview = mWithPreview;
 
         sFlashMode = 0;
         sSaveInGallery = false;
 
 
-        mCaptureImage.setOnClickListener(new View.OnClickListener() {
+        this.mCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 takeImage();
                 //Toast.makeText(mContext, "took photo", Toast.LENGTH_LONG).show();
             }
         });
-        mFlashButton.setOnClickListener(new View.OnClickListener() {
+        this.mFlashButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 changeFlashMode();
             }
         });
-        mFlipCamera.setOnClickListener(new View.OnClickListener() {
+        this.mFlipCamera.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -103,15 +101,15 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
                 //mCamera.release();
                 if (mCameraID == Camera.CameraInfo.CAMERA_FACING_BACK) {
                     mCameraID = Camera.CameraInfo.CAMERA_FACING_FRONT;
-                    mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_FRONT, R.DRAWABLE, R.PACKAGE_NAME));
-                    mFlashButton.clearAnimation();
-                    mFlashButton.setVisibility(View.GONE);
-                    mFlashButton.setEnabled(false);
+                    CameraPreview.this.mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_FRONT, R.DRAWABLE, R.PACKAGE_NAME));
+                    CameraPreview.this.mFlashButton.clearAnimation();
+                    CameraPreview.this.mFlashButton.setVisibility(View.GONE);
+                    CameraPreview.this.mFlashButton.setEnabled(false);
                 } else {
                     mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
-                    mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_BACK, R.DRAWABLE, R.PACKAGE_NAME));
-                    mFlashButton.setEnabled(true);
-                    mFlashButton.setVisibility(View.VISIBLE);
+                    CameraPreview.this.mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_BACK, R.DRAWABLE, R.PACKAGE_NAME));
+                    CameraPreview.this.mFlashButton.setEnabled(true);
+                    CameraPreview.this.mFlashButton.setVisibility(View.VISIBLE);
                 }
                 if (!openCamera(mCameraID)) {
                     //alertCameraDialog ();
@@ -476,8 +474,8 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
         }
 
         int result;
-        Camera.CameraInfo info = CameraInfoHelper.getCameraInfo(cameraId);
-        if (CameraInfoHelper.isFrontCameraOn(cameraId)) {
+        Camera.CameraInfo info = mCameraInfoHelper.getCameraInfo(cameraId);
+        if (mCameraInfoHelper.isFrontCameraOn(cameraId)) {
             result = (info.orientation + degrees) % 360;
             result = (360 - result) % 360;  // compensate the mirror
         } else {  // back-facing
@@ -515,5 +513,29 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
         if (success) {
             camera.cancelAutoFocus();
         }
+    }
+
+    public ImageButton getFlashButton() {
+        return mFlashButton;
+    }
+
+    public void setFlashButton(ImageButton mFlashButton) {
+        this.mFlashButton = mFlashButton;
+    }
+
+    public ImageButton getCaptureImage() {
+        return mCaptureImage;
+    }
+
+    public void setCaptureImage(ImageButton mCaptureImage) {
+        this.mCaptureImage = mCaptureImage;
+    }
+
+    public ImageButton getFlipCamera() {
+        return mFlipCamera;
+    }
+
+    public void setFlipCamera(ImageButton mFlipCamera) {
+        this.mFlipCamera = mFlipCamera;
     }
 }

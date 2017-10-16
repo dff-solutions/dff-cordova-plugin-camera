@@ -81,6 +81,9 @@
             src="src/main/java/com/dff/cordova/plugin/camera/dagger/components/CameraPluginComponent.java"
             target-dir="src/com/dff/cordova/plugin/camera/dagger/components"/>
         <source-file
+            src="src/main/java/com/dff/cordova/plugin/camera/dagger/components//sub/CameraActivitySubcomponent.java"
+            target-dir="src/com/dff/cordova/plugin/camera/dagger/components/sub"/>
+        <source-file
             src="src/main/java/com/dff/cordova/plugin/camera/dagger/modules/AppModule.java"
             target-dir="src/com/dff/cordova/plugin/camera/dagger/modules"/>
         <source-file
