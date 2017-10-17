@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import com.dff.cordova.plugin.camera.Res.R;
 import com.dff.cordova.plugin.camera.activities.PreviewActivity;
+import com.dff.cordova.plugin.camera.dagger.annotations.ActivityContext;
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
 
@@ -67,7 +68,7 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
      * @param mContext
      */
     @Inject
-    public CameraPreview(@ApplicationContext Context mContext,
+    public CameraPreview(@ActivityContext Context mContext,
                          CameraInfoHelper mCameraInfoHelper) {
 
         mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
@@ -77,47 +78,6 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
 
         sFlashMode = 0;
         sSaveInGallery = false;
-
-
-        this.mCaptureImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                takeImage();
-                //Toast.makeText(mContext, "took photo", Toast.LENGTH_LONG).show();
-            }
-        });
-        this.mFlashButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                changeFlashMode();
-            }
-        });
-        this.mFlipCamera.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                releaseCamera();
-                //mCamera.release();
-                if (mCameraID == Camera.CameraInfo.CAMERA_FACING_BACK) {
-                    mCameraID = Camera.CameraInfo.CAMERA_FACING_FRONT;
-                    CameraPreview.this.mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_FRONT, R.DRAWABLE, R.PACKAGE_NAME));
-                    CameraPreview.this.mFlashButton.clearAnimation();
-                    CameraPreview.this.mFlashButton.setVisibility(View.GONE);
-                    CameraPreview.this.mFlashButton.setEnabled(false);
-                } else {
-                    mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
-                    CameraPreview.this.mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_BACK, R.DRAWABLE, R.PACKAGE_NAME));
-                    CameraPreview.this.mFlashButton.setEnabled(true);
-                    CameraPreview.this.mFlashButton.setVisibility(View.VISIBLE);
-                }
-                if (!openCamera(mCameraID)) {
-                    //alertCameraDialog ();
-                    Log.d(TAG, "On surface created : camera could not be opened");
-                } else {
-                    Log.d(TAG, " camera opened");
-                }
-            }
-        });
     }
 
     /**
@@ -512,6 +472,10 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
         if (success) {
             camera.cancelAutoFocus();
         }
+    }
+
+    public void setWithPreview(Boolean mWithPreview) {
+        this.mWithPreview = mWithPreview;
     }
 
     public void setFlashButton(ImageButton mFlashButton) {

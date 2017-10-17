@@ -37,12 +37,10 @@ public class CameraPlugin extends CommonPlugin {
     @Override
     public void pluginInitialize() {
 
-//        DaggerYourApplicationComponent.create()
-//            .inject(this);
-
         DaggerManager
             .getInstance()
             .in(cordova.getActivity().getApplication())
+            .and(cordova)
             .inject(this);
 
         requestCameraPermission();

@@ -8,6 +8,7 @@ package com.dff.cordova.plugin.camera.dagger.components;
 
 import com.dff.cordova.plugin.camera.CameraPlugin;
 import com.dff.cordova.plugin.camera.dagger.modules.AppModule;
+import com.dff.cordova.plugin.camera.dagger.modules.CordovaModule;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -15,7 +16,8 @@ import javax.inject.Singleton;
 @Singleton
 @Component(modules =
     {
-        AppModule.class
+        AppModule.class,
+        CordovaModule.class
     })
 public interface CameraPluginComponent {
 

@@ -87,7 +87,13 @@
             src="src/main/java/com/dff/cordova/plugin/camera/dagger/modules/AppModule.java"
             target-dir="src/com/dff/cordova/plugin/camera/dagger/modules"/>
         <source-file
+            src="src/main/java/com/dff/cordova/plugin/camera/dagger/modules/CordovaModule.java"
+            target-dir="src/com/dff/cordova/plugin/camera/dagger/modules"/>
+        <source-file
             src="src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/ApplicationContext.java"
+            target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
+        <source-file
+            src="src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/ActivityContext.java"
             target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
 
         <!-- RESOURCES -->

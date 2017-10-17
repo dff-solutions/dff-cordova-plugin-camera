@@ -60,12 +60,12 @@ public class CameraActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
+
         DaggerManager
             .getInstance()
             .inject(this);
         setContentView(R.RESOURCES.getIdentifier(R.CAMERA_ACTIVITY_LAYOUT, R.LAYOUT, R.PACKAGE_NAME));
 
-        Boolean withPreview = getIntent().getExtras().getBoolean(R.WITH_PREVIEW_KEY);
 
         //on creating the surface view
         mSurfaceView = (PreviewSurfaceView) findViewById(R.RESOURCES.getIdentifier(R.CAMERA_SURFACE_ID, R.ID, R.PACKAGE_NAME));
@@ -82,11 +82,12 @@ public class CameraActivity extends Activity {
         mSurfaceView.setListener(mCameraPreview);
         mSurfaceView.setDrawingView(mDrawingView);
 
+        mCameraPreview.setWithPreview(getIntent().getExtras().getBoolean(R.WITH_PREVIEW_KEY));
         mCameraPreview.setCaptureImage(mCaptureImage);
         mCameraPreview.setFlashButton(mFlashButton);
         mCameraPreview.setFlipCamera(mFlipCamera);
 
-        final List<ImageButton> imageButtonList = new ArrayList<ImageButton>();
+        final List<ImageButton> imageButtonList = new ArrayList<>();
         imageButtonList.add(mFlashButton);
         imageButtonList.add(mFlipCamera);
 
