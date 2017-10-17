@@ -13,12 +13,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import com.dff.cordova.plugin.camera.Res.R;
+import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
 import com.dff.cordova.plugin.camera.helpers.RotationHelper;
 import com.dff.cordova.plugin.camera.views.CameraPreview;
 import com.dff.cordova.plugin.camera.views.DrawingView;
 import com.dff.cordova.plugin.camera.views.PreviewSurfaceView;
-import dagger.android.AndroidInjection;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -60,7 +60,9 @@ public class CameraActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
-        AndroidInjection.inject(this);
+        DaggerManager
+            .getInstance()
+            .inject(this);
         setContentView(R.RESOURCES.getIdentifier(R.CAMERA_ACTIVITY_LAYOUT, R.LAYOUT, R.PACKAGE_NAME));
 
         Boolean withPreview = getIntent().getExtras().getBoolean(R.WITH_PREVIEW_KEY);
@@ -79,6 +81,10 @@ public class CameraActivity extends Activity {
 
         mSurfaceView.setListener(mCameraPreview);
         mSurfaceView.setDrawingView(mDrawingView);
+
+        mCameraPreview.setCaptureImage(mCaptureImage);
+        mCameraPreview.setFlashButton(mFlashButton);
+        mCameraPreview.setFlipCamera(mFlipCamera);
 
         final List<ImageButton> imageButtonList = new ArrayList<ImageButton>();
         imageButtonList.add(mFlashButton);

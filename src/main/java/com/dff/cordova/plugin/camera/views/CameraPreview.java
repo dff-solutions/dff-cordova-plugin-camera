@@ -68,13 +68,12 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
      */
     @Inject
     public CameraPreview(@ApplicationContext Context mContext,
-                         CameraInfoHelper mCameraInfoHelper,
-                         Boolean mWithPreview) {
+                         CameraInfoHelper mCameraInfoHelper) {
 
         mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
         this.mContext = mContext;
         this.mCameraInfoHelper = mCameraInfoHelper;
-        this.mWithPreview = mWithPreview;
+//        this.mWithPreview = mWithPreview;
 
         sFlashMode = 0;
         sSaveInGallery = false;
@@ -515,27 +514,54 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
         }
     }
 
-    public ImageButton getFlashButton() {
-        return mFlashButton;
-    }
-
     public void setFlashButton(ImageButton mFlashButton) {
         this.mFlashButton = mFlashButton;
-    }
-
-    public ImageButton getCaptureImage() {
-        return mCaptureImage;
+        this.mFlashButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeFlashMode();
+            }
+        });
     }
 
     public void setCaptureImage(ImageButton mCaptureImage) {
         this.mCaptureImage = mCaptureImage;
-    }
-
-    public ImageButton getFlipCamera() {
-        return mFlipCamera;
+        this.mCaptureImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                takeImage();
+                //Toast.makeText(mContext, "took photo", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void setFlipCamera(ImageButton mFlipCamera) {
         this.mFlipCamera = mFlipCamera;
+        this.mFlipCamera.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                releaseCamera();
+                //mCamera.release();
+                if (mCameraID == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                    mCameraID = Camera.CameraInfo.CAMERA_FACING_FRONT;
+                    CameraPreview.this.mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_FRONT, R.DRAWABLE, R.PACKAGE_NAME));
+                    CameraPreview.this.mFlashButton.clearAnimation();
+                    CameraPreview.this.mFlashButton.setVisibility(View.GONE);
+                    CameraPreview.this.mFlashButton.setEnabled(false);
+                } else {
+                    mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
+                    CameraPreview.this.mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_BACK, R.DRAWABLE, R.PACKAGE_NAME));
+                    CameraPreview.this.mFlashButton.setEnabled(true);
+                    CameraPreview.this.mFlashButton.setVisibility(View.VISIBLE);
+                }
+                if (!openCamera(mCameraID)) {
+                    //alertCameraDialog ();
+                    Log.d(TAG, "On surface created : camera could not be opened");
+                } else {
+                    Log.d(TAG, " camera opened");
+                }
+            }
+        });
     }
 }
