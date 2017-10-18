@@ -4,6 +4,8 @@ import android.view.View;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.List;
 
 /**
@@ -13,7 +15,12 @@ import java.util.List;
  * @version 1.1
  * @since 8.2.2017
  */
+@Singleton
 public class RotationHelper {
+
+    @Inject
+    public RotationHelper() {
+    }
 
     /**
      * rotate all imagebuttons stored in the given list from a specific degree value
@@ -23,7 +30,7 @@ public class RotationHelper {
      * @param toDegree    - the target degree value
      * @param list        - the list that stored the imagebuttons to be rotated
      */
-    public static void rotate(float fromDegrees, float toDegree, List<ImageButton> list) {
+    public void rotate(float fromDegrees, float toDegree, List<ImageButton> list) {
         final RotateAnimation rotateAnim = new RotateAnimation(fromDegrees, toDegree,
             RotateAnimation.RELATIVE_TO_SELF, 0.5f,
             RotateAnimation.RELATIVE_TO_SELF, 0.5f);

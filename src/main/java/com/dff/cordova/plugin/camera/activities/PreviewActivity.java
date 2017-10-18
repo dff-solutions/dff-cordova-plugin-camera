@@ -18,7 +18,7 @@ import com.dff.cordova.plugin.camera.Res.R;
  * This Feature is optional.
  *
  * @author Anthony Nahas
- * @version 2.2.2
+ * @version 3.0.2
  * @since 22.2.2017
  */
 
