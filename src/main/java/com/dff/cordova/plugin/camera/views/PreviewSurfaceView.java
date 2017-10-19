@@ -7,19 +7,24 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
+import com.dff.cordova.plugin.camera.events.OnAutoFocus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Class that implements a custom surfaceview
  *
  * @author Anthony Nahas
- * @version 3.0.2
+ * @version 3.0.3
  * @since 2.2.2017
  */
 public class PreviewSurfaceView extends SurfaceView {
 
     private CameraPreview mCamPreview;
-    private boolean isListening = false;
     private DrawingView mDrawingView;
+    private EventBus mEventBus;
+    private boolean isListening = false;
     private boolean isInDrawingViewSet = false;
 
     /**
@@ -74,26 +79,6 @@ public class PreviewSurfaceView extends SurfaceView {
             if (isInDrawingViewSet) {
                 mDrawingView.setHaveTouch(true, touchRect);
                 mDrawingView.invalidate();
-
-                // Remove the square after some time
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        mDrawingView.getPaint().setColor(Color.GREEN);
-                        mDrawingView.invalidate();
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mDrawingView.getPaint().setColor(Color.YELLOW);
-                                mDrawingView.setHaveTouch(false, null);
-                                mDrawingView.invalidate();
-                            }
-                        }, 1000);
-                    }
-                }, 1000);
             }
         }
         return false;
@@ -119,5 +104,33 @@ public class PreviewSurfaceView extends SurfaceView {
         isInDrawingViewSet = true;
     }
 
+    public void setEventBus(EventBus mEventBus) {
+        this.mEventBus = mEventBus;
+        this.mEventBus.register(this);
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAutoFocus(final OnAutoFocus event) {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (event.isSuccess()) {
+                    mDrawingView.getPaint().setColor(Color.GREEN);
+                } else {
+                    mDrawingView.getPaint().setColor(Color.RED);
+                }
+                mDrawingView.invalidate();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDrawingView.getPaint().setColor(Color.YELLOW);
+                        mDrawingView.setHaveTouch(false, null);
+                        mDrawingView.invalidate();
+                    }
+                }, 500);
+            }
+        }, 1000);
+    }
 }

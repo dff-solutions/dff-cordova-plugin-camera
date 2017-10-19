@@ -19,6 +19,7 @@ import com.dff.cordova.plugin.camera.helpers.RotationHelper;
 import com.dff.cordova.plugin.camera.views.CameraPreview;
 import com.dff.cordova.plugin.camera.views.DrawingView;
 import com.dff.cordova.plugin.camera.views.PreviewSurfaceView;
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -44,6 +45,9 @@ public class CameraActivity extends Activity {
 
     @Inject
     CameraPreview mCameraPreview;
+
+    @Inject
+    EventBus mEventBus;
 
     private PreviewSurfaceView mSurfaceView;
     private DrawingView mDrawingView;
@@ -84,6 +88,7 @@ public class CameraActivity extends Activity {
 
         mSurfaceView.setListener(mCameraPreview);
         mSurfaceView.setDrawingView(mDrawingView);
+        mSurfaceView.setEventBus(mEventBus);
 
         mCameraPreview.setWithPreview(getIntent().getExtras().getBoolean(R.WITH_PREVIEW_KEY));
         mCameraPreview.setCaptureImage(mCaptureImage);

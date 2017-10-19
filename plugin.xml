@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns:android="http://schemas.android.com/apk/res/android" id="dff-cordova-plugin-camera"
-        version="3.0.2" xmlns="http://www.phonegap.com/ns/plugins/1.0">
+        version="3.0.3" xmlns="http://www.phonegap.com/ns/plugins/1.0">
 
     <name>Camera Plugin</name>
     <description>Camera Plugin</description>
@@ -95,6 +95,9 @@
         <source-file
             src="src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/ActivityContext.java"
             target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
+        <source-file
+            src="src/main/java/com/dff/cordova/plugin/camera/events/OnAutoFocus.java"
+            target-dir="src/com/dff/cordova/plugin/camera/events"/>
 
         <!-- RESOURCES -->
 

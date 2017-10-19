@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 import com.dff.cordova.plugin.camera.Res.R;
 
 
@@ -47,7 +48,7 @@ public class PreviewActivity extends Activity {
         if (R.sBitmap != null) {
             mImageView.setImageBitmap(R.sBitmap);
         } else {
-            //Fehlerbehandlung!
+            Toast.makeText(this,"Error while previewing the image 5125", Toast.LENGTH_LONG).show();
         }
 
         mCancelButton = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_CANCEL, R.ID, R.PACKAGE_NAME));

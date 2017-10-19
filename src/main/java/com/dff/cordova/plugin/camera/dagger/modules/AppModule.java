@@ -5,6 +5,9 @@ import android.content.Context;
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 import dagger.Module;
 import dagger.Provides;
+import org.greenrobot.eventbus.EventBus;
+
+import javax.inject.Singleton;
 
 /**
  * @author Anthony Nahas
@@ -29,5 +32,11 @@ public class AppModule {
     @Provides
     public Application provideApplication() {
         return mApp;
+    }
+
+    @Provides
+    @Singleton
+    public EventBus provideEventBus() {
+        return EventBus.getDefault();
     }
 }

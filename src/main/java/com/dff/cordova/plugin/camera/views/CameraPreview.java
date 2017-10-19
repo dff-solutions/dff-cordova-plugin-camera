@@ -22,7 +22,9 @@ import com.dff.cordova.plugin.camera.Res.R;
 import com.dff.cordova.plugin.camera.activities.PreviewActivity;
 import com.dff.cordova.plugin.camera.dagger.annotations.ActivityContext;
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
+import com.dff.cordova.plugin.camera.events.OnAutoFocus;
 import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 import java.io.ByteArrayOutputStream;
@@ -48,6 +50,8 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
     private static int sFlashMode;
     private static boolean sSaveInGallery;
 
+    private Context mContext;
+    private EventBus mEventBus;
     private Camera mCamera = null;
     private Camera.Parameters mParams;
     private SurfaceHolder mSurfaceHolder;
@@ -59,7 +63,6 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
 
     private int mRotation;
     private int mCameraID;
-    private Context mContext;
 
 
     /**
@@ -69,12 +72,13 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
      */
     @Inject
     public CameraPreview(@ActivityContext Context mContext,
+                         EventBus mEventBus,
                          CameraInfoHelper mCameraInfoHelper) {
 
         mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
         this.mContext = mContext;
+        this.mEventBus = mEventBus;
         this.mCameraInfoHelper = mCameraInfoHelper;
-//        this.mWithPreview = mWithPreview;
 
         sFlashMode = 0;
         sSaveInGallery = false;
@@ -395,10 +399,8 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
                                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                             }
                         } catch (Exception e) {
-                            e.printStackTrace();
                             Log.e(TAG, "Error: ", e);
                         }
-
                     }
                 });
             } catch (RuntimeException e) {
@@ -469,6 +471,7 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
 
     @Override
     public void onAutoFocus(boolean success, Camera camera) {
+        mEventBus.post(new OnAutoFocus(success));
         if (success) {
             camera.cancelAutoFocus();
         }
