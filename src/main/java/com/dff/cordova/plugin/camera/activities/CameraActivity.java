@@ -12,6 +12,7 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+
 import com.dff.cordova.plugin.camera.Res.R;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
@@ -19,9 +20,11 @@ import com.dff.cordova.plugin.camera.helpers.RotationHelper;
 import com.dff.cordova.plugin.camera.views.CameraPreview;
 import com.dff.cordova.plugin.camera.views.DrawingView;
 import com.dff.cordova.plugin.camera.views.PreviewSurfaceView;
+
 import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,7 +85,6 @@ public class CameraActivity extends Activity {
         mDrawingView = (DrawingView) findViewById(R.RESOURCES.getIdentifier(R.CAMERA_DRAWING_SURFACE_ID, R.ID, R.PACKAGE_NAME));
 
         mSurfaceHolder = mSurfaceView.getHolder();
-//        mCameraPreview = new CameraPreview(this, withPreview, mFlashButton, mCaptureImage, mFlipCamera);
         mSurfaceHolder.addCallback(mCameraPreview);
         mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
@@ -90,6 +92,7 @@ public class CameraActivity extends Activity {
         mSurfaceView.setDrawingView(mDrawingView);
         mSurfaceView.setEventBus(mEventBus);
 
+        mCameraPreview.setContext(this);
         mCameraPreview.setWithPreview(getIntent().getExtras().getBoolean(R.WITH_PREVIEW_KEY));
         mCameraPreview.setCaptureImage(mCaptureImage);
         mCameraPreview.setFlashButton(mFlashButton);

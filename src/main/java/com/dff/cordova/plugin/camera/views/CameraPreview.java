@@ -18,15 +18,18 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.ImageButton;
+
 import com.dff.cordova.plugin.camera.Res.R;
 import com.dff.cordova.plugin.camera.activities.PreviewActivity;
 import com.dff.cordova.plugin.camera.dagger.annotations.ActivityContext;
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 import com.dff.cordova.plugin.camera.events.OnAutoFocus;
 import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
+
 import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -67,12 +70,9 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
 
     /**
      * Custom constructor
-     *
-     * @param mContext
      */
     @Inject
-    public CameraPreview(@ActivityContext Context mContext,
-                         EventBus mEventBus,
+    public CameraPreview(EventBus mEventBus,
                          CameraInfoHelper mCameraInfoHelper) {
 
         mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
@@ -477,6 +477,10 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
         }
     }
 
+    public void setContext(Context mContext) {
+        this.mContext = mContext;
+    }
+
     public void setWithPreview(Boolean mWithPreview) {
         this.mWithPreview = mWithPreview;
     }
@@ -502,7 +506,7 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
         });
     }
 
-    public void setFlipCamera(ImageButton mFlipCamera) {
+    public void setFlipCamera(final ImageButton mFlipCamera) {
         this.mFlipCamera = mFlipCamera;
         this.mFlipCamera.setOnClickListener(new View.OnClickListener() {
 
@@ -512,15 +516,15 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
                 //mCamera.release();
                 if (mCameraID == Camera.CameraInfo.CAMERA_FACING_BACK) {
                     mCameraID = Camera.CameraInfo.CAMERA_FACING_FRONT;
-                    CameraPreview.this.mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_FRONT, R.DRAWABLE, R.PACKAGE_NAME));
-                    CameraPreview.this.mFlashButton.clearAnimation();
-                    CameraPreview.this.mFlashButton.setVisibility(View.GONE);
-                    CameraPreview.this.mFlashButton.setEnabled(false);
+                    mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_FRONT, R.DRAWABLE, R.PACKAGE_NAME));
+                    mFlashButton.clearAnimation();
+                    mFlashButton.setVisibility(View.GONE);
+                    mFlashButton.setEnabled(false);
                 } else {
                     mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
-                    CameraPreview.this.mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_BACK, R.DRAWABLE, R.PACKAGE_NAME));
-                    CameraPreview.this.mFlashButton.setEnabled(true);
-                    CameraPreview.this.mFlashButton.setVisibility(View.VISIBLE);
+                    mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_BACK, R.DRAWABLE, R.PACKAGE_NAME));
+                    mFlashButton.setEnabled(true);
+                    mFlashButton.setVisibility(View.VISIBLE);
                 }
                 if (!openCamera(mCameraID)) {
                     //alertCameraDialog ();
