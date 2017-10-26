@@ -23,6 +23,7 @@ public class PreviewSurfaceView extends SurfaceView {
 
     private CameraPreview mCamPreview;
     private DrawingView mDrawingView;
+    private PicIndicatorView mPicIndicatorView;
     private EventBus mEventBus;
     private boolean isListening = false;
     private boolean isInDrawingViewSet = false;
@@ -104,9 +105,23 @@ public class PreviewSurfaceView extends SurfaceView {
         isInDrawingViewSet = true;
     }
 
+    /**
+     * Set default event bus in order to subscribe
+     *
+     * @param mEventBus
+     */
     public void setEventBus(EventBus mEventBus) {
         this.mEventBus = mEventBus;
         this.mEventBus.register(this);
+    }
+
+    /**
+     * Pic indicator view that will be displayed over the surface view
+     *
+     * @param mPicIndicatorView
+     */
+    public void setPicIndicatorView(PicIndicatorView mPicIndicatorView) {
+        this.mPicIndicatorView = mPicIndicatorView;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

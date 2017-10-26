@@ -15,6 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <com.dff.cordova.plugin.camera.views.PicIndicatorView
+        android:id="@+id/camera_drawing_picindicatorview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" />
+
     <ImageButton
         android:id="@+id/take_image"
         android:layout_width="85dp"

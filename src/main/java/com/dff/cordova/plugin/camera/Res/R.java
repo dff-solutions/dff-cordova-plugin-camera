@@ -30,6 +30,7 @@ public class R {
     public static final String PREVIEW_ACTIVITY_LAYOUT = "activity_preview";
     public static final String CAMERA_SURFACE_ID = "camera_preview_surface_view";
     public static final String CAMERA_DRAWING_SURFACE_ID = "camera_drawing_surface_view";
+    public static final String CAMERA_DRAWING_PICINDICATOR_ID = "camera_drawing_picindicatorview";
     public static final String BUTTON_TAKE_IMAGE = "take_image";
     public static final String BUTTON_CHANGE_FLASH_MODE = "button_flash";
     public static final String BUTTON_FLIP_CAMERA = "button_flip_camera";

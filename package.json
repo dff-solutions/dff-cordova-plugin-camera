@@ -1,6 +1,6 @@
 {
   "name": "dff-cordova-plugin-camera",
-  "version": "3.0.0",
+  "version": "3.0.5",
   "description": "Camera Plugin",
   "directories": {
     "doc": "docs"
@@ -16,7 +16,7 @@
     "Camera"
   ],
   "author": "Anthony Nahas",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/dff-solutions/dff-cordova-plugin-camera/issues"
   },

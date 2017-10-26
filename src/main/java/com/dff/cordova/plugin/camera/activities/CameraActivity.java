@@ -12,19 +12,17 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-
 import com.dff.cordova.plugin.camera.Res.R;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
 import com.dff.cordova.plugin.camera.helpers.RotationHelper;
 import com.dff.cordova.plugin.camera.views.CameraPreview;
 import com.dff.cordova.plugin.camera.views.DrawingView;
+import com.dff.cordova.plugin.camera.views.PicIndicatorView;
 import com.dff.cordova.plugin.camera.views.PreviewSurfaceView;
-
 import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,6 +81,8 @@ public class CameraActivity extends Activity {
         mFlashButton = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_CHANGE_FLASH_MODE, R.ID, R.PACKAGE_NAME));
         mFlipCamera = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_FLIP_CAMERA, R.ID, R.PACKAGE_NAME));
         mDrawingView = (DrawingView) findViewById(R.RESOURCES.getIdentifier(R.CAMERA_DRAWING_SURFACE_ID, R.ID, R.PACKAGE_NAME));
+        PicIndicatorView picIndicatorView = (PicIndicatorView) findViewById(R.RESOURCES.getIdentifier
+            (R.CAMERA_DRAWING_PICINDICATOR_ID, R.ID, R.PACKAGE_NAME));
 
         mSurfaceHolder = mSurfaceView.getHolder();
         mSurfaceHolder.addCallback(mCameraPreview);
@@ -90,6 +90,7 @@ public class CameraActivity extends Activity {
 
         mSurfaceView.setListener(mCameraPreview);
         mSurfaceView.setDrawingView(mDrawingView);
+        mSurfaceView.setPicIndicatorView(picIndicatorView);
         mSurfaceView.setEventBus(mEventBus);
 
         mCameraPreview.setContext(this);

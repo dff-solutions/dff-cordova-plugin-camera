@@ -12,7 +12,7 @@
 
 ## Plugin@latest
 
-- Android: 3.0.0
+- Android: 3.0.5
 
 ## Releases:
 - 3.1.0: Feat: Software Architecture with DI - Dagger2 | Fix: @activity context | Feat: draw rec surface on autofocus

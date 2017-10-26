@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns:android="http://schemas.android.com/apk/res/android" id="dff-cordova-plugin-camera"
-        version="3.0.3" xmlns="http://www.phonegap.com/ns/plugins/1.0">
+        version="3.0.5" xmlns="http://www.phonegap.com/ns/plugins/1.0">
 
     <name>Camera Plugin</name>
     <description>Camera Plugin</description>
@@ -70,6 +70,8 @@
         <source-file src="src/main/java/com/dff/cordova/plugin/camera/views/DrawingView.java"
                      target-dir="src/com/dff/cordova/plugin/camera/views"/>
         <source-file src="src/main/java/com/dff/cordova/plugin/camera/views/PreviewSurfaceView.java"
+                     target-dir="src/com/dff/cordova/plugin/camera/views"/>
+        <source-file src="src/main/java/com/dff/cordova/plugin/camera/views/PicIndicatorView.java"
                      target-dir="src/com/dff/cordova/plugin/camera/views"/>
         <source-file src="src/main/java/com/dff/cordova/plugin/camera/helpers/RotationHelper.java"
                      target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
