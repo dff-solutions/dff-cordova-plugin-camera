@@ -12,6 +12,7 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.Toast;
 import com.dff.cordova.plugin.camera.Res.R;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
@@ -69,6 +70,8 @@ public class CameraActivity extends Activity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
 
+        boolean withPicindicator = getIntent().getBooleanExtra(R.WITH_PICINDICATOR, false);
+
         DaggerManager
             .getInstance()
             .inject(this);
@@ -81,8 +84,6 @@ public class CameraActivity extends Activity {
         mFlashButton = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_CHANGE_FLASH_MODE, R.ID, R.PACKAGE_NAME));
         mFlipCamera = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_FLIP_CAMERA, R.ID, R.PACKAGE_NAME));
         mDrawingView = (DrawingView) findViewById(R.RESOURCES.getIdentifier(R.CAMERA_DRAWING_SURFACE_ID, R.ID, R.PACKAGE_NAME));
-        PicIndicatorView picIndicatorView = (PicIndicatorView) findViewById(R.RESOURCES.getIdentifier
-            (R.CAMERA_DRAWING_PICINDICATOR_ID, R.ID, R.PACKAGE_NAME));
 
         mSurfaceHolder = mSurfaceView.getHolder();
         mSurfaceHolder.addCallback(mCameraPreview);
@@ -90,8 +91,15 @@ public class CameraActivity extends Activity {
 
         mSurfaceView.setListener(mCameraPreview);
         mSurfaceView.setDrawingView(mDrawingView);
-        mSurfaceView.setPicIndicatorView(picIndicatorView);
         mSurfaceView.setEventBus(mEventBus);
+
+        if (withPicindicator) {
+            PicIndicatorView picIndicatorView = (PicIndicatorView) findViewById(R.RESOURCES.getIdentifier
+                (R.CAMERA_DRAWING_PICINDICATOR_ID, R.ID, R.PACKAGE_NAME));
+            picIndicatorView.setVisibility(View.VISIBLE);
+            mSurfaceView.setPicIndicatorView(picIndicatorView);
+            Toast.makeText(this, R.PICINDICATOR_MSG, Toast.LENGTH_LONG).show();
+        }
 
         mCameraPreview.setContext(this);
         mCameraPreview.setWithPreview(getIntent().getExtras().getBoolean(R.WITH_PREVIEW_KEY));

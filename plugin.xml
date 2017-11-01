@@ -100,6 +100,9 @@
         <source-file
             src="src/main/java/com/dff/cordova/plugin/camera/events/OnAutoFocus.java"
             target-dir="src/com/dff/cordova/plugin/camera/events"/>
+        <source-file
+            src="src/main/java/com/dff/cordova/plugin/camera/configurations/Config.java"
+            target-dir="src/com/dff/cordova/plugin/camera/configurations"/>
 
         <!-- RESOURCES -->
 
@@ -123,6 +126,8 @@
         <source-file src="src/main/res/drawable/ic_close_white_48px.xml"
                      target-dir="res/drawable"/>
         <source-file src="src/main/res/drawable/ic_refresh_white_48px.xml"
+                     target-dir="res/drawable"/>
+        <source-file src="src/main/res/drawable/dff_color.xml"
                      target-dir="res/drawable"/>
         <!--
         <source-file

@@ -15,7 +15,7 @@
 - Android: 3.0.5
 
 ## Releases:
-- 3.1.0: Feat: Software Architecture with DI - Dagger2 | Fix: @activity context | Feat: draw rec surface on autofocus
+- 3.0.1: Feat: Software Architecture with DI - Dagger2 | Fix: @activity context | Feat: draw rec surface on autofocus
 - 3.0.0: Ref: converted the Camera plugin as well as android module library @Instrumental Tests! RELEASE 3.0.0
 - 2.3.0: Ref: requesting permissions will be performed by the common plugin @TargetAPI(21)
 - 2.2.2: Fix: flash button is set as View.GONE after animations
@@ -27,6 +27,16 @@
 - 2.0.0: FEAT: implementation of manual focus
 - 1.0.7: FEAT: take a picture and forward it to js as BASE64
 
+## Usage
+
+The plugin is available via the global variable `**CameraPlugin**`
+
+Please make sure that you have cordova and ionic installed on your machine
+
+```ssh
+$ npm i cordova && ionic
+```
+
 ##Installation
 
 - cordova plugin add [https://github.com/dff-solutions/dff-cordova-plugin-camera.git]()
@@ -35,12 +45,6 @@
 
 ## Documentation
 - <a href="https://dff-solutions.github.io/dff-cordova-plugin-camera/" target="_blank" >JAVA DOC</a>
-
-
-## Usage
-
-The plugin is available via the global variable `**CameraPlugin**`
-
 
 ## Methods
 
@@ -63,6 +67,11 @@ var error = function(errorMsg) {
 
 #### takePhoto
 ```js
+let params = {
+    withPreview : true, // default false
+    withPicindicator : false // default false
+}
+
 /**
  * Call the camera activity in order to take a photo.
  *
@@ -70,6 +79,5 @@ var error = function(errorMsg) {
  * @param error - Error callback function
  * @param withPreview - whether a preview for the taken image is to provide | true or false
  */
-
-CameraPlugin.takePhoto(success,error,withPreview); // withPreview == true
-
+CameraPlugin.takePhoto(success,error,params); // withPreview == true
+```
