@@ -27,10 +27,10 @@ function CameraPlugin() {
  *
  * @param success - the success callback function.
  * @param error - the error callback function.
- * @param withPreview - whether a preview for the taken image is to provide //true or false
+ * @param params
  */
-CameraPlugin.prototype.takePhoto = function (success, error, withPreview) {
-    exec(success, error, FEATURE, ACTION_TAKE_PHOTO, [withPreview]);
+CameraPlugin.prototype.takePhoto = function (success, error, params) {
+    exec(success, error, FEATURE, ACTION_TAKE_PHOTO, [params]);
 };
 
 

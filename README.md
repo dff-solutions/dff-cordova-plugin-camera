@@ -15,6 +15,7 @@
 - Android: 3.0.5
 
 ## Releases:
+- 3.0.6: Fix: supporting cordova version 7+
 - 3.0.1: Feat: Software Architecture with DI - Dagger2 | Fix: @activity context | Feat: draw rec surface on autofocus
 - 3.0.0: Ref: converted the Camera plugin as well as android module library @Instrumental Tests! RELEASE 3.0.0
 - 2.3.0: Ref: requesting permissions will be performed by the common plugin @TargetAPI(21)
