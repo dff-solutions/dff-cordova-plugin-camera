@@ -1,0 +1,12 @@
+/plugin/build
+/build
+**/*.iml
+/node_modules
+.project
+/.settings
+/.vscode
+/.idea
+/.gradle
+local.properties
+**/*.classpath
+**/*.settings
