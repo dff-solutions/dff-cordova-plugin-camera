@@ -14,9 +14,6 @@
         <clobbers target="CameraPlugin"/>
     </js-module>
 
-    <dependency id="dff-cordova-plugin-common"
-                url="https://github.com/dff-solutions/dff.CordovaPlugin.Common.git"/>
-
     <!--Android-->
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
