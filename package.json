@@ -1,24 +1,64 @@
 {
-  "name": "dff-cordova-plugin-camera",
-  "version": "3.0.6",
-  "description": "Camera Plugin",
-  "directories": {
-    "doc": "docs"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dff-solutions/dff-cordova-plugin-camera.git"
-  },
-  "keywords": [
-    "Camera"
-  ],
-  "author": "Anthony Nahas",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/dff-solutions/dff-cordova-plugin-camera/issues"
-  },
-  "homepage": "https://github.com/dff-solutions/dff-cordova-plugin-camera#readme"
+    "name": "dff-cordova-plugin-camera",
+    "version": "3.0.6",
+    "description": "Camera Plugin",
+    "directories": {
+        "doc": "docs"
+    },
+    "scripts": {
+        "commitmsg": "commitplease .git/COMMIT_EDITMSG",
+        "set-tc-params": "node scripts/setTeamCityParameter.js",
+        "plugin-xml-update": "node scripts/update-pluginxml.js",
+        "plugin-xml-check": "node scripts/gitCheckUpdateXml",
+        "plugin-xml-update-check": "npm run plugin-xml-update && npm run plugin-xml-check"
+    },
+    "cordova": {
+        "id": "dff-cordova-plugin-camera",
+        "platforms": [
+            "android"
+        ]
+    },
+    "husky": {
+        "hooks": {
+            "commit-msg": "npm run commitmsg"
+        }
+    },
+    "commitplease": {
+        "limits": {
+            "firstLine": "72",
+            "otherLine": "80"
+        },
+        "nohook": true,
+        "types": [
+            "build",
+            "ci",
+            "docs",
+            "feat",
+            "fix",
+            "perf",
+            "refactor",
+            "style",
+            "test"
+        ],
+        "scope": "\\S+.*",
+        "style": "angular"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dff-solutions/dff-cordova-plugin-camera.git"
+    },
+    "keywords": [
+        "Camera"
+    ],
+    "author": "Anthony Nahas",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/dff-solutions/dff-cordova-plugin-camera/issues"
+    },
+    "homepage": "https://github.com/dff-solutions/dff-cordova-plugin-camera#readme",
+    "devDependencies": {
+        "commitplease": "3.2.0",
+        "husky": "2.1.0",
+        "xml2js": "0.4.19"
+    }
 }
