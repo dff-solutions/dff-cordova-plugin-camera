@@ -1,141 +1,67 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns:android="http://schemas.android.com/apk/res/android"
-        id="dff-cordova-plugin-camera"
-        name="CameraPlugin"
-        spec="3.0.6"
-        version="3.0.6" xmlns="http://www.phonegap.com/ns/plugins/1.0">
-
-    <name>Camera Plugin</name>
-    <description>Camera Plugin</description>
-    <keywords>cordova,device,Camera, autofocus,manual focus,preview,android</keywords>
-    <author>dff solutions/AnthonyNahas</author>
-
-    <js-module name="CameraPlugin" src="www/CameraPlugin.js">
-        <clobbers target="CameraPlugin"/>
-    </js-module>
-
-    <!--Android-->
-    <platform name="android">
-        <config-file parent="/*" target="res/xml/config.xml">
-            <feature name="CameraPlugin">
-                <param name="android-package" value="com.dff.cordova.plugin.camera.CameraPlugin"/>
-                <param name="onload" value="true"/>
-            </feature>
-        </config-file>
-
-        <config-file parent="/manifest" target="AndroidManifest.xml">
-            <!--
-            <uses-feature android:name="android.hardware.camera"/>
-            -->
-            <uses-permission android:name="android.permission.CAMERA"/>
-            <uses-feature android:name="android.hardware.camera.autofocus"/>
-            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-            <!--
-            <uses-permission
-                android:name="android.permission.FLASHLIGHT"
-                android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
-                android:protectionLevel="normal"/>
-                -->
-
-        </config-file>
-
-        <config-file parent="/manifest/application" target="AndroidManifest.xml">
-            <!-- <activity android:name="src/com/dff/cordova/plugin/camera/activities/CameraActivity"></activity> -->
-            <activity android:name="com.dff.cordova.plugin.camera.activities.CameraActivity"
-                      android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-                <intent-filter>
-                    <!--<action android:name="ACTION_PLAY_VIDEO"/>-->
-                    <category android:name="android.intent.category.DEFAULT"/>
-                </intent-filter>
-            </activity>
-            <activity android:name="com.dff.cordova.plugin.camera.activities.PreviewActivity"
-                      android:theme="@android:style/Theme.NoTitleBar"></activity>
-        </config-file>
-
-        <!-- CLASSES -->
-
-        <source-file src="src/main/java/com/dff/cordova/plugin/camera/CameraPlugin.java"
-                     target-dir="src/com/dff/cordova/plugin/camera"/>
-        <source-file
-            src="src/main/java/com/dff/cordova/plugin/camera/activities/CameraActivity.java"
-            target-dir="src/com/dff/cordova/plugin/camera/activities"/>
-        <source-file
-            src="src/main/java/com/dff/cordova/plugin/camera/activities/PreviewActivity.java"
-            target-dir="src/com/dff/cordova/plugin/camera/activities"/>
-        <source-file src="src/main/java/com/dff/cordova/plugin/camera/Res/R.java"
-                     target-dir="src/com/dff/cordova/plugin/camera/Res"/>
-
-        <source-file src="src/main/java/com/dff/cordova/plugin/camera/views/CameraPreview.java"
-                     target-dir="src/com/dff/cordova/plugin/camera/views"/>
-        <source-file src="src/main/java/com/dff/cordova/plugin/camera/views/DrawingView.java"
-                     target-dir="src/com/dff/cordova/plugin/camera/views"/>
-        <source-file src="src/main/java/com/dff/cordova/plugin/camera/views/PreviewSurfaceView.java"
-                     target-dir="src/com/dff/cordova/plugin/camera/views"/>
-        <source-file src="src/main/java/com/dff/cordova/plugin/camera/views/PicIndicatorView.java"
-                     target-dir="src/com/dff/cordova/plugin/camera/views"/>
-        <source-file src="src/main/java/com/dff/cordova/plugin/camera/helpers/RotationHelper.java"
-                     target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
-        <source-file src="src/main/java/com/dff/cordova/plugin/camera/helpers/CameraInfoHelper.java"
-                     target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
-        <source-file src="src/main/java/com/dff/cordova/plugin/camera/dagger/DaggerManager.java"
-                     target-dir="src/com/dff/cordova/plugin/camera/dagger"/>
-        <source-file
-            src="src/main/java/com/dff/cordova/plugin/camera/dagger/components/CameraPluginComponent.java"
-            target-dir="src/com/dff/cordova/plugin/camera/dagger/components"/>
-        <source-file
-            src="src/main/java/com/dff/cordova/plugin/camera/dagger/components/CameraActivityComponent.java"
-            target-dir="src/com/dff/cordova/plugin/camera/dagger/components"/>
-        <source-file
-            src="src/main/java/com/dff/cordova/plugin/camera/dagger/modules/AppModule.java"
-            target-dir="src/com/dff/cordova/plugin/camera/dagger/modules"/>
-        <source-file
-            src="src/main/java/com/dff/cordova/plugin/camera/dagger/modules/CordovaModule.java"
-            target-dir="src/com/dff/cordova/plugin/camera/dagger/modules"/>
-        <source-file
-            src="src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/ApplicationContext.java"
-            target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
-        <source-file
-            src="src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/ActivityContext.java"
-            target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
-        <source-file
-            src="src/main/java/com/dff/cordova/plugin/camera/events/OnAutoFocus.java"
-            target-dir="src/com/dff/cordova/plugin/camera/events"/>
-        <source-file
-            src="src/main/java/com/dff/cordova/plugin/camera/configurations/Config.java"
-            target-dir="src/com/dff/cordova/plugin/camera/configurations"/>
-
-        <!-- RESOURCES -->
-
-        <source-file src="src/main/res/layout/activity_camera.xml" target-dir="res/layout"/>
-        <source-file src="src/main/res/layout/activity_preview.xml" target-dir="res/layout"/>
-        <source-file src="src/main/res/drawable/ic_flash_off_white_24px.xml"
-                     target-dir="res/drawable"/>
-        <source-file src="src/main/res/drawable/ic_flash_on_white_24px.xml"
-                     target-dir="res/drawable"/>
-        <source-file src="src/main/res/drawable/ic_flash_auto_white_24px.xml"
-                     target-dir="res/drawable"/>
-        <source-file src="src/main/res/drawable/ic_panorama_fish_eye_white_48px.xml"
-                     target-dir="res/drawable"/>
-        <source-file src="src/main/res/drawable/ic_switch_camera_white_24px.xml"
-                     target-dir="res/drawable"/>
-        <source-file src="src/main/res/drawable/ic_switch_cam_back.xml" target-dir="res/drawable"/>
-        <source-file src="src/main/res/drawable/ic_switch_cam_front.xml"
-                     target-dir="res/drawable"/>
-        <source-file src="src/main/res/drawable/ic_arrow_forward_white_48px.xml"
-                     target-dir="res/drawable"/>
-        <source-file src="src/main/res/drawable/ic_close_white_48px.xml"
-                     target-dir="res/drawable"/>
-        <source-file src="src/main/res/drawable/ic_refresh_white_48px.xml"
-                     target-dir="res/drawable"/>
-        <source-file src="src/main/res/drawable/dff_color.xml"
-                     target-dir="res/drawable"/>
-        <!--
-        <source-file
-            src="src/android/res/values/dimens.xml"
-            target-dir="res/values"/>
-        -->
-        <framework custom="true" src="build-camera-plugin.gradle" type="gradleReference"/>
-
-    </platform>
-
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<plugin xmlns:android="http://schemas.android.com/apk/res/android" id="dff-cordova-plugin-camera" name="CameraPlugin" spec="3.0.6" version="3.0.6" xmlns="http://www.phonegap.com/ns/plugins/1.0">
+  <name>Camera Plugin</name>
+  <description>Camera Plugin</description>
+  <keywords>cordova,device,Camera, autofocus,manual focus,preview,android</keywords>
+  <author>dff solutions/AnthonyNahas</author>
+  <js-module name="CameraPlugin" src="www/CameraPlugin.js">
+    <clobbers target="CameraPlugin"/>
+  </js-module>
+  <platform name="android">
+    <config-file parent="/*" target="res/xml/config.xml">
+      <feature name="CameraPlugin">
+        <param name="android-package" value="com.dff.cordova.plugin.camera.CameraPlugin"/>
+        <param name="onload" value="true"/>
+      </feature>
+    </config-file>
+    <config-file parent="/manifest" target="AndroidManifest.xml">
+      <uses-permission android:name="android.permission.CAMERA"/>
+      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+      <uses-feature android:name="android.hardware.camera.autofocus"/>
+    </config-file>
+    <config-file parent="/manifest/application" target="AndroidManifest.xml">
+      <activity android:name="com.dff.cordova.plugin.camera.activities.CameraActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        <intent-filter>
+          <category android:name="android.intent.category.DEFAULT"/>
+        </intent-filter>
+      </activity>
+      <activity android:name="com.dff.cordova.plugin.camera.activities.PreviewActivity" android:theme="@android:style/Theme.NoTitleBar"/>
+    </config-file>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/CameraPlugin.java" target-dir="src/com/dff/cordova/plugin/camera"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/Res/R.java" target-dir="src/com/dff/cordova/plugin/camera/Res"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/activities/CameraActivity.java" target-dir="src/com/dff/cordova/plugin/camera/activities"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/activities/PreviewActivity.java" target-dir="src/com/dff/cordova/plugin/camera/activities"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/configurations/Config.java" target-dir="src/com/dff/cordova/plugin/camera/configurations"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/DaggerManager.java" target-dir="src/com/dff/cordova/plugin/camera/dagger"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/ActivityContext.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/ApplicationContext.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/components/CameraActivityComponent.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/components"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/components/CameraPluginComponent.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/components"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/modules/AppModule.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/modules"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/modules/CordovaModule.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/modules"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/events/OnAutoFocus.java" target-dir="src/com/dff/cordova/plugin/camera/events"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/CameraInfoHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/RotationHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/views/CameraPreview.java" target-dir="src/com/dff/cordova/plugin/camera/views"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/views/DrawingView.java" target-dir="src/com/dff/cordova/plugin/camera/views"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/views/PicIndicatorView.java" target-dir="src/com/dff/cordova/plugin/camera/views"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/views/PreviewSurfaceView.java" target-dir="src/com/dff/cordova/plugin/camera/views"/>
+    <source-file src="plugin/src/main/res/drawable/dff_color.xml" target-dir="res/drawable"/>
+    <source-file src="plugin/src/main/res/drawable/ic_arrow_forward_white_48px.xml" target-dir="res/drawable"/>
+    <source-file src="plugin/src/main/res/drawable/ic_close_white_48px.xml" target-dir="res/drawable"/>
+    <source-file src="plugin/src/main/res/drawable/ic_flash_auto_white_24px.xml" target-dir="res/drawable"/>
+    <source-file src="plugin/src/main/res/drawable/ic_flash_off_white_24px.xml" target-dir="res/drawable"/>
+    <source-file src="plugin/src/main/res/drawable/ic_flash_on_white_24px.xml" target-dir="res/drawable"/>
+    <source-file src="plugin/src/main/res/drawable/ic_local_shipping.xml" target-dir="res/drawable"/>
+    <source-file src="plugin/src/main/res/drawable/ic_panorama_fish_eye_white_48px.xml" target-dir="res/drawable"/>
+    <source-file src="plugin/src/main/res/drawable/ic_refresh_white_48px.xml" target-dir="res/drawable"/>
+    <source-file src="plugin/src/main/res/drawable/ic_switch_cam_back.xml" target-dir="res/drawable"/>
+    <source-file src="plugin/src/main/res/drawable/ic_switch_cam_front.xml" target-dir="res/drawable"/>
+    <source-file src="plugin/src/main/res/drawable/ic_switch_camera_white_24px.xml" target-dir="res/drawable"/>
+    <source-file src="plugin/src/main/res/drawable/ic_transform_white_24px.xml" target-dir="res/drawable"/>
+    <source-file src="plugin/src/main/res/layout/activity_camera.xml" target-dir="res/layout"/>
+    <source-file src="plugin/src/main/res/layout/activity_preview.xml" target-dir="res/layout"/>
+    <source-file src="plugin/src/main/res/values/dimens.xml" target-dir="res/values"/>
+    <framework custom="true" src="plugin/build-camera-plugin.gradle" type="gradleReference"/>
+  </platform>
 </plugin>

@@ -1,82 +1,84 @@
 const fs = require("fs");
-const path = require("path");
-const xml2js = require("xml2js");
+const path = require("path").posix;
+const pluginXmlHelper = require("./plugin-xml-helper");
 
 const projectDir = path.join(__dirname, "..");
-const pluginXmlPath = path.join(projectDir, "plugin.xml");
-const androidSrcDir = path.join(projectDir, "plugin", "src", "main", "java");
-const androidDestDir = "src";
+const pluginDir = path.join(projectDir, "plugin")
+const androidSrcJavaDir = path.join(
+    pluginDir,
+    "src",
+    "main",
+    "java"
+);
+const androidSrcResDir = path.join(pluginDir, "src", "main", "res");
+const androidDestJavaDir = "src";
+const androidDestResDir = "res";
 
-console.log(androidSrcDir);
+console.log(androidSrcJavaDir);
 
-const androidSrcFiles = readDir(androidSrcDir)
+const androidSrcJavaFiles = readDir(androidSrcJavaDir)
     .sort()
-    .map((file) => {
-        const src = unixfyPath(
-            file.substring(projectDir.length + 1)
-        );
-        const destFile = unixfyPath(
-            path.join(androidDestDir, file.substring(androidSrcDir.length + 1))
-        );
-        const targetDir = unixfyPath(
-            path.dirname(destFile)
-        );
+    .map(file =>
+        createSourceFileElement(file, androidSrcJavaDir, androidDestJavaDir)
+    );
 
-        return {
-            $: {
-                src,
-                "target-dir": targetDir
-            }
-        };
-    });
+const androidSrcResFiles = readDir(androidSrcResDir)
+    .filter((file) => !file.endsWith("strings.xml"))
+    .sort()
+    .map(file =>
+        createSourceFileElement(file, androidSrcResDir, androidDestResDir)
+    );
 
-const pluginXmlData = fs.readFileSync(pluginXmlPath);
+const pluginXmlData = pluginXmlHelper.read();
 
-xml2js.parseString(pluginXmlData, (err, json) => {
-    if (err) {
-        console.error(err);
-    }
+const xmlPlatformAndroid = pluginXmlData.plugin.platform
+    .filter(p => p.$.name == "android")
+    .pop();
+const oldSourceFiles = xmlPlatformAndroid["source-file"];
 
-    const builder = new xml2js.Builder();
-    const xmlPlatformAndroid = json.plugin.platform.filter((p) => p.$.name == "android").pop();
-    const oldSourceFiles = xmlPlatformAndroid["source-file"];
+// keep system libs
+const sourceLibs = oldSourceFiles.filter(oldFile =>
+    oldFile.$.src.endsWith(".jar")
+);
 
-    // keep system libs
-    const sourceLibs = oldSourceFiles
-        .filter((oldFile) => oldFile.$.src.endsWith(".jar"));
-    xmlPlatformAndroid["source-file"] = androidSrcFiles.concat(sourceLibs);
-    
-    const xml = builder.buildObject(json);
+xmlPlatformAndroid["source-file"] = [
+    ...androidSrcJavaFiles,
+    ...androidSrcResFiles,
+    ...sourceLibs
+];
 
-    fs.writeFileSync(pluginXmlPath, xml);
-});
+pluginXmlHelper.write(pluginXmlData);
 
-function readDir(dir) {
-    // console.debug(`read dir ${dir}`);
-    let result = [];
+function createSourceFileElement(file, srcDir, destDir) {
+    const src = path.relative(projectDir, file);
+    const destFile = path.join(destDir, path.relative(srcDir, file));
+    const targetDir = path.dirname(destFile);
 
-    if (fs.existsSync(dir)) {
-        fs
-            .readdirSync(dir)
-            .forEach((file) => {
-                const filePath = path.join(dir, file)
-                const stat = fs.lstatSync(filePath);
-
-                if (stat.isDirectory()) {
-                    result = result.concat(readDir(filePath));
-                }
-                else if (stat.isFile()) {
-                    result.push(filePath);
-                }
-            });
-    }
-    else {
-        console.warn(`directory not found ${dir}`);
-    }
-
-    return result;
+    return {
+        $: {
+            src,
+            "target-dir": targetDir
+        }
+    };
 }
 
-function unixfyPath(path) {
-    return path.replace(/\\/g, '/')
+function readDir(dir) {
+    let result = [];
+
+    if (!fs.existsSync(dir)) {
+        throw new Error(`directory not found ${dir}`);
+    }
+
+    fs.readdirSync(dir).forEach(file => {
+        const filePath = path.join(dir, file);
+        const stat = fs.lstatSync(filePath);
+
+        if (stat.isDirectory()) {
+            result = [...result, ...readDir(filePath)];
+        } else if (stat.isFile()) {
+            result.push(filePath);
+        }
+    });
+
+    return result;
 }

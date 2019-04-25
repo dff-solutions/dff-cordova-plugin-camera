@@ -20,7 +20,8 @@
     },
     "husky": {
         "hooks": {
-            "commit-msg": "npm run commitmsg"
+            "commit-msg": "npm run commitmsg",
+            "pre-commit": "npm run plugin-xml-update-check"
         }
     },
     "commitplease": {
