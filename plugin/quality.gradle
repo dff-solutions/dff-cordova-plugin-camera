@@ -1,0 +1,36 @@
+apply plugin: "checkstyle"
+apply plugin: "pmd"
+
+check.dependsOn "checkstyle", "pmd"
+
+task checkstyle(type: Checkstyle) {
+    //fail early
+    ignoreFailures false
+    showViolations true
+
+    source "src/main/java"
+    include '**/*.java'
+    classpath = files()
+
+    reports {
+        xml.enabled false
+        html.enabled true
+    }
+}
+
+task pmd(type: Pmd) {
+    ignoreFailures = false
+    ruleSets = [
+        "category/java/bestpractices.xml"
+    ]
+    rulePriority = 3
+
+    source "src/main/java"
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}

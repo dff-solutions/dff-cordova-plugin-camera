@@ -10,8 +10,8 @@ import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.configurations.Config;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
-import com.dff.cordova.plugin.common.CommonPlugin;
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +25,7 @@ import javax.inject.Inject;
  * @version 3.0.3
  * @since 05.01.2017
  */
-public class CameraPlugin extends CommonPlugin {
+public class CameraPlugin extends CordovaPlugin {
 
     private static final String TAG = "CameraPlugin";
     private static final String CAMERA_PERMISSION = Manifest.permission.CAMERA;
@@ -58,7 +58,7 @@ public class CameraPlugin extends CommonPlugin {
     }
 
     private void requestCameraPermission() {
-        CommonPlugin.addPermission(CAMERA_PERMISSION);
+        // CommonPlugin.addPermission(CAMERA_PERMISSION);
     }
 
     @Nullable
