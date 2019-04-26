@@ -9,11 +9,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Singleton;
 
-/**
- * @author Anthony Nahas
- * @version 1.0
- * @since 12.10.17
- */
 @Module
 public class AppModule {
 
@@ -25,18 +20,18 @@ public class AppModule {
 
     @Provides
     @ApplicationContext
-    public Context provideContext() {
+    Context provideContext() {
         return mApp;
     }
 
     @Provides
-    public Application provideApplication() {
+    Application provideApplication() {
         return mApp;
     }
 
     @Provides
     @Singleton
-    public EventBus provideEventBus() {
+    EventBus provideEventBus() {
         return EventBus.getDefault();
     }
 }

@@ -1,15 +1,16 @@
 package com.dff.cordova.plugin.camera;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.Log;
+
 import com.dff.cordova.plugin.camera.Res.R;
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.configurations.Config;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
@@ -28,7 +29,7 @@ import javax.inject.Inject;
 public class CameraPlugin extends CordovaPlugin {
 
     private static final String TAG = "CameraPlugin";
-    private static final String CAMERA_PERMISSION = Manifest.permission.CAMERA;
+    // private static final String CAMERA_PERMISSION = Manifest.permission.CAMERA;
 
     @Inject
     @ApplicationContext
@@ -72,34 +73,37 @@ public class CameraPlugin extends CordovaPlugin {
     }
 
     /**
-     * Executes an action called by JavaScript
+     * Executes an action called by JavaScript.
      *
      * @param action          The action to execute.
      * @param args            The exec() arguments.
      * @param callbackContext The callback context used when calling back into JavaScript.
-     * @return
-     * @throws JSONException
+     * @return Whether the action was valid
      */
     @Override
-    public boolean execute(final String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException {
-
+    public boolean execute(
+        final String action,
+        final JSONArray args,
+        final CallbackContext callbackContext
+    ) {
         if (action != null) {
             R.sCallBackContext = callbackContext;
-            cordova.getThreadPool().execute(new Runnable() {
-                @Override
-                public void run() {
-                    Log.d(TAG, "Action = " + action);
-                    if (action.equals(R.ACTION_TAKE_PHOTO)) {
-                        JSONObject params = parseArgs(args);
-                        mConfig.setWithPreview(params != null && params.optBoolean(R.WITH_PREVIEW, false));
-                        Intent intent = new Intent(mContext, CameraActivity.class);
-                        intent.putExtra(R.WITH_PREVIEW_KEY, params != null && params.optBoolean(R.WITH_PREVIEW, false));
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(intent);
-                    } else {
-                        Log.e(TAG, "Action not found");
-                        callbackContext.error("Error: action not found --> " + action);
+            cordova.getThreadPool().execute(() -> {
+                Log.d(TAG, "Action = " + action);
+
+                if (action.equals(R.ACTION_TAKE_PHOTO)) {
+                    JSONObject params = parseArgs(args);
+                    Intent intent = new Intent(mContext, CameraActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    if (params != null) {
+                        mConfig.setWithPreview(params.optBoolean(R.WITH_PREVIEW, false));
+                        intent.putExtra(R.WITH_PREVIEW_KEY, mConfig.isWithPreview());
                     }
+
+                    mContext.startActivity(intent);
+                } else {
+                    callbackContext.error("Error: action not found --> " + action);
                 }
             });
             return true;

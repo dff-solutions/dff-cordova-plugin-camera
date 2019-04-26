@@ -13,23 +13,21 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 /**
- * Class that implements a custom surfaceview
+ * Class that implements a custom surface view.
  *
  * @author Anthony Nahas
  * @version 3.0.3
  * @since 2.2.2017
  */
 public class PreviewSurfaceView extends SurfaceView {
-
     private CameraPreview mCamPreview;
     private DrawingView mDrawingView;
-    private PicIndicatorView mPicIndicatorView;
     private EventBus mEventBus;
     private boolean isListening = false;
     private boolean isInDrawingViewSet = false;
 
     /**
-     * Custom custructor
+     * Custom constructor.
      *
      * @param context - the used context
      * @param attrs   -  the used attrubutset
@@ -39,27 +37,31 @@ public class PreviewSurfaceView extends SurfaceView {
     }
 
     /**
-     * @param widthMeasureSpec
-     * @param heightMeasureSpec
+     * Set measure dimension.
+     *
+     * @param widthMeasureSpec width
+     * @param heightMeasureSpec height
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         setMeasuredDimension(
             MeasureSpec.getSize(widthMeasureSpec),
-            MeasureSpec.getSize(heightMeasureSpec));
+            MeasureSpec.getSize(heightMeasureSpec)
+        );
     }
 
     /**
      * Handle the touch event to draw a rect focus.
      *
-     * @param event - the target event
-     * @return
+     * @param event The motion event.
+     * @return True if the event was handled, false otherwise.
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!isListening) {
             return false;
         }
+
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             float x = event.getX();
             float y = event.getY();
@@ -77,16 +79,18 @@ public class PreviewSurfaceView extends SurfaceView {
                 touchRect.bottom * 2000 / this.getHeight() - 1000);
 
             mCamPreview.doTouchFocus(targetFocusRect);
+
             if (isInDrawingViewSet) {
                 mDrawingView.setHaveTouch(true, touchRect);
                 mDrawingView.invalidate();
             }
         }
+
         return false;
     }
 
     /**
-     * set CameraPreview instance for touch focus.
+     * Set CameraPreview instance for touch focus.
      *
      * @param camPreview - CameraPreview
      */
@@ -96,9 +100,9 @@ public class PreviewSurfaceView extends SurfaceView {
     }
 
     /**
-     * set DrawingView instance for touch focus indication.
+     * Set DrawingView instance for touch focus indication.
      *
-     * @param drawingView
+     * @param drawingView drawing view
      */
     public void setDrawingView(DrawingView drawingView) {
         mDrawingView = drawingView;
@@ -106,46 +110,31 @@ public class PreviewSurfaceView extends SurfaceView {
     }
 
     /**
-     * Set default event bus in order to subscribe
+     * Set default event bus in order to subscribe.
      *
-     * @param mEventBus
+     * @param eventBus event bus
      */
-    public void setEventBus(EventBus mEventBus) {
-        this.mEventBus = mEventBus;
+    public void setEventBus(EventBus eventBus) {
+        this.mEventBus = eventBus;
         this.mEventBus.register(this);
-    }
-
-    /**
-     * Pic indicator view that will be displayed over the surface view
-     *
-     * @param mPicIndicatorView
-     */
-    public void setPicIndicatorView(PicIndicatorView mPicIndicatorView) {
-        this.mPicIndicatorView = mPicIndicatorView;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAutoFocus(final OnAutoFocus event) {
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (event.isSuccess()) {
-                    mDrawingView.getPaint().setColor(Color.GREEN);
-                } else {
-                    mDrawingView.getPaint().setColor(Color.RED);
-                }
-                mDrawingView.invalidate();
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mDrawingView.getPaint().setColor(Color.YELLOW);
-                        mDrawingView.setHaveTouch(false, null);
-                        mDrawingView.invalidate();
-                    }
-                }, 500);
+        handler.postDelayed(() -> {
+            if (event.isSuccess()) {
+                mDrawingView.getPaint().setColor(Color.GREEN);
+            } else {
+                mDrawingView.getPaint().setColor(Color.RED);
             }
+            mDrawingView.invalidate();
+            Handler handler1 = new Handler();
+            handler1.postDelayed(() -> {
+                mDrawingView.getPaint().setColor(Color.YELLOW);
+                mDrawingView.setHaveTouch(false, null);
+                mDrawingView.invalidate();
+            }, 500);
         }, 1000);
     }
 }

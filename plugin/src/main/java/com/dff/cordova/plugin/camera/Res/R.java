@@ -13,16 +13,12 @@ import org.apache.cordova.CallbackContext;
  * @since 05.01.2017
  */
 public class R {
-
     public static String PACKAGE_NAME;
     public static Resources RESOURCES;
-
 
     public static final String LAYOUT = "layout";
     public static final String ID = "id";
     public static final String DRAWABLE = "drawable";
-
-    public static boolean sSaveInGallery = false;
 
     public static final int IMAGE_PREVIEW_REQUEST = 1;
     public static final int RESULT_REPEAT = 2;
@@ -45,13 +41,10 @@ public class R {
     public static final String IC_CAMERA_BACK = "ic_switch_cam_back";
     public static final String WITH_PREVIEW = "withPreview";
     public static final String WITH_PICINDICATOR = "withPicindicator";
-    public static final String PICINDICATOR_MSG = "Bitte achten Sie bei einer Detail-Aufnahme darauf, dass das Motiv " +
-        "ungefähr die Größe der beiden seitlichen Rahmen einnimmt.";
+    public static final String PICINDICATOR_MSG = "Bitte achten Sie bei einer Detail-Aufnahme" +
+        " darauf, dass das Motiv ungefähr die Größe der beiden seitlichen Rahmen einnimmt.";
     public static final String WITH_PREVIEW_KEY = "withpreviewkey";
 
-    public static final String RESULT_KEY_BASE64_IMG = "base64img";
-
-    public static final String CAMERA_ACTIVITY_PATH = "com.dff.cordova.plugin.camera.CameraPlugin";
     public static final String ACTION_TAKE_PHOTO = "takephoto";
 
     public static Bitmap sBitmap;

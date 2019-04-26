@@ -5,9 +5,8 @@ import javax.inject.Singleton;
 
 @Singleton
 public class Config {
-
-    private boolean mWithPreview;
-    private boolean mWithPicIndicator;
+    private boolean mWithPreview = false;
+    private boolean mWithPicIndicator = false;
 
     @Inject
     public Config() {
@@ -18,15 +17,15 @@ public class Config {
         return mWithPreview;
     }
 
-    public void setWithPreview(boolean mWithPreview) {
-        this.mWithPreview = mWithPreview;
+    public void setWithPreview(boolean withPreview) {
+        this.mWithPreview = withPreview;
     }
 
     public boolean isWithPicIndicator() {
         return mWithPicIndicator;
     }
 
-    public void setWithPicIndicator(boolean mWithPicIndicator) {
-        this.mWithPicIndicator = mWithPicIndicator;
+    public void setWithPicIndicator(boolean withPicIndicator) {
+        this.mWithPicIndicator = withPicIndicator;
     }
 }

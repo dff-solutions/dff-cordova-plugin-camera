@@ -15,7 +15,6 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class CameraInfoHelper {
-
     private static final String TAG = CameraInfoHelper.class.getSimpleName();
 
     @Inject
@@ -23,7 +22,7 @@ public class CameraInfoHelper {
     }
 
     /**
-     * Method that returns whether the front or back camera is in use
+     * Method that returns whether the front or back camera is in use.
      *
      * @param cameraID - the used camera id
      * @return - whether the front or back camera is in use
@@ -35,8 +34,10 @@ public class CameraInfoHelper {
     }
 
     /**
-     * @param cameraID
-     * @return
+     * Returns the information about a particular camera.
+     *
+     * @param cameraID Camera to get information from
+     * @return camera info of particular camera.
      */
     public Camera.CameraInfo getCameraInfo(int cameraID) {
         Camera.CameraInfo info = new Camera.CameraInfo();
@@ -50,69 +51,69 @@ public class CameraInfoHelper {
      */
     public static void printParameters(Camera.Parameters parameters) {
         String space = " ";
-        Log.d(TAG, "Camera params: "
-            + "Antibanding: "
-            + parameters.getAntibanding()
-            + space
-            + "ExposureCompensation "
-            + parameters.getExposureCompensation()
-            + space
-            + "MinExposureCompensation "
-            + parameters.getMinExposureCompensation()
-            + space
-            + "MaxExposureCompensation "
-            + parameters.getMaxExposureCompensation()
-            + space
-            + "MaxNumFocusAreas "
-            + parameters.getMaxNumFocusAreas()
-            + space
-            + "MaxNumMeteringAreas "
-            + parameters.getMaxNumMeteringAreas()
-            + space
+        Log.d(TAG, "Camera params: " +
+            "Antibanding: " +
+            parameters.getAntibanding() +
+            space +
+            "ExposureCompensation " +
+            parameters.getExposureCompensation() +
+            space +
+            "MinExposureCompensation " +
+            parameters.getMinExposureCompensation() +
+            space +
+            "MaxExposureCompensation " +
+            parameters.getMaxExposureCompensation() +
+            space +
+            "MaxNumFocusAreas " +
+            parameters.getMaxNumFocusAreas() +
+            space +
+            "MaxNumMeteringAreas " +
+            parameters.getMaxNumMeteringAreas() +
+            space +
             //+ "MeteringAreas "
             //+ parameters.getMeteringAreas()
-            + "FocusAreas "
-            + parameters.getFocusAreas()
-            + space
-            + "FocalLength "
-            + parameters.getFocalLength()
-            + space
-            + "MaxZoom "
-            + parameters.getMaxZoom()
-            + space
-            + "PictureFormat"
-            + parameters.getPictureFormat()
-            + space
-            + "PreviewFormat "
-            + parameters.getPreviewFormat()
-            + space
-            + "MaxZoom "
-            + parameters.getMaxZoom()
-            + space
-            + "FlashMode "
-            + parameters.getFlashMode()
-            + space
-            + "ZoomRatios "
-            + parameters.getZoomRatios()
-            + space
-            + "WhiteBalance "
-            + parameters.getWhiteBalance()
-            + space
-            + "SceneMode "
-            + parameters.getSceneMode()
-            + space
-            + "AutoExposureLock "
-            + parameters.getAutoExposureLock()
-            + space
-            + "ExposureCompensationStep "
-            + parameters.getExposureCompensationStep()
-            + space
-            + "HorizontalViewAngle "
-            + parameters.getHorizontalViewAngle()
-            + space
-            + "VerticalViewAngle "
-            + parameters.getVerticalViewAngle()
-            + space
+            "FocusAreas " +
+            parameters.getFocusAreas() +
+            space +
+            "FocalLength " +
+            parameters.getFocalLength() +
+            space +
+            "MaxZoom " +
+            parameters.getMaxZoom() +
+            space +
+            "PictureFormat" +
+            parameters.getPictureFormat() +
+            space +
+            "PreviewFormat " +
+            parameters.getPreviewFormat() +
+            space +
+            "MaxZoom " +
+            parameters.getMaxZoom() +
+            space +
+            "FlashMode " +
+            parameters.getFlashMode() +
+            space +
+            "ZoomRatios " +
+            parameters.getZoomRatios() +
+            space +
+            "WhiteBalance " +
+            parameters.getWhiteBalance() +
+            space +
+            "SceneMode " +
+            parameters.getSceneMode() +
+            space +
+            "AutoExposureLock " +
+            parameters.getAutoExposureLock() +
+            space +
+            "ExposureCompensationStep " +
+            parameters.getExposureCompensationStep() +
+            space +
+            "HorizontalViewAngle " +
+            parameters.getHorizontalViewAngle() +
+            space +
+            "VerticalViewAngle " +
+            parameters.getVerticalViewAngle() +
+            space
         );
     }
 

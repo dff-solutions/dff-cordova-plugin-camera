@@ -12,12 +12,13 @@ import com.dff.cordova.plugin.camera.dagger.modules.CordovaModule;
 import org.apache.cordova.CordovaInterface;
 
 /**
+ * Manages Dagger injection.
+ *
  * @author Anthony Nahas
  * @version 1.0
  * @since 13.10.17
  */
 public class DaggerManager {
-
     private static DaggerManager mDaggerManager;
 
     private CameraPluginComponent mCameraPluginComponent;
@@ -26,9 +27,6 @@ public class DaggerManager {
     private AppModule mAppModule;
     private CordovaModule mCordovaModule;
 
-    private Application mApplication;
-    private CordovaInterface mCordovaInterface;
-
     public static synchronized DaggerManager getInstance() {
         if (mDaggerManager == null) {
             mDaggerManager = new DaggerManager();
@@ -36,18 +34,18 @@ public class DaggerManager {
         return mDaggerManager;
     }
 
-    public DaggerManager in(Application mApplication) {
-        this.mApplication = mApplication;
-        if (mAppModule == null) {
-            mAppModule = mApplication != null ? new AppModule(mApplication) : null;
+    public DaggerManager in(Application application) {
+        if (mAppModule == null && application != null) {
+            mAppModule = new AppModule(application);
         }
+
         return this;
     }
 
-    public DaggerManager and(CordovaInterface mCordovaInterface) {
-        this.mCordovaInterface = mCordovaInterface;
-        if (mCordovaModule == null) {
-            mCordovaModule = mCordovaInterface != null ? new CordovaModule(mCordovaInterface) : null;
+    public DaggerManager and(CordovaInterface cordovaInterface) {
+
+        if (mCordovaModule == null && cordovaInterface != null) {
+            mCordovaModule = new CordovaModule(cordovaInterface);
         }
         return this;
     }

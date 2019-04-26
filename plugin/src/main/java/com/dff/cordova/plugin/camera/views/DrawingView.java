@@ -8,7 +8,6 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
-
 /**
  * Class to draw a custom rec that indicate the touch event on the preview surface.
  *
@@ -17,16 +16,15 @@ import android.view.View;
  * @since 2.2.2017
  */
 public class DrawingView extends View {
-
-    private boolean mTouched = false;
+    private boolean mTouched;
     private Rect mRectArea;
     private Paint mPaint;
 
     /**
-     * Custom custructor
+     * Custom constructor.
      *
      * @param context - the used context
-     * @param attrs   -  the used attrubutset
+     * @param attrs   -  the used attribut set
      */
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -69,7 +67,7 @@ public class DrawingView extends View {
         return mPaint;
     }
 
-    public void setPaint(Paint mPaint) {
-        this.mPaint = mPaint;
+    public void setPaint(Paint paint) {
+        this.mPaint = paint;
     }
 }

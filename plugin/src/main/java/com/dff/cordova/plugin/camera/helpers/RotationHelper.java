@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 import java.util.List;
 
 /**
- * Helper classes to rotate a image button with a specific target degree
+ * Helper classes to rotate a image button with a specific target degree.
  *
  * @author Anthony Nahas
  * @version 1.1
@@ -23,8 +23,8 @@ public class RotationHelper {
     }
 
     /**
-     * rotate all imagebuttons stored in the given list from a specific degree value
-     * to a specific dregree value.
+     * Rotate all image buttons stored in the given list from a specific degree value
+     * to a specific degree value.
      *
      * @param fromDegrees - the start degree value
      * @param toDegree    - the target degree value

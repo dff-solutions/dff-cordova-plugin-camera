@@ -1,6 +1,5 @@
 package com.dff.cordova.plugin.camera.activities;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -27,7 +26,6 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Class to create a preview for the camera (including focus mechanism).
  *
@@ -36,7 +34,6 @@ import java.util.List;
  * @since 05.01.2017
  */
 public class CameraActivity extends Activity {
-
     private static final String TAG = CameraActivity.class.getSimpleName();
 
     @Inject
@@ -70,20 +67,30 @@ public class CameraActivity extends Activity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
 
-        boolean withPicindicator = getIntent().getBooleanExtra(R.WITH_PICINDICATOR, false);
-
         DaggerManager
             .getInstance()
             .inject(this);
-        setContentView(R.RESOURCES.getIdentifier(R.CAMERA_ACTIVITY_LAYOUT, R.LAYOUT, R.PACKAGE_NAME));
 
+        setContentView(
+            R.RESOURCES.getIdentifier(R.CAMERA_ACTIVITY_LAYOUT, R.LAYOUT, R.PACKAGE_NAME)
+        );
 
         //on creating the surface view
-        mSurfaceView = (PreviewSurfaceView) findViewById(R.RESOURCES.getIdentifier(R.CAMERA_SURFACE_ID, R.ID, R.PACKAGE_NAME));
-        mCaptureImage = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_TAKE_IMAGE, R.ID, R.PACKAGE_NAME));
-        mFlashButton = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_CHANGE_FLASH_MODE, R.ID, R.PACKAGE_NAME));
-        mFlipCamera = (ImageButton) findViewById(R.RESOURCES.getIdentifier(R.BUTTON_FLIP_CAMERA, R.ID, R.PACKAGE_NAME));
-        mDrawingView = (DrawingView) findViewById(R.RESOURCES.getIdentifier(R.CAMERA_DRAWING_SURFACE_ID, R.ID, R.PACKAGE_NAME));
+        mSurfaceView = findViewById(
+            R.RESOURCES.getIdentifier(R.CAMERA_SURFACE_ID, R.ID, R.PACKAGE_NAME)
+        );
+        mCaptureImage = findViewById(
+            R.RESOURCES.getIdentifier(R.BUTTON_TAKE_IMAGE, R.ID, R.PACKAGE_NAME)
+        );
+        mFlashButton = findViewById(
+            R.RESOURCES.getIdentifier(R.BUTTON_CHANGE_FLASH_MODE, R.ID, R.PACKAGE_NAME)
+        );
+        mFlipCamera = findViewById(
+            R.RESOURCES.getIdentifier(R.BUTTON_FLIP_CAMERA, R.ID, R.PACKAGE_NAME)
+        );
+        mDrawingView = findViewById(
+            R.RESOURCES.getIdentifier(R.CAMERA_DRAWING_SURFACE_ID, R.ID, R.PACKAGE_NAME)
+        );
 
         mSurfaceHolder = mSurfaceView.getHolder();
         mSurfaceHolder.addCallback(mCameraPreview);
@@ -93,16 +100,18 @@ public class CameraActivity extends Activity {
         mSurfaceView.setDrawingView(mDrawingView);
         mSurfaceView.setEventBus(mEventBus);
 
+        boolean withPicindicator = getIntent()
+            .getBooleanExtra(R.WITH_PICINDICATOR, false);
+
         if (withPicindicator) {
-            PicIndicatorView picIndicatorView = (PicIndicatorView) findViewById(R.RESOURCES.getIdentifier
-                (R.CAMERA_DRAWING_PICINDICATOR_ID, R.ID, R.PACKAGE_NAME));
+            PicIndicatorView picIndicatorView = findViewById(
+                R.RESOURCES.getIdentifier(R.CAMERA_DRAWING_PICINDICATOR_ID, R.ID, R.PACKAGE_NAME));
             picIndicatorView.setVisibility(View.VISIBLE);
-            mSurfaceView.setPicIndicatorView(picIndicatorView);
             Toast.makeText(this, R.PICINDICATOR_MSG, Toast.LENGTH_LONG).show();
         }
 
         mCameraPreview.setContext(this);
-        mCameraPreview.setWithPreview(getIntent().getExtras().getBoolean(R.WITH_PREVIEW_KEY));
+        mCameraPreview.setWithPreview(getIntent().getBooleanExtra(R.WITH_PREVIEW_KEY, false));
         mCameraPreview.setCaptureImage(mCaptureImage);
         mCameraPreview.setFlashButton(mFlashButton);
         mCameraPreview.setFlipCamera(mFlipCamera);
@@ -111,7 +120,10 @@ public class CameraActivity extends Activity {
         imageButtonList.add(mFlashButton);
         imageButtonList.add(mFlipCamera);
 
-        mOrientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL) {
+        mOrientationEventListener = new OrientationEventListener(
+            this,
+            SensorManager.SENSOR_DELAY_NORMAL
+        ) {
             @Override
             public void onOrientationChanged(int orientation) {
                 Log.d(TAG, "orientation changed: " + orientation);
@@ -134,7 +146,6 @@ public class CameraActivity extends Activity {
                             }
                             mRotation = 0;
                             mCameraPreview.onOrientationChanged(mRotation);
-
                         }
                         break;
                     case 90:
@@ -143,7 +154,9 @@ public class CameraActivity extends Activity {
                             Log.d(TAG, "mRotation = " + mRotation);
                             switch (mRotation) {
                                 case 0:
+                                    // TODO check call parameters
                                     mRotationHelper.rotate(360, 270, imageButtonList);
+                                    break;
                                 case 180:
                                     mRotationHelper.rotate(360, 270, imageButtonList);
                                     break;
@@ -193,6 +206,8 @@ public class CameraActivity extends Activity {
                             mCameraPreview.onOrientationChanged(mRotation);
                         }
                         break;
+                    default:
+                        break;
                 }
             }
         };
@@ -226,7 +241,6 @@ public class CameraActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         Log.d(TAG, "requestCode = " + requestCode);
         Log.d(TAG, "resultCode = " + resultCode);
 
@@ -253,7 +267,8 @@ public class CameraActivity extends Activity {
                     mFlashButton.setVisibility(View.VISIBLE);
                 }
                 break;
+            default:
+                break;
         }
-
     }
 }

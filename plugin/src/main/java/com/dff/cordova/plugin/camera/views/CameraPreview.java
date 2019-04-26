@@ -1,17 +1,12 @@
 package com.dff.cordova.plugin.camera.views;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Surface;
@@ -21,22 +16,17 @@ import android.widget.ImageButton;
 
 import com.dff.cordova.plugin.camera.Res.R;
 import com.dff.cordova.plugin.camera.activities.PreviewActivity;
-import com.dff.cordova.plugin.camera.dagger.annotations.ActivityContext;
-import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 import com.dff.cordova.plugin.camera.events.OnAutoFocus;
 import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
 
 import org.greenrobot.eventbus.EventBus;
 
-import javax.inject.Inject;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import static android.view.OrientationEventListener.ORIENTATION_UNKNOWN;
 
@@ -48,10 +38,8 @@ import static android.view.OrientationEventListener.ORIENTATION_UNKNOWN;
  * @since 2.2.2017
  */
 public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback {
-
-    private final static String TAG = "CameraPreview";
+    private static final String TAG = "CameraPreview";
     private static int sFlashMode;
-    private static boolean sSaveInGallery;
 
     private Context mContext;
     private EventBus mEventBus;
@@ -67,21 +55,19 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
     private int mRotation;
     private int mCameraID;
 
-
     /**
-     * Custom constructor
+     * Custom constructor.
      */
     @Inject
-    public CameraPreview(EventBus mEventBus,
-                         CameraInfoHelper mCameraInfoHelper) {
-
+    public CameraPreview(
+        EventBus eventBus,
+        CameraInfoHelper cameraInfoHelper
+    ) {
         mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
-        this.mContext = mContext;
-        this.mEventBus = mEventBus;
-        this.mCameraInfoHelper = mCameraInfoHelper;
+        this.mEventBus = eventBus;
+        this.mCameraInfoHelper = cameraInfoHelper;
 
         sFlashMode = 0;
-        sSaveInGallery = false;
     }
 
     /**
@@ -94,12 +80,11 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
         return mCameraID;
     }
 
-
     /**
      * Try to open the camera with params.
      *
      * @param id - whether front or back camera.
-     * @return
+     * @return Whether camera could be opened
      */
     private boolean openCamera(int id) {
         boolean result = false;
@@ -108,13 +93,12 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
         try {
             mCamera = Camera.open(mCameraID);
         } catch (Exception e) {
-            Log.e(TAG, "Error while opeing the camera", e);
+            Log.e(TAG, "Error while opening the camera", e);
             return false;
         }
         if (mCamera != null) {
             try {
                 mCamera.setErrorCallback(new Camera.ErrorCallback() {
-
                     @Override
                     public void onError(int error, Camera camera) {
                         //to show the error message.
@@ -125,7 +109,6 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
                 mCamera.startPreview();
                 result = true;
             } catch (IOException e) {
-                e.printStackTrace();
                 Log.e(TAG, "Error: ", e);
                 result = false;
                 releaseCamera();
@@ -135,7 +118,7 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
     }
 
     /**
-     * Setup the caemra with the correct params and rotation.
+     * Setup the camera with the correct params and rotation.
      */
     private void setUpCamera() {
         try {
@@ -176,16 +159,16 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
     /**
      * Start preview with new settings.
      *
-     * @param surfaceHolder
-     * @param i
-     * @param i1
-     * @param i2
+     * @param holder The SurfaceHolder whose surface has changed.
+     * @param format The new PixelFormat of the surface.
+     * @param width The new width of the surface.
+     * @param height The new height of the surface.
      */
     @Override
-    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         try {
             setCameraDisplayOrientation(((Activity) mContext), mCameraID);
-            mCamera.setPreviewDisplay(surfaceHolder);
+            mCamera.setPreviewDisplay(holder);
             setUpCamera();
             onOrientationChanged(mRotation);
             mCamera.startPreview();
@@ -193,7 +176,6 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
             Log.e(TAG, "Error: ", e);
         }
     }
-
 
     /**
      * Try to release the camera when the surface is destroyed.
@@ -213,7 +195,6 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
         }
 
     }
-
 
     /**
      * Called from PreviewSurfaceView to set touch focus.
@@ -255,9 +236,8 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
         }
     }
 
-
     /**
-     * Change the flash mode:
+     * Change the flash mode.
      * <p>
      * 0: auto
      * 1: off
@@ -266,19 +246,27 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
     private void changeFlashMode() {
         switch (sFlashMode) {
             case 0:
-                mFlashButton.setImageResource(R.RESOURCES.getIdentifier(R.IC_FLASH_AUTO, R.DRAWABLE, R.PACKAGE_NAME));
+                mFlashButton.setImageResource(
+                    R.RESOURCES.getIdentifier(R.IC_FLASH_AUTO, R.DRAWABLE, R.PACKAGE_NAME)
+                );
                 sFlashMode = 1;
                 refreshParams(Camera.Parameters.FLASH_MODE_AUTO);
                 break;
             case 1:
-                mFlashButton.setImageResource(R.RESOURCES.getIdentifier(R.IC_FLASH_OFF, R.DRAWABLE, R.PACKAGE_NAME));
+                mFlashButton.setImageResource(
+                    R.RESOURCES.getIdentifier(R.IC_FLASH_OFF, R.DRAWABLE, R.PACKAGE_NAME)
+                );
                 sFlashMode = 2;
                 refreshParams(Camera.Parameters.FLASH_MODE_OFF);
                 break;
             case 2:
-                mFlashButton.setImageResource(R.RESOURCES.getIdentifier(R.IC_FLASH_ON, R.DRAWABLE, R.PACKAGE_NAME));
+                mFlashButton.setImageResource(
+                    R.RESOURCES.getIdentifier(R.IC_FLASH_ON, R.DRAWABLE, R.PACKAGE_NAME)
+                );
                 sFlashMode = 0;
                 refreshParams(Camera.Parameters.FLASH_MODE_ON);
+                break;
+            default:
                 break;
         }
     }
@@ -327,76 +315,21 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
                         try {
                             // convert byte array into bitmap
                             R.sBase64Image = Base64.encodeToString(data, Base64.DEFAULT);
-                            if (!sSaveInGallery) {
-                                if (mWithPreview) {
-                                    R.sBitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                                    Intent intent = new Intent(mContext, PreviewActivity.class);
-                                    ((Activity) mContext).startActivityForResult(intent, R.IMAGE_PREVIEW_REQUEST);
-                                } else {
-                                    if (R.sBase64Image != null && !R.sBase64Image.isEmpty()) {
-                                        Log.d(TAG, R.sBase64Image);
-                                        R.sCallBackContext.success(R.sBase64Image);
-                                    } else {
-                                        R.sCallBackContext.error("Error: the base64 image is empty or null");
-                                    }
-                                    ((Activity) mContext).finish();
-                                }
+                            if (mWithPreview) {
+                                R.sBitmap = BitmapFactory
+                                    .decodeByteArray(data, 0, data.length);
+                                Intent intent = new Intent(mContext, PreviewActivity.class);
+                                ((Activity) mContext)
+                                    .startActivityForResult(intent, R.IMAGE_PREVIEW_REQUEST);
                             } else {
-                                Bitmap loadedImage = BitmapFactory.decodeByteArray(data, 0,
-                                    data.length);
-
-                                // rotate Image
-                                Matrix rotateMatrix = new Matrix();
-                                rotateMatrix.postRotate(mRotation);
-                                Bitmap rotatedBitmap = Bitmap.createBitmap(loadedImage, 0,
-                                    0, loadedImage.getWidth(), loadedImage.getHeight(),
-                                    rotateMatrix, false);
-                                String state = Environment.getExternalStorageState();
-                                File folder = null;
-                                if (state.contains(Environment.MEDIA_MOUNTED)) {
-                                    folder = new File(Environment
-                                        .getExternalStorageDirectory() + "/Demo");
+                                if (R.sBase64Image != null && !R.sBase64Image.isEmpty()) {
+                                    Log.d(TAG, R.sBase64Image);
+                                    R.sCallBackContext.success(R.sBase64Image);
                                 } else {
-                                    folder = new File(Environment
-                                        .getExternalStorageDirectory() + "/Demo");
+                                    R.sCallBackContext
+                                        .error("Error: the base64 image is empty or null");
                                 }
-
-                                boolean success = true;
-                                if (!folder.exists()) {
-                                    success = folder.mkdirs();
-                                }
-                                if (success) {
-                                    Date date = new Date();
-                                    imageFile = new File(folder.getAbsolutePath()
-                                        + File.separator
-                                        //+ new Timestamp(date.getTime()).toString()
-                                        + new Date()
-                                        + "Image.jpg");
-
-                                    Boolean resOfCreatingImage = imageFile.createNewFile();
-                                    Log.d(TAG, "Result of creating an new image = " + resOfCreatingImage);
-                                } else {
-                                    return;
-                                }
-
-                                ByteArrayOutputStream ostream = new ByteArrayOutputStream();
-
-                                // save image into gallery
-                                rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
-
-                                FileOutputStream fout = new FileOutputStream(imageFile);
-                                fout.write(ostream.toByteArray());
-                                fout.close();
-                                ContentValues values = new ContentValues();
-
-                                values.put(MediaStore.Images.Media.DATE_TAKEN,
-                                    System.currentTimeMillis());
-                                values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-                                values.put(MediaStore.MediaColumns.DATA,
-                                    imageFile.getAbsolutePath());
-
-                                mContext.getContentResolver().insert(
-                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                                ((Activity) mContext).finish();
                             }
                         } catch (Exception e) {
                             Log.e(TAG, "Error: ", e);
@@ -410,7 +343,7 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
     }
 
     /**
-     * set the camera display orientation
+     * Set the camera display orientation.
      *
      * @param activity - the current activity
      * @param cameraId - the id of the camera - back or front camera
@@ -432,6 +365,8 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
             case Surface.ROTATION_270:
                 degrees = 270;
                 break;
+            default:
+                break;
         }
 
         int result;
@@ -446,21 +381,27 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
         mCamera.setDisplayOrientation(result);
     }
 
-
     /**
-     * Change the orientation of the picture that will be shot by the camera
+     * Change the orientation of the picture that will be shot by the camera.
      *
      * @param orientation - the current orientation
      */
     public void onOrientationChanged(int orientation) {
-        if (orientation == ORIENTATION_UNKNOWN) return;
+        if (orientation == ORIENTATION_UNKNOWN) {
+            return;
+        }
         Camera.CameraInfo info =
             new Camera.CameraInfo();
         Camera.getCameraInfo(mCameraID, info);
-        orientation = (orientation + 45) / 90 * 90;
-        int rotation = info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT ?
-            (info.orientation - orientation + 360)
-                % 360 : (info.orientation + orientation) % 360;
+
+        int newOrientation = (orientation + 45) / 90 * 90;
+
+        int rotation;
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            rotation = (info.orientation - newOrientation + 360) % 360;
+        } else {
+            rotation = (info.orientation + newOrientation) % 360;
+        }
         try {
             mParams.setRotation(rotation);
             mCamera.setParameters(mParams);
@@ -477,16 +418,16 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
         }
     }
 
-    public void setContext(Context mContext) {
-        this.mContext = mContext;
+    public void setContext(Context context) {
+        this.mContext = context;
     }
 
-    public void setWithPreview(Boolean mWithPreview) {
-        this.mWithPreview = mWithPreview;
+    public void setWithPreview(Boolean withPreview) {
+        this.mWithPreview = withPreview;
     }
 
-    public void setFlashButton(ImageButton mFlashButton) {
-        this.mFlashButton = mFlashButton;
+    public void setFlashButton(ImageButton flashButton) {
+        this.mFlashButton = flashButton;
         this.mFlashButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -495,34 +436,36 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
         });
     }
 
-    public void setCaptureImage(ImageButton mCaptureImage) {
-        this.mCaptureImage = mCaptureImage;
+    public void setCaptureImage(ImageButton captureImage) {
+        this.mCaptureImage = captureImage;
         this.mCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 takeImage();
-                //Toast.makeText(mContext, "took photo", Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    public void setFlipCamera(final ImageButton mFlipCamera) {
-        this.mFlipCamera = mFlipCamera;
+    public void setFlipCamera(final ImageButton flipCamera) {
+        this.mFlipCamera = flipCamera;
         this.mFlipCamera.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 releaseCamera();
                 //mCamera.release();
                 if (mCameraID == Camera.CameraInfo.CAMERA_FACING_BACK) {
                     mCameraID = Camera.CameraInfo.CAMERA_FACING_FRONT;
-                    mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_FRONT, R.DRAWABLE, R.PACKAGE_NAME));
+                    flipCamera.setImageResource(
+                        R.RESOURCES.getIdentifier(R.IC_CAMERA_FRONT, R.DRAWABLE, R.PACKAGE_NAME)
+                    );
                     mFlashButton.clearAnimation();
                     mFlashButton.setVisibility(View.GONE);
                     mFlashButton.setEnabled(false);
                 } else {
                     mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
-                    mFlipCamera.setImageResource(R.RESOURCES.getIdentifier(R.IC_CAMERA_BACK, R.DRAWABLE, R.PACKAGE_NAME));
+                    flipCamera.setImageResource(
+                        R.RESOURCES.getIdentifier(R.IC_CAMERA_BACK, R.DRAWABLE, R.PACKAGE_NAME)
+                    );
                     mFlashButton.setEnabled(true);
                     mFlashButton.setVisibility(View.VISIBLE);
                 }

@@ -7,18 +7,13 @@ import dagger.Module;
 import dagger.Provides;
 import org.apache.cordova.CordovaInterface;
 
-/**
- * @author Anthony Nahas
- * @version 1.0
- * @since 17.10.2017
- */
 @Module
 public class CordovaModule {
 
     private CordovaInterface mCordovaInterface;
 
-    public CordovaModule(CordovaInterface mCordovaInterface) {
-        this.mCordovaInterface = mCordovaInterface;
+    public CordovaModule(CordovaInterface cordovaInterface) {
+        this.mCordovaInterface = cordovaInterface;
     }
 
     @Provides
