@@ -1,0 +1,21 @@
+project.ext.android_support_version = "27.1.1"
+project.ext.dagger_version = "2.21"
+
+android {
+    dependencies {
+        implementation (
+            "com.android.support:appcompat-v7:$android_support_version",
+            "com.android.support:support-v4:$android_support_version",
+            "org.greenrobot:eventbus:3.1.1",
+
+            "com.google.dagger:dagger:$dagger_version",
+            "com.google.dagger:dagger-android:$dagger_version",
+            "com.google.dagger:dagger-android-support:$dagger_version"
+        )
+
+        annotationProcessor (
+            "com.google.dagger:dagger-compiler:$dagger_version",
+            "com.google.dagger:dagger-android-processor:$dagger_version"
+        )
+    }
+}
