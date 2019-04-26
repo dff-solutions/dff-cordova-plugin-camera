@@ -7,6 +7,12 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Set TeamCity Parameter",
+            "program": "${workspaceFolder}/scripts/setTeamCityParameter.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Update Plugin XML",
             "program": "${workspaceFolder}/scripts/update-pluginxml.js"
         }
