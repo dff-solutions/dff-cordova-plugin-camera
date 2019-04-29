@@ -45,7 +45,7 @@ public class R {
         " darauf, dass das Motiv ungefähr die Größe der beiden seitlichen Rahmen einnimmt.";
     public static final String WITH_PREVIEW_KEY = "withpreviewkey";
 
-    public static final String ACTION_TAKE_PHOTO = "takephoto";
+    public static final String ACTION_TAKE_PHOTO = "takePhoto";
 
     public static Bitmap sBitmap;
     public static String sBase64Image;

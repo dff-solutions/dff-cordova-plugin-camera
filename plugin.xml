@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<plugin xmlns:android="http://schemas.android.com/apk/res/android" id="dff-cordova-plugin-camera" name="CameraPlugin" spec="3.0.6" version="3.0.6" xmlns="http://www.phonegap.com/ns/plugins/1.0">
+<plugin xmlns:android="http://schemas.android.com/apk/res/android" id="dff-cordova-plugin-camera" name="CameraPlugin" version="3.0.6" xmlns="http://www.phonegap.com/ns/plugins/1.0">
   <name>Camera Plugin</name>
   <description>Camera Plugin</description>
   <keywords>cordova,device,Camera, autofocus,manual focus,preview,android</keywords>
   <author>dff solutions/AnthonyNahas</author>
-  <js-module name="CameraPlugin" src="www/CameraPlugin.js">
+  <js-module name="CameraPlugin" src="www/camera.js">
     <clobbers target="CameraPlugin"/>
   </js-module>
+  <js-module src="www/cordova-exec.js" name="cordova-exec"/>
   <platform name="android">
     <config-file parent="/*" target="res/xml/config.xml">
       <feature name="CameraPlugin">
