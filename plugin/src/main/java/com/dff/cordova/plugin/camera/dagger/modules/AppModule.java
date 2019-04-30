@@ -1,36 +1,46 @@
 package com.dff.cordova.plugin.camera.dagger.modules;
 
-import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+
+import com.dff.cordova.plugin.camera.dagger.annotations.ActionHandlerServiceIntent;
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
-import dagger.Module;
-import dagger.Provides;
+import com.dff.cordova.plugin.camera.dagger.components.ActionHandlerServiceComponent;
+import com.dff.cordova.plugin.camera.dagger.components.PluginComponent;
+import com.dff.cordova.plugin.camera.services.ActionHandlerService;
+
 import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Singleton;
 
-@Module
+import dagger.Module;
+import dagger.Provides;
+
+@Module(subcomponents = {
+    ActionHandlerServiceComponent.class,
+    PluginComponent.class
+})
 public class AppModule {
+    private Context applicationContext;
 
-    private Application mApp;
-
-    public AppModule(Application app) {
-        this.mApp = app;
+    public AppModule(Context context) {
+        applicationContext = context;
     }
 
     @Provides
     @ApplicationContext
-    Context provideContext() {
-        return mApp;
-    }
-
-    @Provides
-    Application provideApplication() {
-        return mApp;
+    Context provideApplicationContext() {
+        return applicationContext;
     }
 
     @Provides
     @Singleton
+    @ActionHandlerServiceIntent
+    Intent provideActionHandlerServiceIntent(@ApplicationContext Context context) {
+        return new Intent(context, ActionHandlerService.class);
+    }
+
+    @Provides
     EventBus provideEventBus() {
         return EventBus.getDefault();
     }

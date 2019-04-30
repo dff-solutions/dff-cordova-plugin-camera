@@ -4,14 +4,19 @@ import android.app.Application;
 import com.dff.cordova.plugin.camera.CameraPlugin;
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.activities.PreviewActivity;
+import com.dff.cordova.plugin.camera.dagger.components.ActionHandlerServiceComponent;
+import com.dff.cordova.plugin.camera.dagger.components.AppComponent;
 import com.dff.cordova.plugin.camera.dagger.components.CameraActivityComponent;
-import com.dff.cordova.plugin.camera.dagger.components.CameraPluginComponent;
+import com.dff.cordova.plugin.camera.dagger.components.DaggerAppComponent;
 import com.dff.cordova.plugin.camera.dagger.components.DaggerCameraActivityComponent;
-import com.dff.cordova.plugin.camera.dagger.components.DaggerCameraPluginComponent;
 import com.dff.cordova.plugin.camera.dagger.components.DaggerPreviewActivityComponent;
+import com.dff.cordova.plugin.camera.dagger.components.PluginComponent;
 import com.dff.cordova.plugin.camera.dagger.components.PreviewActivityComponent;
+import com.dff.cordova.plugin.camera.dagger.modules.ActionHandlerServiceModule;
 import com.dff.cordova.plugin.camera.dagger.modules.AppModule;
-import com.dff.cordova.plugin.camera.dagger.modules.CordovaModule;
+import com.dff.cordova.plugin.camera.dagger.modules.PluginModule;
+import com.dff.cordova.plugin.camera.services.ActionHandlerService;
+
 import org.apache.cordova.CordovaInterface;
 
 /**
@@ -22,68 +27,105 @@ import org.apache.cordova.CordovaInterface;
  * @since 13.10.17
  */
 public class DaggerManager {
-    private static DaggerManager mDaggerManager;
+    private static DaggerManager daggerManager;
 
-    private CameraPluginComponent mCameraPluginComponent;
-    private CameraActivityComponent mCameraActivityComponent;
+    private AppComponent appComponent;
+    private ActionHandlerServiceComponent actionHandlerServiceComponent;
+    private PluginComponent pluginComponent;
+    private CameraActivityComponent cameraActivityComponent;
     private PreviewActivityComponent previewActivityComponent;
 
-    private AppModule mAppModule;
-    private CordovaModule mCordovaModule;
+    private AppModule appModule;
+    private PluginModule pluginModule;
+
+    private DaggerManager() {}
 
     public static synchronized DaggerManager getInstance() {
-        if (mDaggerManager == null) {
-            mDaggerManager = new DaggerManager();
+        if (daggerManager == null) {
+            daggerManager = new DaggerManager();
         }
-        return mDaggerManager;
+
+        return daggerManager;
     }
 
     public DaggerManager in(Application application) {
-        if (mAppModule == null && application != null) {
-            mAppModule = new AppModule(application);
+        if (appModule == null && application != null) {
+            appModule = new AppModule(application);
         }
 
         return this;
     }
 
-    public DaggerManager and(CordovaInterface cordovaInterface) {
-
-        if (mCordovaModule == null && cordovaInterface != null) {
-            mCordovaModule = new CordovaModule(cordovaInterface);
+    public DaggerManager in(CordovaInterface cordovaInterface, String[] pluginPermissions) {
+        if (pluginModule == null) {
+            pluginModule = new PluginModule(cordovaInterface, pluginPermissions);
         }
+
         return this;
     }
 
     public void inject(CameraPlugin cameraPlugin) {
-        if (mCameraPluginComponent == null) {
-            mCameraPluginComponent = DaggerCameraPluginComponent
-                .builder()
-                .appModule(mAppModule)
-                .cordovaModule(mCordovaModule)
-                .build();
-        }
-        mCameraPluginComponent.inject(cameraPlugin);
+        getPluginComponent()
+            .inject(cameraPlugin);
+    }
+
+    public void inject(ActionHandlerService actionHandlerService) {
+        getActionHandlerServiceComponent()
+            .inject(actionHandlerService);
     }
 
     public void inject(CameraActivity cameraActivity) {
-        if (mCameraActivityComponent == null) {
-            mCameraActivityComponent = DaggerCameraActivityComponent
+        if (cameraActivityComponent == null) {
+            cameraActivityComponent = DaggerCameraActivityComponent
                 .builder()
-                .appModule(mAppModule)
-                .cordovaModule(mCordovaModule)
+                .appModule(appModule)
                 .build();
         }
-        mCameraActivityComponent.inject(cameraActivity);
+
+        cameraActivityComponent.inject(cameraActivity);
     }
 
     public void inject(PreviewActivity previewActivity) {
         if (previewActivityComponent == null) {
             previewActivityComponent = DaggerPreviewActivityComponent
                 .builder()
-                .appModule(mAppModule)
+                .appModule(appModule)
                 .build();
         }
 
         previewActivityComponent.inject(previewActivity);
+    }
+
+    private AppComponent getAppComponent() {
+        if (appComponent == null) {
+            appComponent = DaggerAppComponent
+                .builder()
+                .appModule(appModule)
+                .build();
+        }
+
+        return appComponent;
+    }
+
+    private PluginComponent getPluginComponent() {
+        if (pluginComponent == null) {
+            pluginComponent = getAppComponent()
+                .pluginComponentBuilder()
+                .pluginModule(pluginModule)
+                .build();
+        }
+
+        return pluginComponent;
+    }
+
+    private ActionHandlerServiceComponent getActionHandlerServiceComponent() {
+        if (actionHandlerServiceComponent == null) {
+            actionHandlerServiceComponent = getAppComponent()
+                .actionHandlerServiceComponentBuilder()
+                .actionHandlerModule(new ActionHandlerServiceModule())
+                .build();
+        }
+
+        return actionHandlerServiceComponent;
     }
 }

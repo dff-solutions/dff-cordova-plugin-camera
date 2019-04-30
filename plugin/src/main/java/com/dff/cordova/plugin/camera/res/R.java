@@ -1,4 +1,4 @@
-package com.dff.cordova.plugin.camera.Res;
+package com.dff.cordova.plugin.camera.res;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -47,11 +47,6 @@ public class R {
 
     public static final int IMAGE_PREVIEW_REQUEST = 1;
     public static final int RESULT_REPEAT = 2;
-
-    public static final String WITH_PREVIEW = "withPreview";
-    public static final String WITH_PREVIEW_KEY = "withpreviewkey";
-
-    public static final String ACTION_TAKE_PHOTO = "takePhoto";
 
     public static Bitmap sBitmap;
     public static String sBase64Image;

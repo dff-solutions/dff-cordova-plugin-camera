@@ -72,15 +72,20 @@
 <span class="packageHierarchyLabel">Package Hierarchies:</span>
 <ul class="horizontal">
 <li><a href="com/dff/cordova/plugin/camera/package-tree.html">com.dff.cordova.plugin.camera</a>, </li>
+<li><a href="com/dff/cordova/plugin/camera/actions/package-tree.html">com.dff.cordova.plugin.camera.actions</a>, </li>
 <li><a href="com/dff/cordova/plugin/camera/activities/package-tree.html">com.dff.cordova.plugin.camera.activities</a>, </li>
+<li><a href="com/dff/cordova/plugin/camera/classes/json/package-tree.html">com.dff.cordova.plugin.camera.classes.json</a>, </li>
 <li><a href="com/dff/cordova/plugin/camera/configurations/package-tree.html">com.dff.cordova.plugin.camera.configurations</a>, </li>
 <li><a href="com/dff/cordova/plugin/camera/dagger/package-tree.html">com.dff.cordova.plugin.camera.dagger</a>, </li>
 <li><a href="com/dff/cordova/plugin/camera/dagger/annotations/package-tree.html">com.dff.cordova.plugin.camera.dagger.annotations</a>, </li>
 <li><a href="com/dff/cordova/plugin/camera/dagger/components/package-tree.html">com.dff.cordova.plugin.camera.dagger.components</a>, </li>
 <li><a href="com/dff/cordova/plugin/camera/dagger/modules/package-tree.html">com.dff.cordova.plugin.camera.dagger.modules</a>, </li>
 <li><a href="com/dff/cordova/plugin/camera/events/package-tree.html">com.dff.cordova.plugin.camera.events</a>, </li>
+<li><a href="com/dff/cordova/plugin/camera/exceptions/package-tree.html">com.dff.cordova.plugin.camera.exceptions</a>, </li>
 <li><a href="com/dff/cordova/plugin/camera/helpers/package-tree.html">com.dff.cordova.plugin.camera.helpers</a>, </li>
-<li><a href="com/dff/cordova/plugin/camera/Res/package-tree.html">com.dff.cordova.plugin.camera.Res</a>, </li>
+<li><a href="com/dff/cordova/plugin/camera/log/package-tree.html">com.dff.cordova.plugin.camera.log</a>, </li>
+<li><a href="com/dff/cordova/plugin/camera/res/package-tree.html">com.dff.cordova.plugin.camera.res</a>, </li>
+<li><a href="com/dff/cordova/plugin/camera/services/package-tree.html">com.dff.cordova.plugin.camera.services</a>, </li>
 <li><a href="com/dff/cordova/plugin/camera/views/package-tree.html">com.dff.cordova.plugin.camera.views</a></li>
 </ul>
 </div>
@@ -89,7 +94,19 @@
 <ul>
 <li type="circle">java.lang.Object
 <ul>
+<li type="circle">&lt;any&gt;
+<ul>
+<li type="circle">com.dff.cordova.plugin.camera.log.<a href="com/dff/cordova/plugin/camera/log/CallbackContextAppender.html" title="class in com.dff.cordova.plugin.camera.log"><span class="typeNameLink">CallbackContextAppender</span></a></li>
+</ul>
+</li>
+<li type="circle">com.dff.cordova.plugin.camera.dagger.modules.<a href="com/dff/cordova/plugin/camera/dagger/modules/ActionHandlerServiceModule.html" title="class in com.dff.cordova.plugin.camera.dagger.modules"><span class="typeNameLink">ActionHandlerServiceModule</span></a></li>
+<li type="circle">com.dff.cordova.plugin.camera.configurations.<a href="com/dff/cordova/plugin/camera/configurations/ActionsManager.html" title="class in com.dff.cordova.plugin.camera.configurations"><span class="typeNameLink">ActionsManager</span></a> (implements android.content.ServiceConnection)</li>
 <li type="circle">com.dff.cordova.plugin.camera.dagger.modules.<a href="com/dff/cordova/plugin/camera/dagger/modules/AppModule.html" title="class in com.dff.cordova.plugin.camera.dagger.modules"><span class="typeNameLink">AppModule</span></a></li>
+<li type="circle">android.os.Binder (implements android.os.IBinder)
+<ul>
+<li type="circle">com.dff.cordova.plugin.camera.services.<a href="com/dff/cordova/plugin/camera/services/ActionHandlerServiceBinder.html" title="class in com.dff.cordova.plugin.camera.services"><span class="typeNameLink">ActionHandlerServiceBinder</span></a></li>
+</ul>
+</li>
 <li type="circle">com.dff.cordova.plugin.camera.helpers.<a href="com/dff/cordova/plugin/camera/helpers/CameraInfoHelper.html" title="class in com.dff.cordova.plugin.camera.helpers"><span class="typeNameLink">CameraInfoHelper</span></a></li>
 <li type="circle">com.dff.cordova.plugin.camera.views.<a href="com/dff/cordova/plugin/camera/views/CameraPreview.html" title="class in com.dff.cordova.plugin.camera.views"><span class="typeNameLink">CameraPreview</span></a> (implements android.hardware.Camera.AutoFocusCallback, android.view.SurfaceHolder.Callback)</li>
 <li type="circle">com.dff.cordova.plugin.camera.configurations.<a href="com/dff/cordova/plugin/camera/configurations/Config.html" title="class in com.dff.cordova.plugin.camera.configurations"><span class="typeNameLink">Config</span></a></li>
@@ -107,20 +124,51 @@
 </li>
 </ul>
 </li>
+<li type="circle">android.app.Service (implements android.content.ComponentCallbacks2)
+<ul>
+<li type="circle">com.dff.cordova.plugin.camera.services.<a href="com/dff/cordova/plugin/camera/services/ActionHandlerService.html" title="class in com.dff.cordova.plugin.camera.services"><span class="typeNameLink">ActionHandlerService</span></a> (implements android.os.MessageQueue.IdleHandler)</li>
 </ul>
 </li>
 </ul>
 </li>
-<li type="circle">com.dff.cordova.plugin.camera.dagger.modules.<a href="com/dff/cordova/plugin/camera/dagger/modules/CordovaModule.html" title="class in com.dff.cordova.plugin.camera.dagger.modules"><span class="typeNameLink">CordovaModule</span></a></li>
+</ul>
+</li>
 <li type="circle">CordovaPlugin
 <ul>
 <li type="circle">com.dff.cordova.plugin.camera.<a href="com/dff/cordova/plugin/camera/CameraPlugin.html" title="class in com.dff.cordova.plugin.camera"><span class="typeNameLink">CameraPlugin</span></a></li>
 </ul>
 </li>
 <li type="circle">com.dff.cordova.plugin.camera.dagger.<a href="com/dff/cordova/plugin/camera/dagger/DaggerManager.html" title="class in com.dff.cordova.plugin.camera.dagger"><span class="typeNameLink">DaggerManager</span></a></li>
+<li type="circle">android.os.Handler
+<ul>
+<li type="circle">com.dff.cordova.plugin.camera.configurations.<a href="com/dff/cordova/plugin/camera/configurations/ActionHandler.html" title="class in com.dff.cordova.plugin.camera.configurations"><span class="typeNameLink">ActionHandler</span></a></li>
+</ul>
+</li>
+<li type="circle">com.dff.cordova.plugin.camera.helpers.<a href="com/dff/cordova/plugin/camera/helpers/JsonFactory.html" title="class in com.dff.cordova.plugin.camera.helpers"><span class="typeNameLink">JsonFactory</span></a></li>
+<li type="circle">com.dff.cordova.plugin.camera.classes.json.<a href="com/dff/cordova/plugin/camera/classes/json/JsonStacktrace.html" title="class in com.dff.cordova.plugin.camera.classes.json"><span class="typeNameLink">JsonStacktrace</span></a></li>
+<li type="circle">com.dff.cordova.plugin.camera.classes.json.<a href="com/dff/cordova/plugin/camera/classes/json/JsonThrowable.html" title="class in com.dff.cordova.plugin.camera.classes.json"><span class="typeNameLink">JsonThrowable</span></a></li>
+<li type="circle">com.dff.cordova.plugin.camera.log.<a href="com/dff/cordova/plugin/camera/log/Log.html" title="class in com.dff.cordova.plugin.camera.log"><span class="typeNameLink">Log</span></a></li>
 <li type="circle">com.dff.cordova.plugin.camera.events.<a href="com/dff/cordova/plugin/camera/events/OnAutoFocus.html" title="class in com.dff.cordova.plugin.camera.events"><span class="typeNameLink">OnAutoFocus</span></a></li>
-<li type="circle">com.dff.cordova.plugin.camera.Res.<a href="com/dff/cordova/plugin/camera/Res/R.html" title="class in com.dff.cordova.plugin.camera.Res"><span class="typeNameLink">R</span></a></li>
+<li type="circle">com.dff.cordova.plugin.camera.helpers.<a href="com/dff/cordova/plugin/camera/helpers/PackageManagerHelper.html" title="class in com.dff.cordova.plugin.camera.helpers"><span class="typeNameLink">PackageManagerHelper</span></a></li>
+<li type="circle">com.dff.cordova.plugin.camera.helpers.<a href="com/dff/cordova/plugin/camera/helpers/PermissionHelper.html" title="class in com.dff.cordova.plugin.camera.helpers"><span class="typeNameLink">PermissionHelper</span></a></li>
+<li type="circle">com.dff.cordova.plugin.camera.actions.<a href="com/dff/cordova/plugin/camera/actions/PluginAction.html" title="class in com.dff.cordova.plugin.camera.actions"><span class="typeNameLink">PluginAction</span></a> (implements java.lang.Runnable)
+<ul>
+<li type="circle">com.dff.cordova.plugin.camera.actions.<a href="com/dff/cordova/plugin/camera/actions/TakePhoto.html" title="class in com.dff.cordova.plugin.camera.actions"><span class="typeNameLink">TakePhoto</span></a></li>
+</ul>
+</li>
+<li type="circle">com.dff.cordova.plugin.camera.dagger.modules.<a href="com/dff/cordova/plugin/camera/dagger/modules/PluginModule.html" title="class in com.dff.cordova.plugin.camera.dagger.modules"><span class="typeNameLink">PluginModule</span></a></li>
+<li type="circle">com.dff.cordova.plugin.camera.res.<a href="com/dff/cordova/plugin/camera/res/R.html" title="class in com.dff.cordova.plugin.camera.res"><span class="typeNameLink">R</span></a></li>
 <li type="circle">com.dff.cordova.plugin.camera.helpers.<a href="com/dff/cordova/plugin/camera/helpers/RotationHelper.html" title="class in com.dff.cordova.plugin.camera.helpers"><span class="typeNameLink">RotationHelper</span></a></li>
+<li type="circle">java.lang.Thread (implements java.lang.Runnable)
+<ul>
+<li type="circle">android.os.HandlerThread
+<ul>
+<li type="circle">com.dff.cordova.plugin.camera.configurations.<a href="com/dff/cordova/plugin/camera/configurations/ActionHandlerThread.html" title="class in com.dff.cordova.plugin.camera.configurations"><span class="typeNameLink">ActionHandlerThread</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li type="circle">com.dff.cordova.plugin.camera.exceptions.<a href="com/dff/cordova/plugin/camera/exceptions/UnexpectedExceptionHandler.html" title="class in com.dff.cordova.plugin.camera.exceptions"><span class="typeNameLink">UnexpectedExceptionHandler</span></a> (implements java.lang.Thread.UncaughtExceptionHandler)</li>
 <li type="circle">android.view.View (implements android.view.accessibility.AccessibilityEventSource, android.graphics.drawable.Drawable.Callback, android.view.KeyEvent.Callback)
 <ul>
 <li type="circle">com.dff.cordova.plugin.camera.views.<a href="com/dff/cordova/plugin/camera/views/DrawingView.html" title="class in com.dff.cordova.plugin.camera.views"><span class="typeNameLink">DrawingView</span></a></li>
@@ -137,14 +185,23 @@
 </ul>
 <h2 title="Interface Hierarchy">Interface Hierarchy</h2>
 <ul>
+<li type="circle">com.dff.cordova.plugin.camera.dagger.components.<a href="com/dff/cordova/plugin/camera/dagger/components/ActionHandlerServiceComponent.html" title="interface in com.dff.cordova.plugin.camera.dagger.components"><span class="typeNameLink">ActionHandlerServiceComponent</span></a></li>
+<li type="circle">com.dff.cordova.plugin.camera.dagger.components.<a href="com/dff/cordova/plugin/camera/dagger/components/ActionHandlerServiceComponent.Builder.html" title="interface in com.dff.cordova.plugin.camera.dagger.components"><span class="typeNameLink">ActionHandlerServiceComponent.Builder</span></a></li>
+<li type="circle">com.dff.cordova.plugin.camera.dagger.components.<a href="com/dff/cordova/plugin/camera/dagger/components/AppComponent.html" title="interface in com.dff.cordova.plugin.camera.dagger.components"><span class="typeNameLink">AppComponent</span></a></li>
 <li type="circle">com.dff.cordova.plugin.camera.dagger.components.<a href="com/dff/cordova/plugin/camera/dagger/components/CameraActivityComponent.html" title="interface in com.dff.cordova.plugin.camera.dagger.components"><span class="typeNameLink">CameraActivityComponent</span></a></li>
-<li type="circle">com.dff.cordova.plugin.camera.dagger.components.<a href="com/dff/cordova/plugin/camera/dagger/components/CameraPluginComponent.html" title="interface in com.dff.cordova.plugin.camera.dagger.components"><span class="typeNameLink">CameraPluginComponent</span></a></li>
+<li type="circle">com.dff.cordova.plugin.camera.classes.json.<a href="com/dff/cordova/plugin/camera/classes/json/JsonDto.html" title="interface in com.dff.cordova.plugin.camera.classes.json"><span class="typeNameLink">JsonDto</span></a>&lt;T&gt;</li>
+<li type="circle">com.dff.cordova.plugin.camera.dagger.components.<a href="com/dff/cordova/plugin/camera/dagger/components/PluginComponent.html" title="interface in com.dff.cordova.plugin.camera.dagger.components"><span class="typeNameLink">PluginComponent</span></a></li>
+<li type="circle">com.dff.cordova.plugin.camera.dagger.components.<a href="com/dff/cordova/plugin/camera/dagger/components/PluginComponent.Builder.html" title="interface in com.dff.cordova.plugin.camera.dagger.components"><span class="typeNameLink">PluginComponent.Builder</span></a></li>
 <li type="circle">com.dff.cordova.plugin.camera.dagger.components.<a href="com/dff/cordova/plugin/camera/dagger/components/PreviewActivityComponent.html" title="interface in com.dff.cordova.plugin.camera.dagger.components"><span class="typeNameLink">PreviewActivityComponent</span></a></li>
 </ul>
 <h2 title="Annotation Type Hierarchy">Annotation Type Hierarchy</h2>
 <ul>
+<li type="circle">com.dff.cordova.plugin.camera.dagger.annotations.<a href="com/dff/cordova/plugin/camera/dagger/annotations/ActionHandlerServiceIntent.html" title="annotation in com.dff.cordova.plugin.camera.dagger.annotations"><span class="typeNameLink">ActionHandlerServiceIntent</span></a> (implements java.lang.annotation.Annotation)</li>
 <li type="circle">com.dff.cordova.plugin.camera.dagger.annotations.<a href="com/dff/cordova/plugin/camera/dagger/annotations/ApplicationContext.html" title="annotation in com.dff.cordova.plugin.camera.dagger.annotations"><span class="typeNameLink">ApplicationContext</span></a> (implements java.lang.annotation.Annotation)</li>
 <li type="circle">com.dff.cordova.plugin.camera.dagger.annotations.<a href="com/dff/cordova/plugin/camera/dagger/annotations/ActivityContext.html" title="annotation in com.dff.cordova.plugin.camera.dagger.annotations"><span class="typeNameLink">ActivityContext</span></a> (implements java.lang.annotation.Annotation)</li>
+<li type="circle">com.dff.cordova.plugin.camera.dagger.annotations.<a href="com/dff/cordova/plugin/camera/dagger/annotations/PluginComponentScope.html" title="annotation in com.dff.cordova.plugin.camera.dagger.annotations"><span class="typeNameLink">PluginComponentScope</span></a> (implements java.lang.annotation.Annotation)</li>
+<li type="circle">com.dff.cordova.plugin.camera.dagger.annotations.<a href="com/dff/cordova/plugin/camera/dagger/annotations/PluginPermissions.html" title="annotation in com.dff.cordova.plugin.camera.dagger.annotations"><span class="typeNameLink">PluginPermissions</span></a> (implements java.lang.annotation.Annotation)</li>
+<li type="circle">com.dff.cordova.plugin.camera.dagger.annotations.<a href="com/dff/cordova/plugin/camera/dagger/annotations/ActionHandlerScope.html" title="annotation in com.dff.cordova.plugin.camera.dagger.annotations"><span class="typeNameLink">ActionHandlerScope</span></a> (implements java.lang.annotation.Annotation)</li>
 </ul>
 </div>
 <!-- ======= START OF BOTTOM NAVBAR ====== -->

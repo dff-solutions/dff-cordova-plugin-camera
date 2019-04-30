@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -164,6 +164,20 @@ extends CordovaPlugin</pre>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/dff/cordova/plugin/camera/CameraPlugin.html#onDestroy--">onDestroy</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/dff/cordova/plugin/camera/CameraPlugin.html#onRequestPermissionResult-int-java.lang.String:A-int:A-">onRequestPermissionResult</a></span>(int&nbsp;requestCode,
+                         java.lang.String[]&nbsp;permissions,
+                         int[]&nbsp;grantResults)</code>&nbsp;</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/dff/cordova/plugin/camera/CameraPlugin.html#onResume-boolean-">onResume</a></span>(boolean&nbsp;multitasking)</code>&nbsp;</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/dff/cordova/plugin/camera/CameraPlugin.html#pluginInitialize--">pluginInitialize</a></span>()</code>
 <div class="block">Initializing the plugin by setting and allocating important information and objects.</div>
 </td>
@@ -215,6 +229,35 @@ extends CordovaPlugin</pre>
 <h4>pluginInitialize</h4>
 <pre>public&nbsp;void&nbsp;pluginInitialize()</pre>
 <div class="block">Initializing the plugin by setting and allocating important information and objects.</div>
+</li>
+</ul>
+<a name="onResume-boolean-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>onResume</h4>
+<pre>public&nbsp;void&nbsp;onResume(boolean&nbsp;multitasking)</pre>
+</li>
+</ul>
+<a name="onDestroy--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>onDestroy</h4>
+<pre>public&nbsp;void&nbsp;onDestroy()</pre>
+</li>
+</ul>
+<a name="onRequestPermissionResult-int-java.lang.String:A-int:A-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>onRequestPermissionResult</h4>
+<pre>public&nbsp;void&nbsp;onRequestPermissionResult(int&nbsp;requestCode,
+                                      java.lang.String[]&nbsp;permissions,
+                                      int[]&nbsp;grantResults)</pre>
 </li>
 </ul>
 <a name="execute-java.lang.String-org.json.JSONArray-CallbackContext-">

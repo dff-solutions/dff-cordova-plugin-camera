@@ -1,21 +1,20 @@
 package com.dff.cordova.plugin.camera;
 
-import android.content.Context;
-import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.util.Log;
+import android.Manifest;
+import android.content.pm.PackageManager;
 
-import com.dff.cordova.plugin.camera.Res.R;
-import com.dff.cordova.plugin.camera.activities.CameraActivity;
+import com.dff.cordova.plugin.camera.actions.PluginAction;
+import com.dff.cordova.plugin.camera.configurations.ActionsManager;
 import com.dff.cordova.plugin.camera.configurations.Config;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
-import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
+import com.dff.cordova.plugin.camera.helpers.PermissionHelper;
+import com.dff.cordova.plugin.camera.log.Log;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import java.util.Arrays;
 
 import javax.inject.Inject;
 
@@ -28,14 +27,25 @@ import javax.inject.Inject;
  */
 public class CameraPlugin extends CordovaPlugin {
     private static final String TAG = "CameraPlugin";
-    // private static final String CAMERA_PERMISSION = Manifest.permission.CAMERA;
 
-    @Inject
-    @ApplicationContext
-    Context mContext;
+    private static final int PERMISSION_REQUEST_CODE = 0;
+    // contains dangerous permissions
+    // @see https://developer.android.com/guide/topics/permissions/overview.html#normal-dangerous
+    private static final String[] PERMISSIONS = new String[] {
+        Manifest.permission.CAMERA,
+    };
 
     @Inject
     Config mConfig;
+
+    @Inject
+    Log log;
+
+    @Inject
+    ActionsManager actionsManager;
+
+    @Inject
+    PermissionHelper permissionHelper;
 
     /**
      * Initializing the plugin by setting and allocating important information and objects.
@@ -47,20 +57,36 @@ public class CameraPlugin extends CordovaPlugin {
         DaggerManager
             .getInstance()
             .in(cordova.getActivity().getApplication())
-            .and(cordova)
+            .in(cordova, PERMISSIONS)
             .inject(this);
 
-        mContext = cordova.getActivity().getApplicationContext();
         cordova.setActivityResultCallback(this);
     }
 
-    @Nullable
-    private JSONObject parseArgs(JSONArray args) {
-        try {
-            return args.getJSONObject(0);
-        } catch (JSONException e) {
-            Log.e(TAG, "Error: ", e);
-            return null;
+    @Override
+    public void onResume(boolean multitasking) {
+        super.onResume(multitasking);
+        requestPermissions();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        log.d(TAG, "onDestroy");
+        actionsManager.onDestroy();
+    }
+
+    @Override
+    public void onRequestPermissionResult(
+        int requestCode,
+        String[] permissions,
+        int[] grantResults
+    ) {
+        log.d(TAG, "onRequestPermissionResult - requestCode: " + requestCode);
+
+        for (int i = 0; i < grantResults.length; i++) {
+            boolean granted = grantResults[i] == PackageManager.PERMISSION_GRANTED;
+            log.i(TAG, permissions[i] + " granted: " + granted);
         }
     }
 
@@ -78,28 +104,59 @@ public class CameraPlugin extends CordovaPlugin {
         final JSONArray args,
         final CallbackContext callbackContext
     ) {
-        if (action != null) {
-            R.sCallBackContext = callbackContext;
-            cordova.getThreadPool().execute(() -> {
-                Log.d(TAG, "Action = " + action);
+        PluginAction actionInstance;
 
-                if (action.equals(R.ACTION_TAKE_PHOTO)) {
-                    JSONObject params = parseArgs(args);
-                    Intent intent = new Intent(mContext, CameraActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            // check permissions
+            if (!requestPermissions()) {
+                // try action anyway since not all actions require permission.
+                // actions are queued and PERMISSIONS might be granted when action is running
+                log.w(TAG, String.format(
+                    "required permissions %s not granted",
+                    Arrays.toString(PERMISSIONS)
+                ));
+            }
 
-                    if (params != null) {
-                        mConfig.setWithPreview(params.optBoolean(R.WITH_PREVIEW, false));
-                        intent.putExtra(R.WITH_PREVIEW_KEY, mConfig.isWithPreview());
-                    }
+            actionInstance = actionsManager
+                .createAction(action, args, callbackContext);
 
-                    mContext.startActivity(intent);
-                } else {
-                    callbackContext.error("Error: action not found --> " + action);
+            if (actionInstance != null) {
+                boolean result = actionsManager.runAction(actionInstance);
+
+                if (!result) {
+                    throw new Exception("could not queue action " + actionInstance.getActionName());
                 }
-            });
-            return true;
+
+                return true;
+            }
+
+            return super.execute(action, args, callbackContext);
+        } catch (Exception e) {
+            log.e(TAG, e.getMessage(), e);
+            callbackContext.error(e.getMessage());
+
+            return false;
         }
-        return false;
+    }
+
+    /**
+     * Requests permissions if user has not selected the Don't ask again option
+     * for all permissions.
+     *
+     * @return True if all permissions are granted false otherwise
+     */
+    private boolean requestPermissions() {
+        boolean allGranted = permissionHelper.hasAllPermissions(PERMISSIONS);
+        boolean showPermissionRationale = permissionHelper
+            .shouldShowRequestPermissionRationale(cordova.getActivity(), PERMISSIONS);
+
+        log.d(TAG, String.format("all permissions granted: %b", allGranted));
+
+        if (!allGranted && showPermissionRationale) {
+            log.d(TAG, String.format("request permissions for %s", Arrays.toString(PERMISSIONS)));
+            cordova.requestPermissions(this, PERMISSION_REQUEST_CODE, PERMISSIONS);
+        }
+
+        return allGranted;
     }
 }

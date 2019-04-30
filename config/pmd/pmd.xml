@@ -7,5 +7,6 @@
     <rule ref="category/java/bestpractices.xml">
         <priority>3</priority>
         <exclude name="GuardLogStatement"/>
+        <exclude name="UseVarargs"/>
     </rule>
 </ruleset>

@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
-import com.dff.cordova.plugin.camera.Res.R;
+import com.dff.cordova.plugin.camera.res.R;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
 import com.dff.cordova.plugin.camera.helpers.RotationHelper;
@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import static com.dff.cordova.plugin.camera.actions.TakePhoto.JSON_ARG_WITH_PREVIEW;
 
 /**
  * Class to create a preview for the camera (including focus mechanism).
@@ -100,7 +102,7 @@ public class CameraActivity extends Activity {
         mSurfaceView.setEventBus(mEventBus);
 
         mCameraPreview.setContext(this);
-        mCameraPreview.setWithPreview(getIntent().getBooleanExtra(R.WITH_PREVIEW_KEY, false));
+        mCameraPreview.setWithPreview(getIntent().getBooleanExtra(JSON_ARG_WITH_PREVIEW, false));
         mCameraPreview.setCaptureImage(mCaptureImage);
         mCameraPreview.setFlashButton(mFlashButton);
         mCameraPreview.setFlipCamera(mFlipCamera);

@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":9,"i2":10,"i3":10,"i4":10,"i5":10};
+var methods = {"i0":9,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -74,13 +74,13 @@ var activeTableTab = "activeTableTab";
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
 </div>
@@ -120,23 +120,6 @@ extends java.lang.Object</pre>
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
-<!-- ======== CONSTRUCTOR SUMMARY ======== -->
-<ul class="blockList">
-<li class="blockList"><a name="constructor.summary">
-<!--   -->
-</a>
-<h3>Constructor Summary</h3>
-<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing constructors, and an explanation">
-<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colOne" scope="col">Constructor and Description</th>
-</tr>
-<tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#DaggerManager--">DaggerManager</a></span>()</code>&nbsp;</td>
-</tr>
-</table>
-</li>
-</ul>
 <!-- ========== METHOD SUMMARY =========== -->
 <ul class="blockList">
 <li class="blockList"><a name="method.summary">
@@ -150,26 +133,31 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html" title="class in com.dff.cordova.plugin.camera.dagger">DaggerManager</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#and-CordovaInterface-">and</a></span>(CordovaInterface&nbsp;cordovaInterface)</code>&nbsp;</td>
-</tr>
-<tr id="i1" class="rowColor">
 <td class="colFirst"><code>static <a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html" title="class in com.dff.cordova.plugin.camera.dagger">DaggerManager</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#getInstance--">getInstance</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html" title="class in com.dff.cordova.plugin.camera.dagger">DaggerManager</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#in-android.app.Application-">in</a></span>(android.app.Application&nbsp;application)</code>&nbsp;</td>
 </tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html" title="class in com.dff.cordova.plugin.camera.dagger">DaggerManager</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#in-CordovaInterface-java.lang.String:A-">in</a></span>(CordovaInterface&nbsp;cordovaInterface,
+  java.lang.String[]&nbsp;pluginPermissions)</code>&nbsp;</td>
+</tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#inject-com.dff.cordova.plugin.camera.activities.CameraActivity-">inject</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html" title="class in com.dff.cordova.plugin.camera.activities">CameraActivity</a>&nbsp;cameraActivity)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#inject-com.dff.cordova.plugin.camera.services.ActionHandlerService-">inject</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/services/ActionHandlerService.html" title="class in com.dff.cordova.plugin.camera.services">ActionHandlerService</a>&nbsp;actionHandlerService)</code>&nbsp;</td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#inject-com.dff.cordova.plugin.camera.CameraPlugin-">inject</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/CameraPlugin.html" title="class in com.dff.cordova.plugin.camera">CameraPlugin</a>&nbsp;cameraPlugin)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#inject-com.dff.cordova.plugin.camera.activities.CameraActivity-">inject</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html" title="class in com.dff.cordova.plugin.camera.activities">CameraActivity</a>&nbsp;cameraActivity)</code>&nbsp;</td>
 </tr>
 <tr id="i5" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#inject-com.dff.cordova.plugin.camera.CameraPlugin-">inject</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/CameraPlugin.html" title="class in com.dff.cordova.plugin.camera">CameraPlugin</a>&nbsp;cameraPlugin)</code>&nbsp;</td>
+</tr>
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#inject-com.dff.cordova.plugin.camera.activities.PreviewActivity-">inject</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/activities/PreviewActivity.html" title="class in com.dff.cordova.plugin.camera.activities">PreviewActivity</a>&nbsp;previewActivity)</code>&nbsp;</td>
 </tr>
@@ -189,23 +177,6 @@ extends java.lang.Object</pre>
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
-<!-- ========= CONSTRUCTOR DETAIL ======== -->
-<ul class="blockList">
-<li class="blockList"><a name="constructor.detail">
-<!--   -->
-</a>
-<h3>Constructor Detail</h3>
-<a name="DaggerManager--">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>DaggerManager</h4>
-<pre>public&nbsp;DaggerManager()</pre>
-</li>
-</ul>
-</li>
-</ul>
 <!-- ============ METHOD DETAIL ========== -->
 <ul class="blockList">
 <li class="blockList"><a name="method.detail">
@@ -230,13 +201,14 @@ extends java.lang.Object</pre>
 <pre>public&nbsp;<a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html" title="class in com.dff.cordova.plugin.camera.dagger">DaggerManager</a>&nbsp;in(android.app.Application&nbsp;application)</pre>
 </li>
 </ul>
-<a name="and-CordovaInterface-">
+<a name="in-CordovaInterface-java.lang.String:A-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>and</h4>
-<pre>public&nbsp;<a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html" title="class in com.dff.cordova.plugin.camera.dagger">DaggerManager</a>&nbsp;and(CordovaInterface&nbsp;cordovaInterface)</pre>
+<h4>in</h4>
+<pre>public&nbsp;<a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html" title="class in com.dff.cordova.plugin.camera.dagger">DaggerManager</a>&nbsp;in(CordovaInterface&nbsp;cordovaInterface,
+                        java.lang.String[]&nbsp;pluginPermissions)</pre>
 </li>
 </ul>
 <a name="inject-com.dff.cordova.plugin.camera.CameraPlugin-">
@@ -246,6 +218,15 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>inject</h4>
 <pre>public&nbsp;void&nbsp;inject(<a href="../../../../../../com/dff/cordova/plugin/camera/CameraPlugin.html" title="class in com.dff.cordova.plugin.camera">CameraPlugin</a>&nbsp;cameraPlugin)</pre>
+</li>
+</ul>
+<a name="inject-com.dff.cordova.plugin.camera.services.ActionHandlerService-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>inject</h4>
+<pre>public&nbsp;void&nbsp;inject(<a href="../../../../../../com/dff/cordova/plugin/camera/services/ActionHandlerService.html" title="class in com.dff.cordova.plugin.camera.services">ActionHandlerService</a>&nbsp;actionHandlerService)</pre>
 </li>
 </ul>
 <a name="inject-com.dff.cordova.plugin.camera.activities.CameraActivity-">
@@ -320,13 +301,13 @@ extends java.lang.Object</pre>
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
 </div>

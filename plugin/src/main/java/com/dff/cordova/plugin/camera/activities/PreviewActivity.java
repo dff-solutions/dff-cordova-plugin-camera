@@ -8,7 +8,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.dff.cordova.plugin.camera.Res.R;
+import com.dff.cordova.plugin.camera.res.R;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 
 import javax.inject.Inject;
