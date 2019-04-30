@@ -20,7 +20,7 @@ CordovaExec.prototype.createActions = function (actions) {
     if (Array.isArray(actions)) {
         actions
             .forEach(function (action) {
-                CordovaExec.prototype[action] = self.createActionFunction(action);
+                self[action] = self.createActionFunction(action);
             });
     }
 };
