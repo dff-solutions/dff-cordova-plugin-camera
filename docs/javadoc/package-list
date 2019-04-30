@@ -1,0 +1,11 @@
+com.dff.cordova.plugin.camera
+com.dff.cordova.plugin.camera.Res
+com.dff.cordova.plugin.camera.activities
+com.dff.cordova.plugin.camera.configurations
+com.dff.cordova.plugin.camera.dagger
+com.dff.cordova.plugin.camera.dagger.annotations
+com.dff.cordova.plugin.camera.dagger.components
+com.dff.cordova.plugin.camera.dagger.modules
+com.dff.cordova.plugin.camera.events
+com.dff.cordova.plugin.camera.helpers
+com.dff.cordova.plugin.camera.views
