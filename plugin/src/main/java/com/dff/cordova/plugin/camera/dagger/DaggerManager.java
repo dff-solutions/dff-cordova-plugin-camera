@@ -3,10 +3,13 @@ package com.dff.cordova.plugin.camera.dagger;
 import android.app.Application;
 import com.dff.cordova.plugin.camera.CameraPlugin;
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
+import com.dff.cordova.plugin.camera.activities.PreviewActivity;
 import com.dff.cordova.plugin.camera.dagger.components.CameraActivityComponent;
 import com.dff.cordova.plugin.camera.dagger.components.CameraPluginComponent;
 import com.dff.cordova.plugin.camera.dagger.components.DaggerCameraActivityComponent;
 import com.dff.cordova.plugin.camera.dagger.components.DaggerCameraPluginComponent;
+import com.dff.cordova.plugin.camera.dagger.components.DaggerPreviewActivityComponent;
+import com.dff.cordova.plugin.camera.dagger.components.PreviewActivityComponent;
 import com.dff.cordova.plugin.camera.dagger.modules.AppModule;
 import com.dff.cordova.plugin.camera.dagger.modules.CordovaModule;
 import org.apache.cordova.CordovaInterface;
@@ -23,6 +26,7 @@ public class DaggerManager {
 
     private CameraPluginComponent mCameraPluginComponent;
     private CameraActivityComponent mCameraActivityComponent;
+    private PreviewActivityComponent previewActivityComponent;
 
     private AppModule mAppModule;
     private CordovaModule mCordovaModule;
@@ -70,5 +74,16 @@ public class DaggerManager {
                 .build();
         }
         mCameraActivityComponent.inject(cameraActivity);
+    }
+
+    public void inject(PreviewActivity previewActivity) {
+        if (previewActivityComponent == null) {
+            previewActivityComponent = DaggerPreviewActivityComponent
+                .builder()
+                .appModule(mAppModule)
+                .build();
+        }
+
+        previewActivityComponent.inject(previewActivity);
     }
 }

@@ -11,20 +11,21 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.Toast;
+
 import com.dff.cordova.plugin.camera.Res.R;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
 import com.dff.cordova.plugin.camera.helpers.RotationHelper;
 import com.dff.cordova.plugin.camera.views.CameraPreview;
 import com.dff.cordova.plugin.camera.views.DrawingView;
-import com.dff.cordova.plugin.camera.views.PicIndicatorView;
 import com.dff.cordova.plugin.camera.views.PreviewSurfaceView;
+
 import org.greenrobot.eventbus.EventBus;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Class to create a preview for the camera (including focus mechanism).
@@ -34,7 +35,17 @@ import java.util.List;
  * @since 05.01.2017
  */
 public class CameraActivity extends Activity {
-    private static final String TAG = CameraActivity.class.getSimpleName();
+    private static final String TAG = "CameraActivity";
+
+    public static final String CAMERA_ACTIVITY_LAYOUT = "activity_camera";
+    public static final String CAMERA_SURFACE_ID = "camera_preview_surface_view";
+    public static final String CAMERA_DRAWING_SURFACE_ID = "camera_drawing_surface_view";
+    public static final String BUTTON_TAKE_IMAGE = "take_image";
+    public static final String BUTTON_CHANGE_FLASH_MODE = "button_flash";
+    public static final String BUTTON_FLIP_CAMERA = "button_flip_camera";
+
+    @Inject
+    R r;
 
     @Inject
     CameraInfoHelper mCameraInfoHelper;
@@ -58,7 +69,7 @@ public class CameraActivity extends Activity {
     private OrientationEventListener mOrientationEventListener;
 
     /**
-     * Iinitialize used components on create the activity.
+     * Initialize used components on create the activity.
      *
      * @param savedInstanceState - saved state
      */
@@ -71,26 +82,14 @@ public class CameraActivity extends Activity {
             .getInstance()
             .inject(this);
 
-        setContentView(
-            R.RESOURCES.getIdentifier(R.CAMERA_ACTIVITY_LAYOUT, R.LAYOUT, R.PACKAGE_NAME)
-        );
+        setContentView(r.getLayoutIdentifier(CAMERA_ACTIVITY_LAYOUT));
 
         //on creating the surface view
-        mSurfaceView = findViewById(
-            R.RESOURCES.getIdentifier(R.CAMERA_SURFACE_ID, R.ID, R.PACKAGE_NAME)
-        );
-        mCaptureImage = findViewById(
-            R.RESOURCES.getIdentifier(R.BUTTON_TAKE_IMAGE, R.ID, R.PACKAGE_NAME)
-        );
-        mFlashButton = findViewById(
-            R.RESOURCES.getIdentifier(R.BUTTON_CHANGE_FLASH_MODE, R.ID, R.PACKAGE_NAME)
-        );
-        mFlipCamera = findViewById(
-            R.RESOURCES.getIdentifier(R.BUTTON_FLIP_CAMERA, R.ID, R.PACKAGE_NAME)
-        );
-        mDrawingView = findViewById(
-            R.RESOURCES.getIdentifier(R.CAMERA_DRAWING_SURFACE_ID, R.ID, R.PACKAGE_NAME)
-        );
+        mSurfaceView = findViewById(r.getIdIdentifier(CAMERA_SURFACE_ID));
+        mCaptureImage = findViewById(r.getIdIdentifier(BUTTON_TAKE_IMAGE));
+        mFlashButton = findViewById(r.getIdIdentifier(BUTTON_CHANGE_FLASH_MODE));
+        mFlipCamera = findViewById(r.getIdIdentifier(BUTTON_FLIP_CAMERA));
+        mDrawingView = findViewById(r.getIdIdentifier(CAMERA_DRAWING_SURFACE_ID));
 
         mSurfaceHolder = mSurfaceView.getHolder();
         mSurfaceHolder.addCallback(mCameraPreview);
@@ -99,16 +98,6 @@ public class CameraActivity extends Activity {
         mSurfaceView.setListener(mCameraPreview);
         mSurfaceView.setDrawingView(mDrawingView);
         mSurfaceView.setEventBus(mEventBus);
-
-        boolean withPicindicator = getIntent()
-            .getBooleanExtra(R.WITH_PICINDICATOR, false);
-
-        if (withPicindicator) {
-            PicIndicatorView picIndicatorView = findViewById(
-                R.RESOURCES.getIdentifier(R.CAMERA_DRAWING_PICINDICATOR_ID, R.ID, R.PACKAGE_NAME));
-            picIndicatorView.setVisibility(View.VISIBLE);
-            Toast.makeText(this, R.PICINDICATOR_MSG, Toast.LENGTH_LONG).show();
-        }
 
         mCameraPreview.setContext(this);
         mCameraPreview.setWithPreview(getIntent().getBooleanExtra(R.WITH_PREVIEW_KEY, false));

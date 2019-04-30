@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.dff.cordova.plugin.camera.Res.R;
+import com.dff.cordova.plugin.camera.dagger.DaggerManager;
+
+import javax.inject.Inject;
 
 /**
  * A preview of the taken image before it is saved.
@@ -20,7 +23,24 @@ import com.dff.cordova.plugin.camera.Res.R;
  * @since 22.2.2017
  */
 public class PreviewActivity extends Activity {
-    private static final String TAG = PreviewActivity.class.getSimpleName();
+    private static final String TAG = "PreviewActivity";
+
+    private static final String PREVIEW_ACTIVITY_LAYOUT = "activity_preview";
+    private static final String IMAGE_VIEW_PREVIEW_ID = "image_view";
+    private static final String BUTTON_CANCEL = "button_cancel";
+    private static final String BUTTON_REPEAT = "button_repeat";
+    private static final String BUTTON_OK = "button_ok";
+
+    @Inject
+    R r;
+
+    public PreviewActivity() {
+        super();
+
+        DaggerManager
+            .getInstance()
+            .inject(this);
+    }
 
     /**
      * On creating the activity, initialize all components needed to preview the taken image.
@@ -34,12 +54,8 @@ public class PreviewActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate() - PreviewActivity");
-        setContentView(
-            R.RESOURCES.getIdentifier(R.PREVIEW_ACTIVITY_LAYOUT, R.LAYOUT, R.PACKAGE_NAME)
-        );
-        ImageView imageView = findViewById(
-            R.RESOURCES.getIdentifier(R.IMAGE_VIEW_PREVIEW_ID, R.ID, R.PACKAGE_NAME)
-        );
+        setContentView(r.getLayoutIdentifier(PREVIEW_ACTIVITY_LAYOUT));
+        ImageView imageView = findViewById(r.getIdIdentifier(IMAGE_VIEW_PREVIEW_ID));
 
         if (R.sBitmap != null) {
             imageView.setImageBitmap(R.sBitmap);
@@ -49,15 +65,9 @@ public class PreviewActivity extends Activity {
                 .show();
         }
 
-        ImageButton cancelButton = findViewById(
-            R.RESOURCES.getIdentifier(R.BUTTON_CANCEL, R.ID, R.PACKAGE_NAME)
-        );
-        ImageButton repeatButton = findViewById(
-            R.RESOURCES.getIdentifier(R.BUTTON_REPEAT, R.ID, R.PACKAGE_NAME)
-        );
-        ImageButton okButton = findViewById(
-            R.RESOURCES.getIdentifier(R.BUTTON_OK, R.ID, R.PACKAGE_NAME)
-        );
+        ImageButton cancelButton = findViewById(r.getIdIdentifier(BUTTON_CANCEL));
+        ImageButton repeatButton = findViewById(r.getIdIdentifier(BUTTON_REPEAT));
+        ImageButton okButton = findViewById(r.getIdIdentifier(BUTTON_OK));
 
         cancelButton.setOnClickListener(view -> {
             setResult(RESULT_CANCELED, new Intent());

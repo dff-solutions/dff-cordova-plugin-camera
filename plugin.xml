@@ -38,6 +38,7 @@
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/ApplicationContext.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/components/CameraActivityComponent.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/components"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/components/CameraPluginComponent.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/components"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/components/PreviewActivityComponent.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/components"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/modules/AppModule.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/modules"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/modules/CordovaModule.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/modules"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/events/OnAutoFocus.java" target-dir="src/com/dff/cordova/plugin/camera/events"/>

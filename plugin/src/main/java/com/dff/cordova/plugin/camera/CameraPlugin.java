@@ -27,7 +27,6 @@ import javax.inject.Inject;
  * @since 05.01.2017
  */
 public class CameraPlugin extends CordovaPlugin {
-
     private static final String TAG = "CameraPlugin";
     // private static final String CAMERA_PERMISSION = Manifest.permission.CAMERA;
 
@@ -43,6 +42,7 @@ public class CameraPlugin extends CordovaPlugin {
      */
     @Override
     public void pluginInitialize() {
+        super.pluginInitialize();
 
         DaggerManager
             .getInstance()
@@ -50,16 +50,8 @@ public class CameraPlugin extends CordovaPlugin {
             .and(cordova)
             .inject(this);
 
-        requestCameraPermission();
-        super.pluginInitialize();
         mContext = cordova.getActivity().getApplicationContext();
         cordova.setActivityResultCallback(this);
-        R.PACKAGE_NAME = mContext.getPackageName();
-        R.RESOURCES = mContext.getResources();
-    }
-
-    private void requestCameraPermission() {
-        // CommonPlugin.addPermission(CAMERA_PERMISSION);
     }
 
     @Nullable

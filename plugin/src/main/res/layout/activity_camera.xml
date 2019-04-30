@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/activity_camera"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_camera"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <com.dff.cordova.plugin.camera.views.PreviewSurfaceView
         android:id="@+id/camera_preview_surface_view"
@@ -15,22 +15,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.dff.cordova.plugin.camera.views.PicIndicatorView
-        android:id="@+id/camera_drawing_picindicatorview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible" />
-
     <ImageButton
         android:id="@+id/take_image"
         android:layout_width="85dp"
         android:layout_height="85dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:background="@null"
         android:gravity="center"
-        android:src="@drawable/ic_panorama_fish_eye_white_48px" />
+        android:src="@drawable/ic_panorama_fish_eye_white_48px"
+        tools:ignore="ContentDescription" />
 
     <ImageButton
         android:id="@+id/button_flash"
@@ -38,26 +32,25 @@
         android:layout_height="85dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:adjustViewBounds="false"
         android:background="@null"
         android:cropToPadding="false"
         android:gravity="center"
         android:rotation="270"
-        android:src="@drawable/ic_flash_auto_white_24px" />
+        android:src="@drawable/ic_flash_auto_white_24px"
+        tools:ignore="ContentDescription" />
 
     <ImageButton
         android:id="@+id/button_flip_camera"
         android:layout_width="85dp"
         android:layout_height="85dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="false"
         android:background="@null"
         android:gravity="center"
         android:rotation="270"
-        android:src="@drawable/ic_switch_cam_back" />
-
+        android:src="@drawable/ic_switch_cam_back"
+        tools:ignore="ContentDescription" />
 
 </RelativeLayout>

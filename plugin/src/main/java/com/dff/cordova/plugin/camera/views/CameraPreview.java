@@ -39,8 +39,16 @@ import static android.view.OrientationEventListener.ORIENTATION_UNKNOWN;
  */
 public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback {
     private static final String TAG = "CameraPreview";
+
+    private static final String IC_CAMERA_FRONT = "ic_switch_cam_front";
+    private static final String IC_CAMERA_BACK = "ic_switch_cam_back";
+    private static final String IC_FLASH_AUTO = "ic_flash_auto_white_24px";
+    private static final String IC_FLASH_OFF = "ic_flash_off_white_24px";
+    private static final String IC_FLASH_ON = "ic_flash_on_white_24px";
+
     private static int sFlashMode;
 
+    private R r;
     private Context mContext;
     private EventBus mEventBus;
     private Camera mCamera = null;
@@ -53,7 +61,7 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
     private Boolean mWithPreview;
 
     private int mRotation;
-    private int mCameraID;
+    private int mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
 
     /**
      * Custom constructor.
@@ -61,10 +69,11 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
     @Inject
     public CameraPreview(
         EventBus eventBus,
+        R r,
         CameraInfoHelper cameraInfoHelper
     ) {
-        mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
         this.mEventBus = eventBus;
+        this.r = r;
         this.mCameraInfoHelper = cameraInfoHelper;
 
         sFlashMode = 0;
@@ -246,23 +255,17 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
     private void changeFlashMode() {
         switch (sFlashMode) {
             case 0:
-                mFlashButton.setImageResource(
-                    R.RESOURCES.getIdentifier(R.IC_FLASH_AUTO, R.DRAWABLE, R.PACKAGE_NAME)
-                );
+                mFlashButton.setImageResource(r.getDrawableIdentifier(IC_FLASH_AUTO));
                 sFlashMode = 1;
                 refreshParams(Camera.Parameters.FLASH_MODE_AUTO);
                 break;
             case 1:
-                mFlashButton.setImageResource(
-                    R.RESOURCES.getIdentifier(R.IC_FLASH_OFF, R.DRAWABLE, R.PACKAGE_NAME)
-                );
+                mFlashButton.setImageResource(r.getDrawableIdentifier(IC_FLASH_OFF));
                 sFlashMode = 2;
                 refreshParams(Camera.Parameters.FLASH_MODE_OFF);
                 break;
             case 2:
-                mFlashButton.setImageResource(
-                    R.RESOURCES.getIdentifier(R.IC_FLASH_ON, R.DRAWABLE, R.PACKAGE_NAME)
-                );
+                mFlashButton.setImageResource(r.getDrawableIdentifier(IC_FLASH_ON));
                 sFlashMode = 0;
                 refreshParams(Camera.Parameters.FLASH_MODE_ON);
                 break;
@@ -428,53 +431,36 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
 
     public void setFlashButton(ImageButton flashButton) {
         this.mFlashButton = flashButton;
-        this.mFlashButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                changeFlashMode();
-            }
-        });
+        this.mFlashButton.setOnClickListener(view -> changeFlashMode());
     }
 
     public void setCaptureImage(ImageButton captureImage) {
         this.mCaptureImage = captureImage;
-        this.mCaptureImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                takeImage();
-            }
-        });
+        this.mCaptureImage.setOnClickListener(view -> takeImage());
     }
 
     public void setFlipCamera(final ImageButton flipCamera) {
         this.mFlipCamera = flipCamera;
-        this.mFlipCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                releaseCamera();
-                //mCamera.release();
-                if (mCameraID == Camera.CameraInfo.CAMERA_FACING_BACK) {
-                    mCameraID = Camera.CameraInfo.CAMERA_FACING_FRONT;
-                    flipCamera.setImageResource(
-                        R.RESOURCES.getIdentifier(R.IC_CAMERA_FRONT, R.DRAWABLE, R.PACKAGE_NAME)
-                    );
-                    mFlashButton.clearAnimation();
-                    mFlashButton.setVisibility(View.GONE);
-                    mFlashButton.setEnabled(false);
-                } else {
-                    mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
-                    flipCamera.setImageResource(
-                        R.RESOURCES.getIdentifier(R.IC_CAMERA_BACK, R.DRAWABLE, R.PACKAGE_NAME)
-                    );
-                    mFlashButton.setEnabled(true);
-                    mFlashButton.setVisibility(View.VISIBLE);
-                }
-                if (!openCamera(mCameraID)) {
-                    //alertCameraDialog ();
-                    Log.d(TAG, "On surface created : camera could not be opened");
-                } else {
-                    Log.d(TAG, " camera opened");
-                }
+        this.mFlipCamera.setOnClickListener(view -> {
+            releaseCamera();
+
+            if (mCameraID == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                mCameraID = Camera.CameraInfo.CAMERA_FACING_FRONT;
+                flipCamera.setImageResource(r.getDrawableIdentifier(IC_CAMERA_FRONT));
+                mFlashButton.clearAnimation();
+                mFlashButton.setVisibility(View.GONE);
+                mFlashButton.setEnabled(false);
+            } else {
+                mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
+                flipCamera.setImageResource(r.getDrawableIdentifier(IC_CAMERA_BACK));
+                mFlashButton.setEnabled(true);
+                mFlashButton.setVisibility(View.VISIBLE);
+            }
+            if (!openCamera(mCameraID)) {
+                //alertCameraDialog ();
+                Log.d(TAG, "On surface created : camera could not be opened");
+            } else {
+                Log.d(TAG, " camera opened");
             }
         });
     }
