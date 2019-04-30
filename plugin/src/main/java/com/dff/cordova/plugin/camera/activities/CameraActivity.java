@@ -5,13 +5,14 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.OrientationEventListener;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
+import com.dff.cordova.plugin.camera.exceptions.UnexpectedExceptionHandler;
+import com.dff.cordova.plugin.camera.log.Log;
 import com.dff.cordova.plugin.camera.res.R;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
@@ -47,6 +48,9 @@ public class CameraActivity extends Activity {
     public static final String BUTTON_FLIP_CAMERA = "button_flip_camera";
 
     @Inject
+    Log log;
+
+    @Inject
     R r;
 
     @Inject
@@ -60,6 +64,9 @@ public class CameraActivity extends Activity {
 
     @Inject
     EventBus mEventBus;
+
+    @Inject
+    UnexpectedExceptionHandler unexpectedExceptionHandler;
 
     private PreviewSurfaceView mSurfaceView;
     private DrawingView mDrawingView;
@@ -78,11 +85,13 @@ public class CameraActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate()");
+        log.d(TAG, "onCreate()");
 
         DaggerManager
             .getInstance()
             .inject(this);
+
+        Thread.currentThread().setUncaughtExceptionHandler(unexpectedExceptionHandler);
 
         setContentView(r.getLayoutIdentifier(CAMERA_ACTIVITY_LAYOUT));
 
@@ -95,7 +104,6 @@ public class CameraActivity extends Activity {
 
         mSurfaceHolder = mSurfaceView.getHolder();
         mSurfaceHolder.addCallback(mCameraPreview);
-        mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         mSurfaceView.setListener(mCameraPreview);
         mSurfaceView.setDrawingView(mDrawingView);
@@ -117,13 +125,13 @@ public class CameraActivity extends Activity {
         ) {
             @Override
             public void onOrientationChanged(int orientation) {
-                Log.d(TAG, "orientation changed: " + orientation);
+                log.d(TAG, "orientation changed: " + orientation);
 
                 switch (orientation) {
                     case 0:
                         if (mRotation != 0) {
-                            Log.d(TAG, "Orientation = 0");
-                            Log.d(TAG, "mRotation = " + mRotation);
+                            log.d(TAG, "Orientation = 0");
+                            log.d(TAG, "mRotation = " + mRotation);
                             switch (mRotation) {
                                 case 90:
                                     mRotationHelper.rotate(-90, 0, imageButtonList);
@@ -141,8 +149,8 @@ public class CameraActivity extends Activity {
                         break;
                     case 90:
                         if (mRotation != 90) {
-                            Log.d(TAG, "Orientation = 90");
-                            Log.d(TAG, "mRotation = " + mRotation);
+                            log.d(TAG, "Orientation = 90");
+                            log.d(TAG, "mRotation = " + mRotation);
                             switch (mRotation) {
                                 case 0:
                                     // TODO check call parameters
@@ -161,8 +169,8 @@ public class CameraActivity extends Activity {
                         break;
                     case 180:
                         if (mRotation != 180) {
-                            Log.d(TAG, "Orientation 180");
-                            Log.d(TAG, "mRotation = " + mRotation);
+                            log.d(TAG, "Orientation 180");
+                            log.d(TAG, "mRotation = " + mRotation);
                             switch (mRotation) {
                                 case 90:
                                     mRotationHelper.rotate(270, 180, imageButtonList);
@@ -180,8 +188,8 @@ public class CameraActivity extends Activity {
                         break;
                     case 270:
                         if (mRotation != 270) {
-                            Log.d(TAG, "Orientation 270");
-                            Log.d(TAG, "mRotation = " + mRotation);
+                            log.d(TAG, "Orientation 270");
+                            log.d(TAG, "mRotation = " + mRotation);
                             switch (mRotation) {
                                 case 0:
                                     mRotationHelper.rotate(0, 90, imageButtonList);
@@ -216,7 +224,7 @@ public class CameraActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause()");
+        log.d(TAG, "onPause()");
         mCameraPreview.releaseCamera();
         mOrientationEventListener.disable();
     }
@@ -232,22 +240,22 @@ public class CameraActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "requestCode = " + requestCode);
-        Log.d(TAG, "resultCode = " + resultCode);
+        log.d(TAG, "requestCode = " + requestCode);
+        log.d(TAG, "resultCode = " + resultCode);
 
         switch (resultCode) {
             case RESULT_OK:
-                Log.d(TAG, "resultCode2 = " + resultCode);
-                if (R.sBase64Image != null && !R.sBase64Image.isEmpty()) {
-                    Log.d(TAG, R.sBase64Image);
-                    R.sCallBackContext.success(R.sBase64Image);
+                log.d(TAG, "resultCode2 = " + resultCode);
+                if (r.sBase64Image != null && !r.sBase64Image.isEmpty()) {
+                    log.d(TAG, r.sBase64Image);
+                    r.sCallBackContext.success(r.sBase64Image);
                 } else {
-                    R.sCallBackContext.error("Error: the base64 image is empty or null");
+                    r.sCallBackContext.error("Error: the base64 image is empty or null");
                 }
                 finish();
                 break;
             case RESULT_CANCELED:
-                Log.d(TAG, "resultCode2 = " + resultCode);
+                log.d(TAG, "resultCode2 = " + resultCode);
                 setResult(RESULT_OK);
                 finish();
                 break;

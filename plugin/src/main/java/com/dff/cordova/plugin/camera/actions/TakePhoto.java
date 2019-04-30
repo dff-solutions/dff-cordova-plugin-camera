@@ -20,10 +20,12 @@ public class TakePhoto extends PluginAction {
     };
 
     private Context context;
+    private R r;
 
     @Inject
-    public TakePhoto(@ApplicationContext Context context) {
+    public TakePhoto(@ApplicationContext Context context, R r) {
         this.context = context;
+        this.r = r;
         needsArgs = true;
         requiresPermissions = true;
     }
@@ -39,7 +41,7 @@ public class TakePhoto extends PluginAction {
 
         context.startActivity(intent);
         // TODO keep callback and return Photo
-        R.sCallBackContext = callbackContext;
+        r.sCallBackContext = callbackContext;
     }
 
     @Override

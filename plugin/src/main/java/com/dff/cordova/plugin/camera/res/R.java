@@ -48,7 +48,7 @@ public class R {
     public static final int IMAGE_PREVIEW_REQUEST = 1;
     public static final int RESULT_REPEAT = 2;
 
-    public static Bitmap sBitmap;
-    public static String sBase64Image;
-    public static CallbackContext sCallBackContext;
+    public Bitmap sBitmap;
+    public String sBase64Image;
+    public CallbackContext sCallBackContext;
 }

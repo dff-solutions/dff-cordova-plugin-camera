@@ -3,11 +3,12 @@ package com.dff.cordova.plugin.camera.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.dff.cordova.plugin.camera.exceptions.UnexpectedExceptionHandler;
+import com.dff.cordova.plugin.camera.log.Log;
 import com.dff.cordova.plugin.camera.res.R;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 
@@ -32,15 +33,13 @@ public class PreviewActivity extends Activity {
     private static final String BUTTON_OK = "button_ok";
 
     @Inject
+    Log log;
+
+    @Inject
     R r;
 
-    public PreviewActivity() {
-        super();
-
-        DaggerManager
-            .getInstance()
-            .inject(this);
-    }
+    @Inject
+    UnexpectedExceptionHandler unexpectedExceptionHandler;
 
     /**
      * On creating the activity, initialize all components needed to preview the taken image.
@@ -53,12 +52,19 @@ public class PreviewActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate() - PreviewActivity");
+
+        DaggerManager
+            .getInstance()
+            .inject(this);
+
+        Thread.currentThread().setUncaughtExceptionHandler(unexpectedExceptionHandler);
+
+        log.d(TAG, "onCreate() - PreviewActivity");
         setContentView(r.getLayoutIdentifier(PREVIEW_ACTIVITY_LAYOUT));
         ImageView imageView = findViewById(r.getIdIdentifier(IMAGE_VIEW_PREVIEW_ID));
 
-        if (R.sBitmap != null) {
-            imageView.setImageBitmap(R.sBitmap);
+        if (r.sBitmap != null) {
+            imageView.setImageBitmap(r.sBitmap);
         } else {
             Toast
                 .makeText(this,"Error while previewing the image 5125", Toast.LENGTH_LONG)

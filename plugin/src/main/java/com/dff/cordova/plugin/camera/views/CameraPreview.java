@@ -8,12 +8,12 @@ import android.graphics.Rect;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
 import android.util.Base64;
-import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.dff.cordova.plugin.camera.log.Log;
 import com.dff.cordova.plugin.camera.res.R;
 import com.dff.cordova.plugin.camera.activities.PreviewActivity;
 import com.dff.cordova.plugin.camera.events.OnAutoFocus;
@@ -48,6 +48,7 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
 
     private static int sFlashMode;
 
+    private Log log;
     private R r;
     private Context mContext;
     private EventBus mEventBus;
@@ -68,10 +69,12 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
      */
     @Inject
     public CameraPreview(
+        Log log,
         EventBus eventBus,
         R r,
         CameraInfoHelper cameraInfoHelper
     ) {
+        this.log = log;
         this.mEventBus = eventBus;
         this.r = r;
         this.mCameraInfoHelper = cameraInfoHelper;
@@ -102,7 +105,7 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
         try {
             mCamera = Camera.open(mCameraID);
         } catch (Exception e) {
-            Log.e(TAG, "Error while opening the camera", e);
+            log.e(TAG, "Error while opening the camera", e);
             return false;
         }
         if (mCamera != null) {
@@ -118,7 +121,7 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
                 mCamera.startPreview();
                 result = true;
             } catch (IOException e) {
-                Log.e(TAG, "Error: ", e);
+                log.e(TAG, "Error: ", e);
                 result = false;
                 releaseCamera();
             }
@@ -145,7 +148,7 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
             mCamera.startPreview();
             mCamera.setParameters(mParams);
         } catch (Exception e) {
-            Log.e(TAG, "Error: ", e);
+            log.e(TAG, "Error: ", e);
         }
     }
 
@@ -159,9 +162,9 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
         mSurfaceHolder = surfaceHolder;
 
         if (!openCamera(mCameraID)) {
-            Log.d(TAG, "On surface created : camera could not be opened");
+            log.d(TAG, "On surface created : camera could not be opened");
         } else {
-            Log.i(TAG, " camera opened");
+            log.i(TAG, " camera opened");
         }
     }
 
@@ -182,7 +185,7 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
             onOrientationChanged(mRotation);
             mCamera.startPreview();
         } catch (Exception e) {
-            Log.e(TAG, "Error: ", e);
+            log.e(TAG, "Error: ", e);
         }
     }
 
@@ -211,7 +214,7 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
      * @param focusRect - new area for auto focus
      */
     public void doTouchFocus(final Rect focusRect) {
-        Log.i(TAG, "TouchFocus");
+        log.i(TAG, "TouchFocus");
         try {
             final List<Camera.Area> focusList = new ArrayList<Camera.Area>();
             Camera.Area focusArea = new Camera.Area(focusRect, 1000);
@@ -224,7 +227,7 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
 
             mCamera.autoFocus(this);
         } catch (Exception e) {
-            Log.i(TAG, "Unable to autofocus", e);
+            log.i(TAG, "Unable to autofocus", e);
         }
 
     }
@@ -236,12 +239,12 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
      */
     private void refreshParams(String mode) {
         if (mCamera != null) {
-            Log.d(TAG, "supported flash mode");
-            Log.d(TAG, mCamera.getParameters().getSupportedFlashModes().toString());
+            log.d(TAG, "supported flash mode");
+            log.d(TAG, mCamera.getParameters().getSupportedFlashModes().toString());
             Camera.Parameters parameters = mCamera.getParameters();
             parameters.setFlashMode(mode);
             mCamera.setParameters(parameters);
-            Log.d(TAG, "flash mode = " + mCamera.getParameters().getFlashMode());
+            log.d(TAG, "flash mode = " + mCamera.getParameters().getFlashMode());
         }
     }
 
@@ -287,7 +290,7 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
                 mCamera = null;
             }
         } catch (Exception e) {
-            Log.e(TAG, "Error: ", e);
+            log.e(TAG, "Error: ", e);
             mCamera = null;
         }
     }
@@ -317,30 +320,30 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
                     public void onPictureTaken(byte[] data, Camera camera) {
                         try {
                             // convert byte array into bitmap
-                            R.sBase64Image = Base64.encodeToString(data, Base64.DEFAULT);
+                            r.sBase64Image = Base64.encodeToString(data, Base64.DEFAULT);
                             if (mWithPreview) {
-                                R.sBitmap = BitmapFactory
+                                r.sBitmap = BitmapFactory
                                     .decodeByteArray(data, 0, data.length);
                                 Intent intent = new Intent(mContext, PreviewActivity.class);
                                 ((Activity) mContext)
                                     .startActivityForResult(intent, R.IMAGE_PREVIEW_REQUEST);
                             } else {
-                                if (R.sBase64Image != null && !R.sBase64Image.isEmpty()) {
-                                    Log.d(TAG, R.sBase64Image);
-                                    R.sCallBackContext.success(R.sBase64Image);
+                                if (r.sBase64Image != null && !r.sBase64Image.isEmpty()) {
+                                    log.d(TAG, r.sBase64Image);
+                                    r.sCallBackContext.success(r.sBase64Image);
                                 } else {
-                                    R.sCallBackContext
+                                    r.sCallBackContext
                                         .error("Error: the base64 image is empty or null");
                                 }
                                 ((Activity) mContext).finish();
                             }
                         } catch (Exception e) {
-                            Log.e(TAG, "Error: ", e);
+                            log.e(TAG, "Error: ", e);
                         }
                     }
                 });
             } catch (RuntimeException e) {
-                Log.e(TAG, "Error while taking picture.. ", e);
+                log.e(TAG, "Error while taking picture.. ", e);
             }
         }
     }
@@ -409,7 +412,7 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
             mParams.setRotation(rotation);
             mCamera.setParameters(mParams);
         } catch (RuntimeException e) {
-            Log.e(TAG, "Error while setting the rotation params for the camera: ", e);
+            log.e(TAG, "Error while setting the rotation params for the camera: ", e);
         }
     }
 
@@ -458,9 +461,9 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
             }
             if (!openCamera(mCameraID)) {
                 //alertCameraDialog ();
-                Log.d(TAG, "On surface created : camera could not be opened");
+                log.d(TAG, "On surface created : camera could not be opened");
             } else {
-                Log.d(TAG, " camera opened");
+                log.d(TAG, " camera opened");
             }
         });
     }

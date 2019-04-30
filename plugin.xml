@@ -70,7 +70,6 @@
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/services/ActionHandlerServiceBinder.java" target-dir="src/com/dff/cordova/plugin/camera/services"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/views/CameraPreview.java" target-dir="src/com/dff/cordova/plugin/camera/views"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/views/DrawingView.java" target-dir="src/com/dff/cordova/plugin/camera/views"/>
-    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/views/PicIndicatorView.java" target-dir="src/com/dff/cordova/plugin/camera/views"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/views/PreviewSurfaceView.java" target-dir="src/com/dff/cordova/plugin/camera/views"/>
     <source-file src="plugin/src/main/res/drawable/dff_color.xml" target-dir="res/drawable"/>
     <source-file src="plugin/src/main/res/drawable/ic_arrow_forward_white_48px.xml" target-dir="res/drawable"/>
