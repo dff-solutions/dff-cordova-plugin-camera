@@ -18,6 +18,7 @@ import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
 
+import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.res.R;
 import com.dff.cordova.plugin.camera.helpers.PermissionHelper;
 import com.dff.cordova.plugin.camera.listeners.SurfaceListener;
@@ -49,15 +50,23 @@ public class Camera2Activity extends Activity {
     @Inject
     R r;
     
+    public CameraDevice cameraDevice;
     private TextureView textureView;
     private Size previweSize;
-    public CameraDevice cameraDevice;
     private CameraCaptureSession cameraCaptureSession;
-    CaptureRequest.Builder captureRequest;
+    private CaptureRequest.Builder captureRequest;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    
+        DaggerManager
+            .getInstance()
+            .inject(this);
+        
+        surfaceListener.camera2Activity = this;
+        cameraStateCallback.camera2Activity = this;
+        
         setContentView(r.getLayoutIdentifier(CAMERA_ACTIVITY_LAYOUT));
         
         textureView = findViewById(r.getIdIdentifier(TEXTURE_VIEW_ID));
@@ -99,16 +108,15 @@ public class Camera2Activity extends Activity {
             Surface surface = new Surface(texture);
             captureRequest.addTarget(surface);
     
-            log.e(TAG, "create CaptureSession");
+            log.d(TAG, "create CaptureSession");
             cameraDevice.createCaptureSession(Arrays.asList(surface),
                                               new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession captureSession) {
-                    //The camera is already closed
                     if (null == cameraDevice) {
                         return;
                     }
-                    // When the session is ready, we start displaying the preview.
+                    
                     cameraCaptureSession = captureSession;
                     updatePreview();
                 }

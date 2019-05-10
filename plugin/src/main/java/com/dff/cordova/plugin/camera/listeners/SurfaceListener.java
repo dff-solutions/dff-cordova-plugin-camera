@@ -9,13 +9,17 @@ import com.dff.cordova.plugin.camera.log.Log;
 import javax.inject.Inject;
 
 public class SurfaceListener implements TextureView.SurfaceTextureListener {
-    public final String TAG = "SurfaceListener";
+    private final String TAG = "SurfaceListener";
+    
+    public Camera2Activity camera2Activity;
+    private Log log;
     
     @Inject
-    Camera2Activity camera2Activity;
-    
-    @Inject
-    Log log;
+    public SurfaceListener(
+        Log log
+    ) {
+        this.log = log;
+    }
     
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
