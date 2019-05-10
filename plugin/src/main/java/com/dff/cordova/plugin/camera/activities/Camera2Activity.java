@@ -17,6 +17,7 @@ import android.support.annotation.NonNull;
 import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
+import android.widget.ImageButton;
 
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.res.R;
@@ -34,6 +35,9 @@ public class Camera2Activity extends Activity {
     
     public static final String CAMERA_ACTIVITY_LAYOUT = "activity_camera2";
     public static final String TEXTURE_VIEW_ID = "texture";
+    public static final String CAPTURE_BUTTON = "capture_button";
+    public static final String FLASH_BUTTON = "flash_button";
+    public static final String FLIP_BUTTON = "flip_button";
     
     @Inject
     SurfaceListener surfaceListener;
@@ -55,6 +59,9 @@ public class Camera2Activity extends Activity {
     private Size previweSize;
     private CameraCaptureSession cameraCaptureSession;
     private CaptureRequest.Builder captureRequest;
+    private ImageButton captureButton;
+    private ImageButton flashButton;
+    private ImageButton flipButton;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +75,10 @@ public class Camera2Activity extends Activity {
         cameraStateCallback.camera2Activity = this;
         
         setContentView(r.getLayoutIdentifier(CAMERA_ACTIVITY_LAYOUT));
+    
+        captureButton = findViewById(r.getIdIdentifier(CAPTURE_BUTTON));
+        flashButton = findViewById(r.getIdIdentifier(FLASH_BUTTON));
+        flipButton =  findViewById(r.getIdIdentifier(FLIP_BUTTON));
         
         textureView = findViewById(r.getIdIdentifier(TEXTURE_VIEW_ID));
         textureView.setSurfaceTextureListener(surfaceListener);
