@@ -30,11 +30,13 @@ public class CameraStateCallback extends CameraDevice.StateCallback {
     
     @Override
     public void onDisconnected(@NonNull CameraDevice camera) {
-    
+        log.d(TAG, "disconnecting cameraDevice");
+        camera2Activity.closeCamera();
     }
     
     @Override
     public void onError(@NonNull CameraDevice camera, int error) {
-    
+        log.e(TAG, "error on cameraDevice. closing camera");
+        camera2Activity.closeCamera();
     }
 }
