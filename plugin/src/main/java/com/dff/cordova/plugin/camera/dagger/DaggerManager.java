@@ -57,9 +57,10 @@ public class DaggerManager {
         return this;
     }
 
-    public DaggerManager in(CordovaInterface cordovaInterface, String[] pluginPermissions) {
+    public DaggerManager in(CordovaInterface cordovaInterface, String[] pluginPermissions,
+                            CameraPlugin cameraPlugin) {
         if (pluginModule == null) {
-            pluginModule = new PluginModule(cordovaInterface, pluginPermissions);
+            pluginModule = new PluginModule(cordovaInterface, pluginPermissions, cameraPlugin);
         }
 
         return this;

@@ -3,6 +3,7 @@ package com.dff.cordova.plugin.camera.actions;
 import android.content.Context;
 import android.content.Intent;
 
+import com.dff.cordova.plugin.camera.CameraPlugin;
 import com.dff.cordova.plugin.camera.activities.Camera2Activity;
 import com.dff.cordova.plugin.camera.res.R;
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
@@ -21,11 +22,13 @@ public class TakePhoto extends PluginAction {
 
     private Context context;
     private R r;
+    private CameraPlugin cameraPlugin;
 
     @Inject
-    public TakePhoto(@ApplicationContext Context context, R r) {
+    public TakePhoto(@ApplicationContext Context context, R r, CameraPlugin cameraPlugin) {
         this.context = context;
         this.r = r;
+        this.cameraPlugin = cameraPlugin;
         needsArgs = true;
         requiresPermissions = true;
     }
@@ -39,7 +42,12 @@ public class TakePhoto extends PluginAction {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(JSON_ARG_WITH_PREVIEW, withPreview);
 
-        context.startActivity(intent);
+        cameraPlugin.cordova.startActivityForResult(
+            cameraPlugin,
+            intent,
+            Camera2Activity.RESULT_OK
+        );
+        
         // TODO keep callback and return Photo
         r.sCallBackContext = callbackContext;
     }

@@ -1,5 +1,6 @@
 package com.dff.cordova.plugin.camera.dagger.modules;
 
+import com.dff.cordova.plugin.camera.CameraPlugin;
 import com.dff.cordova.plugin.camera.actions.PluginAction;
 import com.dff.cordova.plugin.camera.actions.TakePhoto;
 import com.dff.cordova.plugin.camera.dagger.annotations.PluginComponentScope;
@@ -20,10 +21,13 @@ import dagger.Provides;
 public class PluginModule {
     private CordovaInterface cordovaInterface;
     private String[] pluginPermissions;
+    private CameraPlugin cameraPlugin;
 
-    public PluginModule(CordovaInterface cordovaInterface, String[] pluginPermissions) {
+    public PluginModule(CordovaInterface cordovaInterface, String[] pluginPermissions,
+                        CameraPlugin cameraPlugin) {
         this.cordovaInterface = cordovaInterface;
         this.pluginPermissions = Arrays.copyOf(pluginPermissions, pluginPermissions.length);
+        this.cameraPlugin = cameraPlugin;
     }
 
     @Provides
@@ -37,6 +41,12 @@ public class PluginModule {
     @PluginPermissions
     String[] providePluginPermissions() {
         return pluginPermissions.clone();
+    }
+    
+    @Provides
+    @PluginComponentScope
+    CameraPlugin provideCameraPlugin() {
+        return cameraPlugin;
     }
 
     @Provides

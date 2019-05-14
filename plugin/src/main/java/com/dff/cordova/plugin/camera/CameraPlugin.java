@@ -46,6 +46,9 @@ public class CameraPlugin extends CordovaPlugin {
 
     @Inject
     PermissionHelper permissionHelper;
+    
+    @Inject
+    public CameraPlugin(){}
 
     /**
      * Initializing the plugin by setting and allocating important information and objects.
@@ -57,10 +60,8 @@ public class CameraPlugin extends CordovaPlugin {
         DaggerManager
             .getInstance()
             .in(cordova.getActivity().getApplication())
-            .in(cordova, PERMISSIONS)
+            .in(cordova, PERMISSIONS, this)
             .inject(this);
-
-        cordova.setActivityResultCallback(this);
     }
 
     @Override
@@ -119,7 +120,6 @@ public class CameraPlugin extends CordovaPlugin {
 
             actionInstance = actionsManager
                 .createAction(action, args, callbackContext);
-
             if (actionInstance != null) {
                 boolean result = actionsManager.runAction(actionInstance);
 
