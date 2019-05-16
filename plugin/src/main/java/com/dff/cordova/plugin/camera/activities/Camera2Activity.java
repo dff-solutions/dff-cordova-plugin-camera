@@ -3,6 +3,7 @@ package com.dff.cordova.plugin.camera.activities;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -21,7 +22,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.util.Size;
-import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
@@ -81,14 +81,6 @@ public class Camera2Activity extends Activity {
     private ImageButton flipButton;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
-    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
-    
-    static {
-        ORIENTATIONS.append(Surface.ROTATION_0, 90);
-        ORIENTATIONS.append(Surface.ROTATION_90, 0);
-        ORIENTATIONS.append(Surface.ROTATION_180, 270);
-        ORIENTATIONS.append(Surface.ROTATION_270, 180);
-    }
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +89,8 @@ public class Camera2Activity extends Activity {
         DaggerManager
             .getInstance()
             .inject(this);
+        
+        log.d(TAG, "onCreate");
         
         surfaceListener.camera2Activity = this;
         cameraStateCallback.camera2Activity = this;
@@ -116,6 +110,8 @@ public class Camera2Activity extends Activity {
                 takePicture();
             }
         });
+    
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
     
     @Override
@@ -196,6 +192,9 @@ public class Camera2Activity extends Activity {
         }
     }
     
+    /**
+     * This methods closes the cameraDevice.
+     */
     public void closeCamera() {
         log.d(TAG, "closing camera");
         if (cameraDevice != null) {
@@ -234,8 +233,8 @@ public class Camera2Activity extends Activity {
                    characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
                                   .getOutputSizes(ImageFormat.JPEG);
             }
-            int width = 640;
-            int height = 480;
+            int width = previweSize.getWidth();
+            int height = previweSize.getHeight();
             
             if (jpegSizes != null && 0 < jpegSizes.length) {
                 width = jpegSizes[0].getWidth();
@@ -253,8 +252,7 @@ public class Camera2Activity extends Activity {
             captureBuilder.addTarget(reader.getSurface());
             captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
             
-            int rotation = getWindowManager().getDefaultDisplay().getRotation();
-            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
+            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, 90);
             
             final File file = new File(Environment.getExternalStorageDirectory() +
                                            "/pic" + new Date().getTime() + ".jpg");

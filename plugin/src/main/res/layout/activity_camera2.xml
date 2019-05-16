@@ -11,7 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
+        android:screenOrientation="portrait"
         android:src="@drawable/ic_panorama_fish_eye_white_48px">
+
     </TextureView>
 
     <ImageButton
@@ -21,28 +23,32 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        android:src="@drawable/ic_panorama_fish_eye_white_48px"
-        android:background="@null"/>
+        android:background="@null"
+        android:gravity="center"
+        android:src="@drawable/ic_panorama_fish_eye_white_48px" />
+
 
     <ImageButton
         android:id="@+id/flash_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
-        android:src="@drawable/ic_flash_auto_white_24px"
-        android:background="@null"/>
+        android:layout_marginBottom="16dp"
+        android:background="@null"
+        android:gravity="center"
+        android:src="@drawable/ic_flash_auto_white_24px" />
 
     <ImageButton
         android:id="@+id/flip_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="16dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="32dp"
-        android:src="@drawable/ic_switch_cam_back"
-        android:background="@null"/>
+        android:layout_marginBottom="16dp"
+        android:background="@null"
+        android:gravity="center"
+        android:src="@drawable/ic_switch_cam_back" />
 
 </RelativeLayout>
