@@ -65,6 +65,7 @@
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/events/OnAutoFocus.java" target-dir="src/com/dff/cordova/plugin/camera/events"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/exceptions/UnexpectedExceptionHandler.java" target-dir="src/com/dff/cordova/plugin/camera/exceptions"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/CameraInfoHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/ImageHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/JsonFactory.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/PackageManagerHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/PermissionHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
