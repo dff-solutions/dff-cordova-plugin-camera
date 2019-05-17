@@ -11,7 +11,7 @@ import javax.inject.Inject;
 public class SurfaceListener implements TextureView.SurfaceTextureListener {
     private final String TAG = "SurfaceListener";
     
-    public Camera2Activity camera2Activity;
+    private Camera2Activity camera2Activity;
     private Log log;
     
     @Inject
@@ -42,5 +42,9 @@ public class SurfaceListener implements TextureView.SurfaceTextureListener {
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
     
+    }
+    
+    public void setCamera2Activity(Camera2Activity camera2Activity) {
+        this.camera2Activity = camera2Activity;
     }
 }

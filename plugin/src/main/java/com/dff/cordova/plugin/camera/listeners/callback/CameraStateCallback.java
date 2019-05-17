@@ -11,7 +11,7 @@ import javax.inject.Inject;
 public class CameraStateCallback extends CameraDevice.StateCallback {
     private final String TAG = "CameraStateCallback";
     
-    public Camera2Activity camera2Activity;
+    private Camera2Activity camera2Activity;
     private Log log;
     
     @Inject
@@ -38,5 +38,9 @@ public class CameraStateCallback extends CameraDevice.StateCallback {
     public void onError(@NonNull CameraDevice camera, int error) {
         log.e(TAG, "error on cameraDevice. closing camera");
         camera2Activity.closeCamera();
+    }
+    
+    public void setCamera2Activity(Camera2Activity camera2Activity) {
+        this.camera2Activity = camera2Activity;
     }
 }
