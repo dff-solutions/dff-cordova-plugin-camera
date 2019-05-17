@@ -5,7 +5,7 @@ import android.view.OrientationEventListener;
 import android.widget.ImageButton;
 
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
-import com.dff.cordova.plugin.camera.helpers.RotationHelper;
+import com.dff.cordova.plugin.camera.helpers.ButtonHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import javax.inject.Inject;
 
 public class OrientationListener extends OrientationEventListener {
     private static final String TAG = "OrientationListener";
-    private RotationHelper rotationHelper;
+    private ButtonHelper buttonHelper;
     private List<ImageButton> imageButtonList = new ArrayList<>();
     private int currentRotaion = 0;
     private Log log;
@@ -24,10 +24,10 @@ public class OrientationListener extends OrientationEventListener {
     public OrientationListener(
         @ApplicationContext Context context,
         Log log,
-        RotationHelper rotationHelper
+        ButtonHelper buttonHelper
     ) {
         super(context);
-        this.rotationHelper = rotationHelper;
+        this.buttonHelper = buttonHelper;
         this.log = log;
         this.log.d(TAG, "init listener");
     }
@@ -41,19 +41,19 @@ public class OrientationListener extends OrientationEventListener {
         */
         if (orientation < 15 || orientation > 345) {
             log.d(TAG, "setting rotation to 0");
-            rotationHelper.rotate(currentRotaion, 0, imageButtonList);
+            buttonHelper.rotate(currentRotaion, 0, imageButtonList);
             currentRotaion = 0;
         } else if (orientation >= 75 && orientation < 105) {
             log.d(TAG, "setting rotation to -90");
-            rotationHelper.rotate(currentRotaion, 270, imageButtonList);
+            buttonHelper.rotate(currentRotaion, 270, imageButtonList);
             currentRotaion = 270;
         } else if (orientation >= 165 && orientation < 195) {
             log.d(TAG, "setting rotation to 180");
-            rotationHelper.rotate(currentRotaion, 180, imageButtonList);
+            buttonHelper.rotate(currentRotaion, 180, imageButtonList);
             currentRotaion = 180;
         } else if (orientation >= 255 && orientation < 285) {
             log.d(TAG, "setting rotation to 90");
-            rotationHelper.rotate(currentRotaion, 90, imageButtonList);
+            buttonHelper.rotate(currentRotaion, 90, imageButtonList);
             currentRotaion = 90;
         }
     }

@@ -11,12 +11,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
+import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.exceptions.UnexpectedExceptionHandler;
+import com.dff.cordova.plugin.camera.helpers.ButtonHelper;
+import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 import com.dff.cordova.plugin.camera.res.R;
-import com.dff.cordova.plugin.camera.dagger.DaggerManager;
-import com.dff.cordova.plugin.camera.helpers.CameraInfoHelper;
-import com.dff.cordova.plugin.camera.helpers.RotationHelper;
 import com.dff.cordova.plugin.camera.views.CameraPreview;
 import com.dff.cordova.plugin.camera.views.DrawingView;
 import com.dff.cordova.plugin.camera.views.PreviewSurfaceView;
@@ -57,7 +57,7 @@ public class CameraActivity extends Activity {
     CameraInfoHelper mCameraInfoHelper;
 
     @Inject
-    RotationHelper mRotationHelper;
+    ButtonHelper mButtonHelper;
 
     @Inject
     CameraPreview mCameraPreview;
@@ -85,7 +85,6 @@ public class CameraActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        log.d(TAG, "onCreate()");
 
         DaggerManager
             .getInstance()
@@ -134,13 +133,13 @@ public class CameraActivity extends Activity {
                             log.d(TAG, "mRotation = " + mRotation);
                             switch (mRotation) {
                                 case 90:
-                                    mRotationHelper.rotate(-90, 0, imageButtonList);
+                                    mButtonHelper.rotate(-90, 0, imageButtonList);
                                     break;
                                 case 270:
-                                    mRotationHelper.rotate(90, 0, imageButtonList);
+                                    mButtonHelper.rotate(90, 0, imageButtonList);
                                     break;
                                 default:
-                                    mRotationHelper.rotate(0, 0, imageButtonList);
+                                    mButtonHelper.rotate(0, 0, imageButtonList);
                                     break;
                             }
                             mRotation = 0;
@@ -154,13 +153,13 @@ public class CameraActivity extends Activity {
                             switch (mRotation) {
                                 case 0:
                                     // TODO check call parameters
-                                    mRotationHelper.rotate(360, 270, imageButtonList);
+                                    mButtonHelper.rotate(360, 270, imageButtonList);
                                     break;
                                 case 180:
-                                    mRotationHelper.rotate(360, 270, imageButtonList);
+                                    mButtonHelper.rotate(360, 270, imageButtonList);
                                     break;
                                 default:
-                                    mRotationHelper.rotate(0, 270, imageButtonList);
+                                    mButtonHelper.rotate(0, 270, imageButtonList);
                                     break;
                             }
                             mRotation = 90;
@@ -173,13 +172,13 @@ public class CameraActivity extends Activity {
                             log.d(TAG, "mRotation = " + mRotation);
                             switch (mRotation) {
                                 case 90:
-                                    mRotationHelper.rotate(270, 180, imageButtonList);
+                                    mButtonHelper.rotate(270, 180, imageButtonList);
                                     break;
                                 case 270:
-                                    mRotationHelper.rotate(90, 180, imageButtonList);
+                                    mButtonHelper.rotate(90, 180, imageButtonList);
                                     break;
                                 default:
-                                    mRotationHelper.rotate(0, 180, imageButtonList);
+                                    mButtonHelper.rotate(0, 180, imageButtonList);
                                     break;
                             }
                             mRotation = 180;
@@ -192,13 +191,13 @@ public class CameraActivity extends Activity {
                             log.d(TAG, "mRotation = " + mRotation);
                             switch (mRotation) {
                                 case 0:
-                                    mRotationHelper.rotate(0, 90, imageButtonList);
+                                    mButtonHelper.rotate(0, 90, imageButtonList);
                                     break;
                                 case 180:
-                                    mRotationHelper.rotate(180, 90, imageButtonList);
+                                    mButtonHelper.rotate(180, 90, imageButtonList);
                                     break;
                                 default:
-                                    mRotationHelper.rotate(0, 90, imageButtonList);
+                                    mButtonHelper.rotate(0, 90, imageButtonList);
                                     break;
                             }
                             mRotation = 270;

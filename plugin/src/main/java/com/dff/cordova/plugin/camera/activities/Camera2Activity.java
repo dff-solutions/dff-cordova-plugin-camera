@@ -16,7 +16,6 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.ImageReader;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Size;
@@ -26,20 +25,19 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
+import com.dff.cordova.plugin.camera.helpers.ButtonHelper;
+import com.dff.cordova.plugin.camera.helpers.PermissionHelper;
 import com.dff.cordova.plugin.camera.listeners.OrientationListener;
+import com.dff.cordova.plugin.camera.listeners.SurfaceListener;
 import com.dff.cordova.plugin.camera.listeners.callback.AvailableImageListener;
 import com.dff.cordova.plugin.camera.listeners.callback.CameraCaptureStateCallback;
 import com.dff.cordova.plugin.camera.listeners.callback.CameraPreviewStateCallback;
-import com.dff.cordova.plugin.camera.res.R;
-import com.dff.cordova.plugin.camera.helpers.PermissionHelper;
-import com.dff.cordova.plugin.camera.listeners.SurfaceListener;
 import com.dff.cordova.plugin.camera.listeners.callback.CameraStateCallback;
 import com.dff.cordova.plugin.camera.log.Log;
+import com.dff.cordova.plugin.camera.res.R;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -80,6 +78,9 @@ public class Camera2Activity extends Activity {
     @Inject
     CameraCaptureStateCallback cameraCaptureStateCallback;
     
+    @Inject
+    ButtonHelper buttonHelper;
+    
     public CameraDevice cameraDevice;
     private TextureView textureView;
     private Size previweSize;
@@ -90,6 +91,9 @@ public class Camera2Activity extends Activity {
     private ImageButton flipButton;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
+    
+    private int flashMode = 0;
+    private int cameraMode = 0;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +109,7 @@ public class Camera2Activity extends Activity {
         cameraStateCallback.setCamera2Activity(this);
         cameraPreviewStateCallback.setCamera2Activity(this);
         cameraCaptureStateCallback.setCamera2Activity(this);
+        availableImageListener.setCamera2Activity(this);
         
         setContentView(r.getLayoutIdentifier(CAMERA_ACTIVITY_LAYOUT));
     
@@ -122,6 +127,18 @@ public class Camera2Activity extends Activity {
             @Override
             public void onClick(View v) {
                 takePicture();
+            }
+        });
+        flashButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeFlashMode();
+            }
+        });
+        flipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeCamera();
             }
         });
     
@@ -261,10 +278,6 @@ public class Camera2Activity extends Activity {
             
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, 90);
             
-            final File file = new File(Environment.getExternalStorageDirectory() +
-                                           "/pic" + new Date().getTime() + ".jpg");
-            availableImageListener.setFile(file);
-            
             log.d(TAG, "set OnImageAvailableListener");
             reader.setOnImageAvailableListener(availableImageListener, mBackgroundHandler);
             
@@ -297,5 +310,34 @@ public class Camera2Activity extends Activity {
         } catch (InterruptedException e) {
             log.e(TAG, "unablte to stop background thread", e);
         }
+    }
+    
+    private void changeFlashMode() {
+        log.d(TAG, "changeFlashMode");
+        switch (flashMode) {
+            case 0:
+                flashMode = 1;
+                break;
+            case 1:
+                flashMode = 2;
+                break;
+            case 2:
+                flashMode = 0;
+                break;
+            default:
+                break;
+        }
+        buttonHelper.changeFlashButton(flashButton, flashMode);
+    }
+    
+    private void changeCamera() {
+        log.d(TAG, "changeCamera");
+        
+        if (cameraMode == 0) {
+            cameraMode = 1;
+        } else {
+            cameraMode = 0;
+        }
+        buttonHelper.changeFlipButton(flipButton, cameraMode);
     }
 }
