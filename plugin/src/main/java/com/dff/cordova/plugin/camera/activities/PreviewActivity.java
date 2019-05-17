@@ -7,10 +7,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.exceptions.UnexpectedExceptionHandler;
+import com.dff.cordova.plugin.camera.helpers.ImageHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 import com.dff.cordova.plugin.camera.res.R;
-import com.dff.cordova.plugin.camera.dagger.DaggerManager;
+
+import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -37,7 +40,10 @@ public class PreviewActivity extends Activity {
 
     @Inject
     R r;
-
+    
+    @Inject
+    ImageHelper imageHelper;
+    
     @Inject
     UnexpectedExceptionHandler unexpectedExceptionHandler;
 
@@ -59,12 +65,12 @@ public class PreviewActivity extends Activity {
 
         Thread.currentThread().setUncaughtExceptionHandler(unexpectedExceptionHandler);
 
-        log.d(TAG, "onCreate() - PreviewActivity");
+        log.d(TAG, "onCreate");
         setContentView(r.getLayoutIdentifier(PREVIEW_ACTIVITY_LAYOUT));
         ImageView imageView = findViewById(r.getIdIdentifier(IMAGE_VIEW_PREVIEW_ID));
-
-        if (r.sBitmap != null) {
-            imageView.setImageBitmap(r.sBitmap);
+        
+        if (imageHelper.sBitmap != null) {
+            imageView.setImageBitmap(imageHelper.sBitmap);
         } else {
             Toast
                 .makeText(this,"Error while previewing the image 5125", Toast.LENGTH_LONG)
@@ -84,6 +90,11 @@ public class PreviewActivity extends Activity {
             finish();
         });
         okButton.setOnClickListener(view -> {
+            try {
+                imageHelper.saveImage();
+            } catch (IOException e) {
+                log.e(TAG, "unable to save image", e);
+            }
             Intent intent = new Intent();
             intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

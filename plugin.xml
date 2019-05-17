@@ -55,21 +55,20 @@
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/PluginComponentScope.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/PluginPermissions.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/components/ActionHandlerServiceComponent.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/components"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/components/ActivityComponent.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/components"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/components/AppComponent.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/components"/>
-    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/components/CameraActivityComponent.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/components"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/components/PluginComponent.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/components"/>
-    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/components/PreviewActivityComponent.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/components"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/modules/ActionHandlerServiceModule.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/modules"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/modules/AppModule.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/modules"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/modules/PluginModule.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/modules"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/events/OnAutoFocus.java" target-dir="src/com/dff/cordova/plugin/camera/events"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/exceptions/UnexpectedExceptionHandler.java" target-dir="src/com/dff/cordova/plugin/camera/exceptions"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/ButtonHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/CameraInfoHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/ImageHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/JsonFactory.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/PackageManagerHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/PermissionHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
-    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/RotationHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/listeners/OrientationListener.java" target-dir="src/com/dff/cordova/plugin/camera/listeners"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/listeners/SurfaceListener.java" target-dir="src/com/dff/cordova/plugin/camera/listeners"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/listeners/callback/AvailableImageListener.java" target-dir="src/com/dff/cordova/plugin/camera/listeners/callback"/>

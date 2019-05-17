@@ -8,12 +8,10 @@ import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.activities.PreviewActivity;
 import com.dff.cordova.plugin.camera.dagger.components.ActionHandlerServiceComponent;
 import com.dff.cordova.plugin.camera.dagger.components.AppComponent;
-import com.dff.cordova.plugin.camera.dagger.components.CameraActivityComponent;
+import com.dff.cordova.plugin.camera.dagger.components.ActivityComponent;
 import com.dff.cordova.plugin.camera.dagger.components.DaggerAppComponent;
-import com.dff.cordova.plugin.camera.dagger.components.DaggerCameraActivityComponent;
-import com.dff.cordova.plugin.camera.dagger.components.DaggerPreviewActivityComponent;
+import com.dff.cordova.plugin.camera.dagger.components.DaggerActivityComponent;
 import com.dff.cordova.plugin.camera.dagger.components.PluginComponent;
-import com.dff.cordova.plugin.camera.dagger.components.PreviewActivityComponent;
 import com.dff.cordova.plugin.camera.dagger.modules.ActionHandlerServiceModule;
 import com.dff.cordova.plugin.camera.dagger.modules.AppModule;
 import com.dff.cordova.plugin.camera.dagger.modules.PluginModule;
@@ -34,8 +32,7 @@ public class DaggerManager {
     private AppComponent appComponent;
     private ActionHandlerServiceComponent actionHandlerServiceComponent;
     private PluginComponent pluginComponent;
-    private CameraActivityComponent cameraActivityComponent;
-    private PreviewActivityComponent previewActivityComponent;
+    private ActivityComponent activityComponent;
 
     private AppModule appModule;
     private PluginModule pluginModule;
@@ -85,38 +82,38 @@ public class DaggerManager {
     }
 
     public void inject(CameraActivity cameraActivity) {
-        if (cameraActivityComponent == null) {
-            cameraActivityComponent = DaggerCameraActivityComponent
+        if (activityComponent == null) {
+            activityComponent = DaggerActivityComponent
                 .builder()
                 .appModule(appModule)
                 .build();
         }
 
-        cameraActivityComponent.inject(cameraActivity);
+        activityComponent.inject(cameraActivity);
     }
     
     public void inject(Camera2Activity cameraActivity) {
-        if (cameraActivityComponent == null) {
-            cameraActivityComponent = DaggerCameraActivityComponent
+        if (activityComponent == null) {
+            activityComponent = DaggerActivityComponent
                 .builder()
                 .appModule(appModule)
                 .build();
         }
         
-        cameraActivityComponent.inject(cameraActivity);
+        activityComponent.inject(cameraActivity);
     }
-
+    
     public void inject(PreviewActivity previewActivity) {
-        if (previewActivityComponent == null) {
-            previewActivityComponent = DaggerPreviewActivityComponent
+        if (activityComponent == null) {
+            activityComponent = DaggerActivityComponent
                 .builder()
                 .appModule(appModule)
                 .build();
         }
-
-        previewActivityComponent.inject(previewActivity);
+        
+        activityComponent.inject(previewActivity);
     }
-
+    
     private AppComponent getAppComponent() {
         if (appComponent == null) {
             appComponent = DaggerAppComponent
