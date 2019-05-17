@@ -14,13 +14,11 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
-import android.media.Image;
 import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.support.annotation.NonNull;
 import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
@@ -28,6 +26,10 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
+import com.dff.cordova.plugin.camera.listeners.OrientationListener;
+import com.dff.cordova.plugin.camera.listeners.callback.AvailableImageListener;
+import com.dff.cordova.plugin.camera.listeners.callback.CameraCaptureStateCallback;
+import com.dff.cordova.plugin.camera.listeners.callback.CameraPreviewStateCallback;
 import com.dff.cordova.plugin.camera.res.R;
 import com.dff.cordova.plugin.camera.helpers.PermissionHelper;
 import com.dff.cordova.plugin.camera.listeners.SurfaceListener;
@@ -35,11 +37,6 @@ import com.dff.cordova.plugin.camera.listeners.callback.CameraStateCallback;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -48,7 +45,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class Camera2Activity extends Activity {
-    public static final String TAG = "Camera2Activity";
+    private static final String TAG = "Camera2Activity";
     
     public static final String CAMERA_ACTIVITY_LAYOUT = "activity_camera2";
     public static final String TEXTURE_VIEW_ID = "texture";
@@ -71,10 +68,22 @@ public class Camera2Activity extends Activity {
     @Inject
     R r;
     
+    @Inject
+    OrientationListener orientationEventListener;
+    
+    @Inject
+    CameraPreviewStateCallback cameraPreviewStateCallback;
+    
+    @Inject
+    AvailableImageListener availableImageListener;
+    
+    @Inject
+    CameraCaptureStateCallback cameraCaptureStateCallback;
+    
     public CameraDevice cameraDevice;
     private TextureView textureView;
     private Size previweSize;
-    private CameraCaptureSession cameraCaptureSession;
+    public CameraCaptureSession cameraCaptureSession;
     private CaptureRequest.Builder captureRequest;
     private ImageButton captureButton;
     private ImageButton flashButton;
@@ -92,14 +101,19 @@ public class Camera2Activity extends Activity {
         
         log.d(TAG, "onCreate");
         
-        surfaceListener.camera2Activity = this;
-        cameraStateCallback.camera2Activity = this;
+        surfaceListener.setCamera2Activity(this);
+        cameraStateCallback.setCamera2Activity(this);
+        cameraPreviewStateCallback.setCamera2Activity(this);
+        cameraCaptureStateCallback.setCamera2Activity(this);
         
         setContentView(r.getLayoutIdentifier(CAMERA_ACTIVITY_LAYOUT));
     
         captureButton = findViewById(r.getIdIdentifier(CAPTURE_BUTTON));
         flashButton = findViewById(r.getIdIdentifier(FLASH_BUTTON));
         flipButton =  findViewById(r.getIdIdentifier(FLIP_BUTTON));
+        
+        orientationEventListener.addImageButton(flashButton);
+        orientationEventListener.addImageButton(flipButton);
         
         textureView = findViewById(r.getIdIdentifier(TEXTURE_VIEW_ID));
         textureView.setSurfaceTextureListener(surfaceListener);
@@ -119,6 +133,7 @@ public class Camera2Activity extends Activity {
         super.onResume();
         log.d(TAG, "onResume");
         startBackgroundThread();
+        orientationEventListener.enable();
         
         if (textureView.isAvailable()) {
             openCamera();
@@ -132,6 +147,7 @@ public class Camera2Activity extends Activity {
         log.d(TAG, "onPause");
         stopBackgroundThread();
         closeCamera();
+        orientationEventListener.disable();
         super.onPause();
     }
     
@@ -168,25 +184,15 @@ public class Camera2Activity extends Activity {
             captureRequest = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             Surface surface = new Surface(texture);
             captureRequest.addTarget(surface);
-    
+            
             log.d(TAG, "create CaptureSession");
-            cameraDevice.createCaptureSession(Arrays.asList(surface),
-                                              new CameraCaptureSession.StateCallback() {
-                @Override
-                public void onConfigured(@NonNull CameraCaptureSession captureSession) {
-                    if (null == cameraDevice) {
-                        return;
-                    }
-                    
-                    cameraCaptureSession = captureSession;
-                    updatePreview();
-                }
-                
-                @Override
-                public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
-                    log.e(TAG, "error while configurating CaptureSession");
-                }
-            }, null);
+            cameraDevice.createCaptureSession(
+                Arrays.asList(surface),
+                cameraPreviewStateCallback,
+                null
+            );
+    
+            this.orientationEventListener.enable();
         } catch (CameraAccessException e) {
             log.e(TAG, "error while creating caputureRequest");
         }
@@ -203,9 +209,10 @@ public class Camera2Activity extends Activity {
         }
     }
     
-    private void updatePreview() {
+    public void updatePreview() {
+        log.d(TAG, "updatePreview");
         if (cameraDevice == null) {
-            log.e(TAG, "no CameraDevice in updatePreview()");
+            log.e(TAG, "no cameraDevice");
         }
         captureRequest.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
         try {
@@ -256,70 +263,19 @@ public class Camera2Activity extends Activity {
             
             final File file = new File(Environment.getExternalStorageDirectory() +
                                            "/pic" + new Date().getTime() + ".jpg");
-            ImageReader.OnImageAvailableListener readerListener =
-                new ImageReader.OnImageAvailableListener() {
-                @Override
-                public void onImageAvailable(ImageReader reader) {
-                    Image image = null;
-                    try {
-                        image = reader.acquireNextImage();
-                        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-                        byte[] bytes = new byte[buffer.capacity()];
-                        buffer.get(bytes);
-                        save(bytes);
-                    } catch (FileNotFoundException e) {
-                        log.e(TAG, "file not found", e);
-                    } catch (IOException e) {
-                        log.e(TAG, "IO exception", e);
-                    } finally {
-                        if (image != null) {
-                            image.close();
-                        }
-                    }
-                }
-                
-                private void save(byte[] bytes) throws IOException {
-                    OutputStream output = null;
-                    try {
-                        output = new FileOutputStream(file);
-                        output.write(bytes);
-                    } finally {
-                        if (null != output) {
-                            output.close();
-                        }
-                    }
-                }
-            };
-            log.d(TAG, "set OnImageAvailableListener");
-            reader.setOnImageAvailableListener(readerListener, mBackgroundHandler);
+            availableImageListener.setFile(file);
             
-            final CameraCaptureSession.CaptureCallback captureListener =
-                new CameraCaptureSession.CaptureCallback() {
-                @Override
-                public void onCaptureStarted(@NonNull CameraCaptureSession session,
-                                             @NonNull CaptureRequest request,
-                                             long timestamp, long frameNumber) {
-                    super.onCaptureStarted(session, request, timestamp, frameNumber);
-                    startCameraPreview();
-                }
-            };
-            cameraDevice.createCaptureSession(outputSurfaces,
-                                              new CameraCaptureSession.StateCallback() {
-                @Override
-                public void onConfigured(@NonNull CameraCaptureSession session) {
-                    try {
-                        session.capture(captureBuilder.build(), captureListener,
-                                        mBackgroundHandler);
-                    } catch (CameraAccessException e) {
-                        log.e(TAG, "error while accessing camera", e);
-                    }
-                }
-    
-                @Override
-                public void onConfigureFailed(@NonNull CameraCaptureSession session) {
-                    log.e(TAG, "configuration falled @ createCaptureSession");
-                }
-            }, mBackgroundHandler);
+            log.d(TAG, "set OnImageAvailableListener");
+            reader.setOnImageAvailableListener(availableImageListener, mBackgroundHandler);
+            
+           cameraCaptureStateCallback.mBackgroundHandler = mBackgroundHandler;
+           cameraCaptureStateCallback.captureBuilder = captureBuilder;
+            
+            cameraDevice.createCaptureSession(
+                outputSurfaces,
+                cameraCaptureStateCallback,
+                mBackgroundHandler
+            );
             
         } catch (CameraAccessException e) {
             log.e(TAG, "error while accessing camera", e);

@@ -1,12 +1,14 @@
 package com.dff.cordova.plugin.camera;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 
 import com.dff.cordova.plugin.camera.actions.PluginAction;
 import com.dff.cordova.plugin.camera.configurations.ActionsManager;
 import com.dff.cordova.plugin.camera.configurations.Config;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
+import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 import com.dff.cordova.plugin.camera.helpers.PermissionHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 
@@ -48,6 +50,10 @@ public class CameraPlugin extends CordovaPlugin {
     PermissionHelper permissionHelper;
     
     @Inject
+    @ApplicationContext
+    Context applicationContext;
+    
+    @Inject
     public CameraPlugin(){}
 
     /**
@@ -60,7 +66,7 @@ public class CameraPlugin extends CordovaPlugin {
         DaggerManager
             .getInstance()
             .in(cordova.getActivity().getApplication())
-            .in(cordova, PERMISSIONS, this)
+            .in(cordova, PERMISSIONS, this, applicationContext)
             .inject(this);
     }
 
