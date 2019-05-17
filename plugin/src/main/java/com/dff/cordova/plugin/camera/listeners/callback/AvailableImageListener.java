@@ -11,8 +11,6 @@ import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 import com.dff.cordova.plugin.camera.helpers.ImageHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 
-import java.nio.ByteBuffer;
-
 import javax.inject.Inject;
 
 public class AvailableImageListener implements ImageReader.OnImageAvailableListener {
@@ -35,9 +33,7 @@ public class AvailableImageListener implements ImageReader.OnImageAvailableListe
     
     @Override
     public void onImageAvailable(ImageReader reader) {
-        Image image = null;
-    
-        image = reader.acquireLatestImage();
+        Image image = reader.acquireLatestImage();
         
         imageHelper.storeImage(image);
         if (image != null) {

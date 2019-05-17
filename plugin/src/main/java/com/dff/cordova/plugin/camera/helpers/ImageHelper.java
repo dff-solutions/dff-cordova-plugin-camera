@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.Environment;
-import android.util.Base64;
 
 import com.dff.cordova.plugin.camera.log.Log;
 
@@ -22,10 +21,8 @@ import javax.inject.Singleton;
 public class ImageHelper {
     private static final String TAG = "ImageHelper";
     
-    public static Bitmap sBitmap;
-    public static String sBase64Image;
-    public static byte[] bytes;
-    public static Image image;
+    public Bitmap sBitmap;
+    private byte[] bytes;
     private Log log;
     
     @Inject
@@ -34,18 +31,12 @@ public class ImageHelper {
     }
     
     public void storeImage(Image image) {
-        ImageHelper.image = image;
         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-        byte[] bytes = new byte[buffer.capacity()];
+        bytes = new byte[buffer.capacity()];
         buffer.get(bytes);
         log.d(TAG, "storeImage");
-        ImageHelper.bytes = bytes;
-        ImageHelper.sBase64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
-        ImageHelper.sBitmap = BitmapFactory
+        sBitmap = BitmapFactory
             .decodeByteArray(bytes, 0, bytes.length);
-    
-        log.d(TAG, "ImageHelper: " + this);
-        log.d(TAG, "ImageHelper.sBitmap: " + sBitmap);
     }
     
     public void saveImage() throws IOException {
@@ -55,7 +46,7 @@ public class ImageHelper {
         OutputStream output = null;
         try {
             output = new FileOutputStream(file);
-            output.write(ImageHelper.bytes);
+            output.write(bytes);
         } finally {
             if (null != output) {
                 output.close();
