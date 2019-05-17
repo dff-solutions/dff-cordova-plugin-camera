@@ -1,66 +1,58 @@
 package com.dff.cordova.plugin.camera.listeners.callback;
 
+import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.media.ImageReader;
 
+import com.dff.cordova.plugin.camera.activities.Camera2Activity;
+import com.dff.cordova.plugin.camera.activities.PreviewActivity;
+import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
+import com.dff.cordova.plugin.camera.helpers.ImageHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
 import javax.inject.Inject;
 
 public class AvailableImageListener implements ImageReader.OnImageAvailableListener {
     private final String TAG = "AvailableImageListener";
-    private File file;
     private Log log;
+    private Context context;
+    private Camera2Activity camera2Activity;
+    private ImageHelper imageHelper;
     
     @Inject
-    public AvailableImageListener(Log log) {
+    public AvailableImageListener(
+        Log log,
+        ImageHelper imageHelper,
+        @ApplicationContext Context context
+    ) {
         this.log = log;
+        this.imageHelper = imageHelper;
+        this.context = context;
     }
     
     @Override
     public void onImageAvailable(ImageReader reader) {
         Image image = null;
-        try {
-            image = reader.acquireLatestImage();
-            ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-            byte[] bytes = new byte[buffer.capacity()];
-            buffer.get(bytes);
-            save(bytes);
-        } catch (FileNotFoundException e) {
-            log.e(TAG, "file not found", e);
-        } catch (IOException e) {
-            log.e(TAG, "IOException", e);
-        } finally {
-            if (image != null) {
-                image.close();
-            }
+    
+        image = reader.acquireLatestImage();
+        
+        imageHelper.storeImage(image);
+        if (image != null) {
+            image.close();
         }
+        startImagePreview();
     }
     
-    private void save(byte[] bytes) throws IOException {
-        OutputStream output = null;
-        try {
-            output = new FileOutputStream(getFile());
-            output.write(bytes);
-        } finally {
-            if (null != output) {
-                output.close();
-            }
-        }
+    private void startImagePreview() {
+        log.d(TAG, "startImagePreview");
+        Intent intent = new Intent(context, PreviewActivity.class);
+        camera2Activity.startActivityForResult(intent, PreviewActivity.RESULT_OK);
     }
     
-    public File getFile() {
-        return file;
-    }
-    
-    public void setFile(File file) {
-        this.file = file;
+    public void setCamera2Activity(Camera2Activity camera2Activity) {
+        this.camera2Activity = camera2Activity;
     }
 }

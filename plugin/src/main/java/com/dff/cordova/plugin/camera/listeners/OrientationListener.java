@@ -51,7 +51,7 @@ public class OrientationListener extends OrientationEventListener {
             log.d(TAG, "setting rotation to 180");
             rotationHelper.rotate(currentRotaion, 180, imageButtonList);
             currentRotaion = 180;
-        } else if(orientation >= 255 && orientation < 285){
+        } else if (orientation >= 255 && orientation < 285) {
             log.d(TAG, "setting rotation to 90");
             rotationHelper.rotate(currentRotaion, 90, imageButtonList);
             currentRotaion = 90;
