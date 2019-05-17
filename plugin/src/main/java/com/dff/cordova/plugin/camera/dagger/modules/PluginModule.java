@@ -1,7 +1,5 @@
 package com.dff.cordova.plugin.camera.dagger.modules;
 
-import android.content.Context;
-
 import com.dff.cordova.plugin.camera.CameraPlugin;
 import com.dff.cordova.plugin.camera.actions.PluginAction;
 import com.dff.cordova.plugin.camera.actions.TakePhoto;
@@ -24,18 +22,15 @@ public class PluginModule {
     private CordovaInterface cordovaInterface;
     private String[] pluginPermissions;
     private CameraPlugin cameraPlugin;
-    private Context context;
 
     public PluginModule(
         CordovaInterface cordovaInterface,
         String[] pluginPermissions,
-        CameraPlugin cameraPlugin,
-        Context context
+        CameraPlugin cameraPlugin
     ) {
         this.cordovaInterface = cordovaInterface;
         this.pluginPermissions = Arrays.copyOf(pluginPermissions, pluginPermissions.length);
         this.cameraPlugin = cameraPlugin;
-        this.context = context;
     }
 
     @Provides
@@ -57,12 +52,6 @@ public class PluginModule {
         return cameraPlugin;
     }
     
-    @Provides
-    @PluginComponentScope
-    Context provideContext() {
-        return context;
-    }
-
     @Provides
     @PluginComponentScope
     Map<String, Provider<? extends PluginAction>> provideActionProviders(

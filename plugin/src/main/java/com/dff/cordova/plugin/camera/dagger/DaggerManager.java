@@ -1,7 +1,6 @@
 package com.dff.cordova.plugin.camera.dagger;
 
 import android.app.Application;
-import android.content.Context;
 
 import com.dff.cordova.plugin.camera.CameraPlugin;
 import com.dff.cordova.plugin.camera.activities.Camera2Activity;
@@ -62,15 +61,13 @@ public class DaggerManager {
     public DaggerManager in(
         CordovaInterface cordovaInterface,
         String[] pluginPermissions,
-        CameraPlugin cameraPlugin,
-        Context context
+        CameraPlugin cameraPlugin
     ) {
         if (pluginModule == null) {
             pluginModule = new PluginModule(
                 cordovaInterface,
                 pluginPermissions,
-                cameraPlugin,
-                context
+                cameraPlugin
             );
         }
 
