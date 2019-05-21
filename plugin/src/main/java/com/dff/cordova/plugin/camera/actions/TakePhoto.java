@@ -39,7 +39,7 @@ public class TakePhoto extends PluginAction {
 
         boolean withPreview = jsonArgs.getBoolean(JSON_ARG_WITH_PREVIEW);
         Intent intent = new Intent(context, Camera2Activity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(JSON_ARG_WITH_PREVIEW, withPreview);
 
         cameraPlugin.cordova.startActivityForResult(
