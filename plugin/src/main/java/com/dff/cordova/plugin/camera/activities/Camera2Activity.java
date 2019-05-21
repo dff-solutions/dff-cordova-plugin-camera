@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
+import android.graphics.Point;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -25,6 +26,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.helpers.ButtonHelper;
@@ -97,8 +99,7 @@ public class Camera2Activity extends Activity {
     private String cameraId;
     private CameraCharacteristics characteristics;
     
-    private boolean hasFlashMode;
-    private int flipMode;
+    private int flipMode = 0;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,8 +132,12 @@ public class Camera2Activity extends Activity {
         
         orientationEventListener.addImageButton(flashButton);
         orientationEventListener.addImageButton(flipButton);
+    
+        Point displaySize = new Point();
+        this.getWindowManager().getDefaultDisplay().getSize(displaySize);
         
         textureView = findViewById(r.getIdIdentifier(TEXTURE_VIEW_ID));
+        textureView.setLayoutParams(new RelativeLayout.LayoutParams(displaySize.x, displaySize.y));
         textureView.setSurfaceTextureListener(surfaceListener);
         
         captureButton.setOnClickListener(new View.OnClickListener() {
@@ -154,14 +159,27 @@ public class Camera2Activity extends Activity {
             }
         });
     
-        hasFlashMode =
+        boolean hasFlashMode =
             getApplicationContext()
                 .getPackageManager()
                 .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
         
         if (!hasFlashMode) {
-            //flashButton.setEnabled(false);
-            //flashButton.setVisibility(View.GONE);
+            flashButton.setEnabled(false);
+            flashButton.setVisibility(View.GONE);
+        } else {
+            //init flashMode
+            changeFlashMode();
+        }
+        
+        boolean hasFrontCamera =
+            getApplicationContext()
+                .getPackageManager()
+                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT);
+        
+        if (!hasFrontCamera) {
+            flipButton.setEnabled(false);
+            flipButton.setVisibility(View.GONE);
         }
     
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -333,7 +351,32 @@ public class Camera2Activity extends Activity {
     }
     
     private void changeCamera() {
-        buttonHelper.changeFlipButton(flipButton, cameraManager);
+        if (flipMode == 0) {
+            log.d(TAG, "flip to front camera");
+            try {
+                for (String id : cameraManager.getCameraIdList()) {
+                    if (id.equals(CameraCharacteristics.LENS_FACING_BACK)) {
+                        cameraId = id;
+                    }
+                }
+            } catch (CameraAccessException e) {
+                log.e(TAG, "unable to access camera", e);
+            }
+            flipMode = 1;
+        } else {
+            log.d(TAG, "flip to front camera");
+            try {
+                for (String id : cameraManager.getCameraIdList()) {
+                    if (id.equals(CameraCharacteristics.LENS_FACING_FRONT)) {
+                        cameraId = id;
+                    }
+                }
+            } catch (CameraAccessException e) {
+                log.e(TAG, "unable to access camera", e);
+            }
+            flipMode = 0;
+        }
+        buttonHelper.changeFlipButton(flipButton, flipMode);
         closeCamera();
         openCamera();
     }

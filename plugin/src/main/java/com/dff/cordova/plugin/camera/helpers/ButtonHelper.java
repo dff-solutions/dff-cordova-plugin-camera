@@ -1,8 +1,5 @@
 package com.dff.cordova.plugin.camera.helpers;
 
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.view.View;
 import android.view.animation.RotateAnimation;
@@ -33,7 +30,7 @@ public class ButtonHelper {
     
     private R r;
     private Log log;
-    private int flashMode = 0;
+    private int flashMode = 1;
     
     @Inject
     public ButtonHelper(R r, Log log) {
@@ -97,42 +94,16 @@ public class ButtonHelper {
         }
     }
     
-    private int flipMode = 0;
-    
-    public void changeFlipButton(ImageButton button, CameraManager cameraManager) {
+    public String changeFlipButton(ImageButton button, int flipMode) {
         log.d(TAG, "changeCamera");
         
-        String cameraId = null;
+        String cameraId = "1";
         if (flipMode == 0) {
             button.setImageResource(r.getDrawableIdentifier(IC_CAMERA_BACK));
         } else {
             button.setImageResource(r.getDrawableIdentifier(IC_CAMERA_FRONT));
         }
-    
-        if (flipMode == 0) {
-            log.d(TAG, "flip to front camera");
-            try {
-                for (String id : cameraManager.getCameraIdList()) {
-                    if (id.equals(CameraCharacteristics.LENS_FACING_BACK)) {
-                        cameraId = id;
-                    }
-                }
-            } catch (CameraAccessException e) {
-                log.e(TAG, "unable to access camera", e);
-            }
-            flipMode = 1;
-        } else {
-            log.d(TAG, "flip to front camera");
-            try {
-                for (String id : cameraManager.getCameraIdList()) {
-                    if (id.equals(CameraCharacteristics.LENS_FACING_FRONT)) {
-                        cameraId = id;
-                    }
-                }
-            } catch (CameraAccessException e) {
-                log.e(TAG, "unable to access camera", e);
-            }
-            flipMode = 0;
-        }
+        
+        return cameraId;
     }
 }
