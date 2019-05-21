@@ -1,9 +1,14 @@
 package com.dff.cordova.plugin.camera.helpers;
 
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CaptureRequest;
 import android.view.View;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 
+import com.dff.cordova.plugin.camera.log.Log;
 import com.dff.cordova.plugin.camera.res.R;
 
 import javax.inject.Inject;
@@ -19,7 +24,7 @@ import java.util.List;
  */
 @Singleton
 public class ButtonHelper {
-    
+    private static final String TAG = "ButtonHelper";
     private static final String IC_CAMERA_FRONT = "ic_switch_cam_front";
     private static final String IC_CAMERA_BACK = "ic_switch_cam_back";
     private static final String IC_FLASH_AUTO = "ic_flash_auto_white_24px";
@@ -27,10 +32,13 @@ public class ButtonHelper {
     private static final String IC_FLASH_ON = "ic_flash_on_white_24px";
     
     private R r;
+    private Log log;
+    private int flashMode = 0;
     
     @Inject
-    public ButtonHelper(R r) {
+    public ButtonHelper(R r, Log log) {
         this.r = r;
+        this.log = log;
     }
 
     /**
@@ -56,27 +64,75 @@ public class ButtonHelper {
         }
     }
     
-    public void changeFlashButton(ImageButton button, int flashMode) {
+    public void changeFlashButton(CaptureRequest.Builder captureRequest, ImageButton button) {
+        log.d(TAG, "changeFlashMode");
+        
         switch (flashMode) {
             case 0:
+                log.d(TAG, "single flash");
                 button.setImageResource(r.getDrawableIdentifier(IC_FLASH_AUTO));
+                captureRequest.set(CaptureRequest.CONTROL_AE_MODE,
+                                   CaptureRequest.CONTROL_AE_MODE_ON_ALWAYS_FLASH);
+                captureRequest.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_SINGLE);
+                flashMode = 1;
                 break;
             case 1:
-                button.setImageResource(r.getDrawableIdentifier(IC_FLASH_OFF));
+                log.d(TAG, "flash off");
+                button.setImageResource(r.getDrawableIdentifier(IC_FLASH_ON));
+                captureRequest.set(CaptureRequest.CONTROL_AE_MODE,
+                                   CaptureRequest.CONTROL_AE_MODE_ON);
+                captureRequest.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
+                flashMode = 2;
                 break;
             case 2:
-                button.setImageResource(r.getDrawableIdentifier(IC_FLASH_ON));
+                log.d(TAG, "auto flash");
+                button.setImageResource(r.getDrawableIdentifier(IC_FLASH_OFF));
+                captureRequest.set(CaptureRequest.CONTROL_AE_MODE,
+                                   CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
+                captureRequest.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
+                flashMode = 0;
                 break;
             default:
                 break;
         }
     }
     
-    public void changeFlipButton(ImageButton button, int flipMode) {
+    private int flipMode = 0;
+    
+    public void changeFlipButton(ImageButton button, CameraManager cameraManager) {
+        log.d(TAG, "changeCamera");
+        
+        String cameraId = null;
         if (flipMode == 0) {
             button.setImageResource(r.getDrawableIdentifier(IC_CAMERA_BACK));
         } else {
             button.setImageResource(r.getDrawableIdentifier(IC_CAMERA_FRONT));
+        }
+    
+        if (flipMode == 0) {
+            log.d(TAG, "flip to front camera");
+            try {
+                for (String id : cameraManager.getCameraIdList()) {
+                    if (id.equals(CameraCharacteristics.LENS_FACING_BACK)) {
+                        cameraId = id;
+                    }
+                }
+            } catch (CameraAccessException e) {
+                log.e(TAG, "unable to access camera", e);
+            }
+            flipMode = 1;
+        } else {
+            log.d(TAG, "flip to front camera");
+            try {
+                for (String id : cameraManager.getCameraIdList()) {
+                    if (id.equals(CameraCharacteristics.LENS_FACING_FRONT)) {
+                        cameraId = id;
+                    }
+                }
+            } catch (CameraAccessException e) {
+                log.e(TAG, "unable to access camera", e);
+            }
+            flipMode = 0;
         }
     }
 }

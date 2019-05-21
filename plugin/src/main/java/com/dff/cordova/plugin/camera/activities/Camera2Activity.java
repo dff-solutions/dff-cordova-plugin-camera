@@ -3,7 +3,9 @@ package com.dff.cordova.plugin.camera.activities;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -83,7 +85,7 @@ public class Camera2Activity extends Activity {
     
     public CameraDevice cameraDevice;
     private TextureView textureView;
-    private Size previweSize;
+    private Size previewSize;
     public CameraCaptureSession cameraCaptureSession;
     private CaptureRequest.Builder captureRequest;
     private ImageButton captureButton;
@@ -91,9 +93,12 @@ public class Camera2Activity extends Activity {
     private ImageButton flipButton;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
+    private CameraManager cameraManager;
+    private String cameraId;
+    private CameraCharacteristics characteristics;
     
-    private int flashMode = 0;
-    private int cameraMode = 0;
+    private boolean hasFlashMode;
+    private int flipMode;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +117,13 @@ public class Camera2Activity extends Activity {
         availableImageListener.setCamera2Activity(this);
         
         setContentView(r.getLayoutIdentifier(CAMERA_ACTIVITY_LAYOUT));
+    
+        cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        try {
+            cameraId = cameraManager.getCameraIdList()[0];
+        } catch (CameraAccessException e) {
+            log.e(TAG, "unable to access camera.", e);
+        }
     
         captureButton = findViewById(r.getIdIdentifier(CAPTURE_BUTTON));
         flashButton = findViewById(r.getIdIdentifier(FLASH_BUTTON));
@@ -142,6 +154,16 @@ public class Camera2Activity extends Activity {
             }
         });
     
+        hasFlashMode =
+            getApplicationContext()
+                .getPackageManager()
+                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+        
+        if (!hasFlashMode) {
+            //flashButton.setEnabled(false);
+            //flashButton.setVisibility(View.GONE);
+        }
+    
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
     
@@ -171,20 +193,15 @@ public class Camera2Activity extends Activity {
     @SuppressLint("MissingPermission")
     public void openCamera() {
         log.d(TAG, "opening camera");
-    
-        CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-        String cameraId = null;
         
         try {
-            cameraId = cameraManager.getCameraIdList()[0];
-    
-            CameraCharacteristics cameraCharacteristics =
+            characteristics =
                 cameraManager.getCameraCharacteristics(cameraId);
             
             StreamConfigurationMap streamConfigurationMap =
-                cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+                characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             
-            previweSize = streamConfigurationMap.getOutputSizes(SurfaceTexture.class)[0];
+            previewSize = streamConfigurationMap.getOutputSizes(SurfaceTexture.class)[0];
             
             cameraManager.openCamera(cameraId, cameraStateCallback, null);
             
@@ -197,7 +214,7 @@ public class Camera2Activity extends Activity {
     public void startCameraPreview() {
         try {
             SurfaceTexture texture = textureView.getSurfaceTexture();
-            texture.setDefaultBufferSize(previweSize.getWidth(), previweSize.getHeight());
+            texture.setDefaultBufferSize(previewSize.getWidth(), previewSize.getHeight());
             captureRequest = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             Surface surface = new Surface(texture);
             captureRequest.addTarget(surface);
@@ -231,6 +248,7 @@ public class Camera2Activity extends Activity {
         if (cameraDevice == null) {
             log.e(TAG, "no cameraDevice");
         }
+        
         captureRequest.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
         try {
             cameraCaptureSession.setRepeatingRequest(captureRequest.build(), null,
@@ -246,25 +264,21 @@ public class Camera2Activity extends Activity {
             return;
         }
         log.d(TAG, "take picture");
-        
-        CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try {
-            CameraCharacteristics characteristics =
-                manager.getCameraCharacteristics(cameraDevice.getId());
             Size[] jpegSizes = null;
             if (characteristics != null) {
                jpegSizes =
                    characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
                                   .getOutputSizes(ImageFormat.JPEG);
             }
-            int width = previweSize.getWidth();
-            int height = previweSize.getHeight();
+            int width = previewSize.getWidth();
+            int height = previewSize.getHeight();
             
             if (jpegSizes != null && 0 < jpegSizes.length) {
                 width = jpegSizes[0].getWidth();
                 height = jpegSizes[0].getHeight();
             }
-    
+            
             ImageReader reader = ImageReader.newInstance(width, height, ImageFormat.JPEG,
                                                          1);
             List<Surface> outputSurfaces = new ArrayList<Surface>(2);
@@ -313,31 +327,20 @@ public class Camera2Activity extends Activity {
     }
     
     private void changeFlashMode() {
-        log.d(TAG, "changeFlashMode");
-        switch (flashMode) {
-            case 0:
-                flashMode = 1;
-                break;
-            case 1:
-                flashMode = 2;
-                break;
-            case 2:
-                flashMode = 0;
-                break;
-            default:
-                break;
-        }
-        buttonHelper.changeFlashButton(flashButton, flashMode);
+        buttonHelper.changeFlashButton(captureRequest, flashButton);
+        closeCamera();
+        openCamera();
     }
     
     private void changeCamera() {
-        log.d(TAG, "changeCamera");
-        
-        if (cameraMode == 0) {
-            cameraMode = 1;
-        } else {
-            cameraMode = 0;
-        }
-        buttonHelper.changeFlipButton(flipButton, cameraMode);
+        buttonHelper.changeFlipButton(flipButton, cameraManager);
+        closeCamera();
+        openCamera();
+    }
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        log.d(TAG, "SWEET VICTORY");
     }
 }
