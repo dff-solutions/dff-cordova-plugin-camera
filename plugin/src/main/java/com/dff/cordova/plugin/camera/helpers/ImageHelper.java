@@ -2,9 +2,12 @@ package com.dff.cordova.plugin.camera.helpers;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.media.Image;
 import android.os.Environment;
+import android.util.Base64;
 
+import com.dff.cordova.plugin.camera.res.R;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import java.io.File;
@@ -24,10 +27,12 @@ public class ImageHelper {
     public Bitmap sBitmap;
     private byte[] bytes;
     private Log log;
+    private R r;
     
     @Inject
-    public ImageHelper(Log log) {
+    public ImageHelper(Log log, R r) {
         this.log = log;
+        this.r = r;
     }
     
     public void storeImage(Image image) {
@@ -37,6 +42,9 @@ public class ImageHelper {
         log.d(TAG, "storeImage");
         sBitmap = BitmapFactory
             .decodeByteArray(bytes, 0, bytes.length);
+        
+        rotateBitMap();
+        
     }
     
     public void saveImage() throws IOException {
@@ -52,5 +60,18 @@ public class ImageHelper {
                 output.close();
             }
         }
+        r.sBase64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
+    
+    public void rotateBitMap() {
+        
+        // rotate Image
+        Matrix rotateMatrix = new Matrix();
+        rotateMatrix.postRotate(90);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(sBitmap, 0,
+                                                   0, sBitmap.getWidth(), sBitmap.getHeight(),
+                                                   rotateMatrix, false);
+        sBitmap = rotatedBitmap;
+        
     }
 }
