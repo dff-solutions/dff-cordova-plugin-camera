@@ -330,9 +330,9 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
                             } else {
                                 if (r.sBase64Image != null && !r.sBase64Image.isEmpty()) {
                                     log.d(TAG, r.sBase64Image);
-                                    r.sCallBackContext.success(r.sBase64Image);
+                                    r.getCallBackContext().success(r.sBase64Image);
                                 } else {
-                                    r.sCallBackContext
+                                    r.getCallBackContext()
                                         .error("Error: the base64 image is empty or null");
                                 }
                                 ((Activity) mContext).finish();

@@ -95,10 +95,15 @@ public class PreviewActivity extends Activity {
             } catch (IOException e) {
                 log.e(TAG, "unable to save image", e);
             }
-            log.d(TAG, "finish");
             Intent returnIntent = new Intent();
-            returnIntent.putExtra("result", "testResult");
-            setResult(R.RESULT_OK, returnIntent);
+            if (r.sBase64Image != null) {
+                returnIntent.putExtra("result", r.sBase64Image);
+                setResult(R.RESULT_OK, returnIntent);
+            } else {
+                log.e(TAG, "sBase64Image is empty");
+                log.e(TAG, "repeat capture");
+                setResult(R.RESULT_REPEAT, returnIntent);
+            }
             finish();
         });
 

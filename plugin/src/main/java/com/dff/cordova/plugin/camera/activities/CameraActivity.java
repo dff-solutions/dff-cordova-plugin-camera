@@ -247,9 +247,9 @@ public class CameraActivity extends Activity {
                 log.d(TAG, "resultCode2 = " + resultCode);
                 if (r.sBase64Image != null && !r.sBase64Image.isEmpty()) {
                     log.d(TAG, r.sBase64Image);
-                    r.sCallBackContext.success(r.sBase64Image);
+                    r.getCallBackContext().success(r.sBase64Image);
                 } else {
-                    r.sCallBackContext.error("Error: the base64 image is empty or null");
+                    r.getCallBackContext().error("Error: the base64 image is empty or null");
                 }
                 finish();
                 break;

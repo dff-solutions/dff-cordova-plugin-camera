@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
+import com.dff.cordova.plugin.camera.log.Log;
 
 import org.apache.cordova.CallbackContext;
 
@@ -20,17 +21,20 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class R {
+    private static final String TAG = "R";
     private static final String DEF_TYPE_LAYOUT = "layout";
     private static final String DEF_TYPE_ID = "id";
     private static final String DEF_TYPE_DRAWABLE = "drawable";
 
     private String packageName;
     private Resources resources;
+    private Log log;
 
     @Inject
-    public R(@ApplicationContext Context context) {
+    public R(@ApplicationContext Context context, Log log) {
         packageName = context.getPackageName();
         resources = context.getResources();
+        this.log = log;
     }
 
     public int getLayoutIdentifier(String name) {
@@ -53,5 +57,14 @@ public class R {
 
     public Bitmap sBitmap;
     public String sBase64Image;
-    public CallbackContext sCallBackContext;
+    private CallbackContext callBackContext;
+    
+    public CallbackContext getCallBackContext() {
+        return callBackContext;
+    }
+    
+    public void setCallBackContext(CallbackContext callBackContext) {
+        log.d(TAG, "set callbackContext");
+        this.callBackContext = callBackContext;
+    }
 }

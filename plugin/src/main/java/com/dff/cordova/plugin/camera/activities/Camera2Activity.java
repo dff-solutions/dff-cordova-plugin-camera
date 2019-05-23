@@ -28,8 +28,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
+import com.dff.cordova.plugin.camera.actions.TakePhoto;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.helpers.ButtonHelper;
+import com.dff.cordova.plugin.camera.helpers.ImageHelper;
 import com.dff.cordova.plugin.camera.helpers.PermissionHelper;
 import com.dff.cordova.plugin.camera.listeners.OrientationListener;
 import com.dff.cordova.plugin.camera.listeners.SurfaceListener;
@@ -40,6 +42,7 @@ import com.dff.cordova.plugin.camera.listeners.callback.CameraStateCallback;
 import com.dff.cordova.plugin.camera.log.Log;
 import com.dff.cordova.plugin.camera.res.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -84,6 +87,9 @@ public class Camera2Activity extends Activity {
     
     @Inject
     ButtonHelper buttonHelper;
+    
+    @Inject
+    ImageHelper imageHelper;
     
     public CameraDevice cameraDevice;
     private TextureView textureView;
@@ -328,8 +334,28 @@ public class Camera2Activity extends Activity {
     }
     
     public void startPreviewActivity() {
-        Intent intent = new Intent(this, PreviewActivity.class);
-        startActivityForResult(intent, R.RESULT_OK);
+        if (this.getIntent().getBooleanExtra(TakePhoto.JSON_ARG_WITH_PREVIEW, false)) {
+            Intent intent = new Intent(this, PreviewActivity.class);
+            startActivityForResult(intent, R.RESULT_OK);
+        } else {
+            log.d(TAG, "no PreviewAcitivty");
+            try {
+                imageHelper.saveImage();
+            } catch (IOException e) {
+                log.e(TAG, "unable to save image", e);
+            }
+            Intent returnIntent = new Intent();
+            if (r.sBase64Image != null) {
+                returnIntent.putExtra("result", r.sBase64Image);
+                setResult(R.RESULT_OK, returnIntent);
+            } else {
+                log.e(TAG, "sBase64Image is empty");
+                log.e(TAG, "repeat capture");
+                setResult(R.RESULT_REPEAT, returnIntent);
+            }
+            finish();
+            
+        }
     }
     
     protected void startBackgroundThread() {
@@ -397,11 +423,13 @@ public class Camera2Activity extends Activity {
             case R.RESULT_OK:
                 log.d(TAG, "onActivityResult: result = OK");
                 setResult(RESULT_OK, data);
+                closeCamera();
                 finish();
                 break;
             case R.RESULT_CANCELED:
                 log.d(TAG, "onActivityResult: result = canceled");
                 setResult(RESULT_CANCELED);
+                closeCamera();
                 finish();
                 break;
             case R.RESULT_REPEAT:
