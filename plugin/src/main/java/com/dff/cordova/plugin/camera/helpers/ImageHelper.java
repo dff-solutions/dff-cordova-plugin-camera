@@ -4,18 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.Image;
-import android.os.Environment;
 import android.util.Base64;
 
 import com.dff.cordova.plugin.camera.res.R;
 import com.dff.cordova.plugin.camera.log.Log;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.util.Date;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -36,19 +31,20 @@ public class ImageHelper {
     }
     
     public void storeImage(Image image) {
+        log.d(TAG, "storeImage");
         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
         bytes = new byte[buffer.capacity()];
         buffer.get(bytes);
-        log.d(TAG, "storeImage");
         sBitmap = BitmapFactory
             .decodeByteArray(bytes, 0, bytes.length);
         
         rotateBitMap();
-        
+        r.sBase64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
     }
     
     public void saveImage() throws IOException {
         log.d(TAG, "saveImage");
+        /*
         final File file = new File(Environment.getExternalStorageDirectory() +
                                        "/pic" + new Date().getTime() + ".jpg");
         OutputStream output = null;
@@ -60,11 +56,11 @@ public class ImageHelper {
                 output.close();
             }
         }
-        r.sBase64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+        */
     }
     
     public void rotateBitMap() {
-        
+        log.d(TAG, "rotateBitMap");
         // rotate Image
         Matrix rotateMatrix = new Matrix();
         rotateMatrix.postRotate(90);

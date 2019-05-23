@@ -82,7 +82,7 @@ public class PreviewActivity extends Activity {
         ImageButton okButton = findViewById(r.getIdIdentifier(BUTTON_OK));
 
         cancelButton.setOnClickListener(view -> {
-            setResult(RESULT_CANCELED, new Intent());
+            setResult(R.RESULT_CANCELED, new Intent());
             finish();
         });
         repeatButton.setOnClickListener(view -> {
@@ -95,10 +95,10 @@ public class PreviewActivity extends Activity {
             } catch (IOException e) {
                 log.e(TAG, "unable to save image", e);
             }
-            Intent intent = new Intent();
-            intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            setResult(RESULT_OK, intent);
+            log.d(TAG, "finish");
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("result", "testResult");
+            setResult(R.RESULT_OK, returnIntent);
             finish();
         });
 

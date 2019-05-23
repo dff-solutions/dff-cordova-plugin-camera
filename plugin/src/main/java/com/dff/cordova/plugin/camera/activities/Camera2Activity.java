@@ -327,6 +327,11 @@ public class Camera2Activity extends Activity {
         }
     }
     
+    public void startPreviewActivity() {
+        Intent intent = new Intent(this, PreviewActivity.class);
+        startActivityForResult(intent, R.RESULT_OK);
+    }
+    
     protected void startBackgroundThread() {
         mBackgroundThread = new HandlerThread("Camera Background");
         mBackgroundThread.start();
@@ -382,8 +387,29 @@ public class Camera2Activity extends Activity {
     }
     
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        log.d(TAG, "SWEET VICTORY");
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        log.d(TAG, "onActivityResult: requestCode = " + requestCode);
+        log.d(TAG, "onActivityResult: resultCode = " + resultCode);
+        if (requestCode != resultCode) {
+            log.d(TAG, "onActivityResult: not expected result");
+        }
+        switch (resultCode) {
+            case R.RESULT_OK:
+                log.d(TAG, "onActivityResult: result = OK");
+                setResult(RESULT_OK, data);
+                finish();
+                break;
+            case R.RESULT_CANCELED:
+                log.d(TAG, "onActivityResult: result = canceled");
+                setResult(RESULT_CANCELED);
+                finish();
+                break;
+            case R.RESULT_REPEAT:
+                log.d(TAG, "onActivityResult: result = repeat");
+                break;
+            default:
+                break;
+        }
+        
     }
 }

@@ -46,7 +46,10 @@ public class R {
     }
 
     public static final int IMAGE_PREVIEW_REQUEST = 1;
+    
+    public static final int RESULT_OK = 1;
     public static final int RESULT_REPEAT = 2;
+    public static final int RESULT_CANCELED = 3;
 
     public Bitmap sBitmap;
     public String sBase64Image;
