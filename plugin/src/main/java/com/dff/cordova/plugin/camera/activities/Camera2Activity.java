@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
-import android.graphics.Point;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -26,7 +25,6 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 
 import com.dff.cordova.plugin.camera.actions.TakePhoto;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
@@ -99,13 +97,13 @@ public class Camera2Activity extends Activity {
     private ImageButton captureButton;
     private ImageButton flashButton;
     private ImageButton flipButton;
-    private Handler mBackgroundHandler;
+    public Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
     private CameraManager cameraManager;
     private String cameraId;
     private CameraCharacteristics characteristics;
     
-    private int flipMode = 0;
+    private int flipMode = 1;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +125,14 @@ public class Camera2Activity extends Activity {
     
         cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try {
+            for (String id : cameraManager.getCameraIdList()) {
+                CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(id);
+                int cameraOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
+                if (cameraOrientation == CameraCharacteristics.LENS_FACING_BACK) {
+                    cameraId = id;
+                    break;
+                }
+            }
             cameraId = cameraManager.getCameraIdList()[0];
         } catch (CameraAccessException e) {
             log.e(TAG, "unable to access camera.", e);
@@ -138,12 +144,8 @@ public class Camera2Activity extends Activity {
         
         orientationEventListener.addImageButton(flashButton);
         orientationEventListener.addImageButton(flipButton);
-    
-        Point displaySize = new Point();
-        this.getWindowManager().getDefaultDisplay().getSize(displaySize);
         
         textureView = findViewById(r.getIdIdentifier(TEXTURE_VIEW_ID));
-        textureView.setLayoutParams(new RelativeLayout.LayoutParams(displaySize.x, displaySize.y));
         textureView.setSurfaceTextureListener(surfaceListener);
         
         captureButton.setOnClickListener(new View.OnClickListener() {
@@ -173,9 +175,6 @@ public class Camera2Activity extends Activity {
         if (!hasFlashMode) {
             flashButton.setEnabled(false);
             flashButton.setVisibility(View.GONE);
-        } else {
-            //init flashMode
-            changeFlashMode();
         }
         
         boolean hasFrontCamera =
@@ -189,6 +188,8 @@ public class Camera2Activity extends Activity {
         }
     
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        
+        startBackgroundThread();
     }
     
     @Override
@@ -289,19 +290,36 @@ public class Camera2Activity extends Activity {
         }
         log.d(TAG, "take picture");
         try {
-            Size[] jpegSizes = null;
-            if (characteristics != null) {
-               jpegSizes =
-                   characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
-                                  .getOutputSizes(ImageFormat.JPEG);
-            }
+            //avoid error due to double clicks
+            flipButton.setEnabled(false);
+            captureButton.setEnabled(false);
+            flashButton.setEnabled(false);
+            
+            Size[] jpegSizes =
+                characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+                    .getOutputSizes(ImageFormat.JPEG);
+            
             int width = previewSize.getWidth();
             int height = previewSize.getHeight();
             
-            if (jpegSizes != null && 0 < jpegSizes.length) {
+            /*
+            if(jpegSizes != null && jpegSizes.length > 0){
                 width = jpegSizes[0].getWidth();
                 height = jpegSizes[0].getHeight();
             }
+            */
+            
+            
+            //limit size to 720p
+            for(Size size : jpegSizes){
+                if(size.getHeight() <= 720 && height < size.getHeight()){
+                    width = size.getWidth();
+                    height = size.getHeight();
+                }
+            }
+            
+            log.d(TAG, "width: " + width);
+            log.d(TAG, "height: " + height);
             
             ImageReader reader = ImageReader.newInstance(width, height, ImageFormat.JPEG,
                                                          1);
@@ -313,8 +331,28 @@ public class Camera2Activity extends Activity {
                 cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             captureBuilder.addTarget(reader.getSurface());
             captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
-            
-            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, 90);
+    
+            int screenRotation;
+            switch (orientationEventListener.currentRotaion) {
+                case 0:
+                    screenRotation = 90;
+                    break;
+                case 90:
+                    screenRotation = 0;
+                    break;
+                case 180:
+                    screenRotation = 270;
+                    break;
+                case 270:
+                    screenRotation = 180;
+                    break;
+                default:
+                    screenRotation = 90;
+                    break;
+            }
+            log.d(TAG, "screenRotation = " + screenRotation);
+            log.d(TAG, "orientationEvent = " + orientationEventListener.currentRotaion);
+            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, screenRotation);
             
             log.d(TAG, "set OnImageAvailableListener");
             reader.setOnImageAvailableListener(availableImageListener, mBackgroundHandler);
@@ -327,6 +365,10 @@ public class Camera2Activity extends Activity {
                 cameraCaptureStateCallback,
                 mBackgroundHandler
             );
+    
+            flipButton.setEnabled(true);
+            captureButton.setEnabled(true);
+            flashButton.setEnabled(true);
             
         } catch (CameraAccessException e) {
             log.e(TAG, "error while accessing camera", e);
@@ -338,12 +380,14 @@ public class Camera2Activity extends Activity {
             Intent intent = new Intent(this, PreviewActivity.class);
             startActivityForResult(intent, R.RESULT_OK);
         } else {
-            log.d(TAG, "no PreviewAcitivty");
+            log.d(TAG, "show no PreviewActivity");
+            
             try {
                 imageHelper.saveImage();
             } catch (IOException e) {
                 log.e(TAG, "unable to save image", e);
             }
+           
             Intent returnIntent = new Intent();
             if (r.sBase64Image != null) {
                 returnIntent.putExtra("result", r.sBase64Image);
@@ -377,17 +421,20 @@ public class Camera2Activity extends Activity {
     
     private void changeFlashMode() {
         buttonHelper.changeFlashButton(captureRequest, flashButton);
-        closeCamera();
-        openCamera();
+        updatePreview();
     }
     
     private void changeCamera() {
         if (flipMode == 0) {
-            log.d(TAG, "flip to front camera");
+            log.d(TAG, "flip to back camera");
             try {
                 for (String id : cameraManager.getCameraIdList()) {
-                    if (id.equals(CameraCharacteristics.LENS_FACING_BACK)) {
+                    CameraCharacteristics characteristics =
+                        cameraManager.getCameraCharacteristics(id);
+                    int cameraOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
+                    if (cameraOrientation == CameraCharacteristics.LENS_FACING_BACK) {
                         cameraId = id;
+                        log.d(TAG, "cameraId: " + id);
                     }
                 }
             } catch (CameraAccessException e) {
@@ -398,8 +445,12 @@ public class Camera2Activity extends Activity {
             log.d(TAG, "flip to front camera");
             try {
                 for (String id : cameraManager.getCameraIdList()) {
-                    if (id.equals(CameraCharacteristics.LENS_FACING_FRONT)) {
+                    CameraCharacteristics characteristics =
+                        cameraManager.getCameraCharacteristics(id);
+                    int cameraOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
+                    if (cameraOrientation == CameraCharacteristics.LENS_FACING_FRONT) {
                         cameraId = id;
+                        log.d(TAG, "cameraId: " + id);
                     }
                 }
             } catch (CameraAccessException e) {
@@ -421,19 +472,19 @@ public class Camera2Activity extends Activity {
         }
         switch (resultCode) {
             case R.RESULT_OK:
-                log.d(TAG, "onActivityResult: result = OK");
-                setResult(RESULT_OK, data);
+                log.d(TAG, "onActivityResult: setresult = OK");
+                setResult(R.RESULT_OK, data);
                 closeCamera();
                 finish();
                 break;
             case R.RESULT_CANCELED:
-                log.d(TAG, "onActivityResult: result = canceled");
-                setResult(RESULT_CANCELED);
+                log.d(TAG, "onActivityResult: set result = canceled");
+                setResult(R.RESULT_CANCELED);
                 closeCamera();
                 finish();
                 break;
             case R.RESULT_REPEAT:
-                log.d(TAG, "onActivityResult: result = repeat");
+                log.d(TAG, "onActivityResult: set result = repeat");
                 break;
             default:
                 break;

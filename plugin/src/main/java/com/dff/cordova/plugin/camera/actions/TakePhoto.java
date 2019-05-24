@@ -41,15 +41,16 @@ public class TakePhoto extends PluginAction {
         Intent intent = new Intent(context, Camera2Activity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(JSON_ARG_WITH_PREVIEW, withPreview);
-
+    
+        // TODO keep callback and return Photo
+        log.d(TAG, "set CallbackContext to r");
+        r.setCallBackContext(callbackContext);
+        
         cameraPlugin.cordova.startActivityForResult(
             cameraPlugin,
             intent,
             R.RESULT_OK
         );
-        
-        // TODO keep callback and return Photo
-        r.setCallBackContext(callbackContext);
     }
 
     @Override

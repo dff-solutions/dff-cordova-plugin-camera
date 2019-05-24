@@ -37,7 +37,7 @@
         android:layout_marginBottom="32dp"
         android:background="@null"
         android:gravity="center"
-        android:src="@drawable/ic_flash_auto_white_24px" />
+        android:src="@drawable/ic_flash_off_white_24px" />
 
     <ImageButton
         android:id="@+id/flip_button"
@@ -49,6 +49,6 @@
         android:layout_marginBottom="32dp"
         android:background="@null"
         android:gravity="center"
-        android:src="@drawable/ic_switch_cam_back" />
+        android:src="@drawable/ic_switch_cam_front" />
 
 </RelativeLayout>

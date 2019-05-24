@@ -83,18 +83,22 @@ public class PreviewActivity extends Activity {
 
         cancelButton.setOnClickListener(view -> {
             setResult(R.RESULT_CANCELED, new Intent());
+            log.d(TAG, "finish Preview Activity. Result = canceled");
             finish();
         });
         repeatButton.setOnClickListener(view -> {
             setResult(R.RESULT_REPEAT);
+            log.d(TAG, "finish Preview Activity. Result = repeat");
             finish();
         });
         okButton.setOnClickListener(view -> {
+            
             try {
                 imageHelper.saveImage();
             } catch (IOException e) {
                 log.e(TAG, "unable to save image", e);
             }
+            
             Intent returnIntent = new Intent();
             if (r.sBase64Image != null) {
                 returnIntent.putExtra("result", r.sBase64Image);
@@ -104,6 +108,7 @@ public class PreviewActivity extends Activity {
                 log.e(TAG, "repeat capture");
                 setResult(R.RESULT_REPEAT, returnIntent);
             }
+            log.d(TAG, "finish Preview Activity. Result = ok");
             finish();
         });
 

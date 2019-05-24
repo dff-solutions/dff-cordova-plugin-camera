@@ -36,8 +36,30 @@ public class CameraStateCallback extends CameraDevice.StateCallback {
     
     @Override
     public void onError(@NonNull CameraDevice camera, int error) {
-        log.e(TAG, "error on cameraDevice. closing camera");
+        String errorText = "none";
+        switch (error) {
+            case ERROR_CAMERA_IN_USE:
+                errorText = "ERROR_CAMERA_IN_USE";
+                break;
+            case ERROR_MAX_CAMERAS_IN_USE:
+                errorText = "ERROR_MAX_CAMERAS_IN_USE";
+                break;
+            case ERROR_CAMERA_DISABLED:
+                errorText = "ERROR_CAMERA_DISABLED";
+                break;
+            case ERROR_CAMERA_DEVICE:
+                errorText = "ERROR_CAMERA_DEVICE";
+                break;
+            case ERROR_CAMERA_SERVICE:
+                errorText = "ERROR_CAMERA_SERVICE";
+                break;
+            default:
+                break;
+        }
+        log.e(TAG, errorText + ". closing camera. errorCode: " + error);
+        
         camera2Activity.closeCamera();
+        camera2Activity.finish();
     }
     
     public void setCamera2Activity(Camera2Activity camera2Activity) {

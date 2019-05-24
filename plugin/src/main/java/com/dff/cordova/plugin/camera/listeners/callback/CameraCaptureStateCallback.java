@@ -29,6 +29,7 @@ public class CameraCaptureStateCallback extends CameraCaptureSession.StateCallba
     
     @Override
     public void onConfigured(@NonNull CameraCaptureSession session) {
+        log.d(TAG, "onConfigured");
         try {
             session.capture(captureBuilder.build(), captureListener,
                             mBackgroundHandler);
@@ -40,9 +41,12 @@ public class CameraCaptureStateCallback extends CameraCaptureSession.StateCallba
     @Override
     public void onConfigureFailed(@NonNull CameraCaptureSession session) {
         log.e(TAG, "configuration falled @ createCaptureSession");
+        log.e(TAG, "onDevice: " + session.getDevice());
+        log.e(TAG, "session to string: " + session.toString());
     }
     
     public void setCamera2Activity(Camera2Activity camera2Activity) {
         captureListener.camera2Activity = camera2Activity;
+        mBackgroundHandler = camera2Activity.mBackgroundHandler;
     }
 }

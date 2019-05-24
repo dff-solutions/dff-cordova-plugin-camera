@@ -2,6 +2,7 @@ package com.dff.cordova.plugin.camera;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 
 import com.dff.cordova.plugin.camera.actions.PluginAction;
@@ -164,5 +165,15 @@ public class CameraPlugin extends CordovaPlugin {
         }
 
         return allGranted;
+    }
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        log.d(TAG, "onActivityResult: requestCode = " + requestCode);
+        log.d(TAG, "onActivityResult: resultCode = " + resultCode);
+        if (requestCode != resultCode) {
+            log.d(TAG, "onActivityResult: not expected result");
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

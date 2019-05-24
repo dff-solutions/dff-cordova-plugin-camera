@@ -30,7 +30,7 @@ public class ButtonHelper {
     
     private R r;
     private Log log;
-    private int flashMode = 1;
+    private int flashMode = 2;
     
     @Inject
     public ButtonHelper(R r, Log log) {
@@ -66,8 +66,8 @@ public class ButtonHelper {
         
         switch (flashMode) {
             case 0:
-                log.d(TAG, "single flash");
-                button.setImageResource(r.getDrawableIdentifier(IC_FLASH_AUTO));
+                log.d(TAG, "single flash / flash on");
+                button.setImageResource(r.getDrawableIdentifier(IC_FLASH_ON));
                 captureRequest.set(CaptureRequest.CONTROL_AE_MODE,
                                    CaptureRequest.CONTROL_AE_MODE_ON_ALWAYS_FLASH);
                 captureRequest.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_SINGLE);
@@ -75,7 +75,7 @@ public class ButtonHelper {
                 break;
             case 1:
                 log.d(TAG, "flash off");
-                button.setImageResource(r.getDrawableIdentifier(IC_FLASH_ON));
+                button.setImageResource(r.getDrawableIdentifier(IC_FLASH_OFF));
                 captureRequest.set(CaptureRequest.CONTROL_AE_MODE,
                                    CaptureRequest.CONTROL_AE_MODE_ON);
                 captureRequest.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
@@ -83,7 +83,7 @@ public class ButtonHelper {
                 break;
             case 2:
                 log.d(TAG, "auto flash");
-                button.setImageResource(r.getDrawableIdentifier(IC_FLASH_OFF));
+                button.setImageResource(r.getDrawableIdentifier(IC_FLASH_AUTO));
                 captureRequest.set(CaptureRequest.CONTROL_AE_MODE,
                                    CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
                 captureRequest.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
