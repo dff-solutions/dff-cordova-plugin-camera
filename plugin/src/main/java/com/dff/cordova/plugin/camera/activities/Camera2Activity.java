@@ -284,13 +284,12 @@ public class Camera2Activity extends Activity {
         if (cameraDevice == null) {
             log.e(TAG, "no cameraDevice");
         }
-        
         captureRequest.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
         try {
             cameraCaptureSession.setRepeatingRequest(captureRequest.build(), null,
                                                      null);
         } catch (CameraAccessException e) {
-            log.e(TAG, "error while creating ");
+            log.e(TAG, "error while setting repeating request", e);
         }
     }
     
@@ -471,8 +470,6 @@ public class Camera2Activity extends Activity {
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        log.d(TAG, "onActivityResult: requestCode = " + requestCode);
-        log.d(TAG, "onActivityResult: resultCode = " + resultCode);
         if (requestCode != resultCode) {
             log.d(TAG, "onActivityResult: not expected result");
         }
