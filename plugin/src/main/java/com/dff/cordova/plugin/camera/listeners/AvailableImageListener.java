@@ -1,4 +1,4 @@
-package com.dff.cordova.plugin.camera.listeners.callback;
+package com.dff.cordova.plugin.camera.listeners;
 
 import android.media.Image;
 import android.media.ImageReader;
@@ -33,10 +33,6 @@ public class AvailableImageListener implements ImageReader.OnImageAvailableListe
             log.d(TAG, "close Image.");
             image.close();
         }
-        startImagePreview();
-    }
-    
-    private void startImagePreview() {
         log.d(TAG, "startImagePreview");
         camera2Activity.startPreviewActivity();
     }

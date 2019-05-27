@@ -12,7 +12,7 @@ import javax.inject.Inject;
 public class CameraCaptureCallback extends CameraCaptureSession.CaptureCallback {
     private static final String TAG = "CameraCaptureCallback";
     private Log log;
-    public Camera2Activity camera2Activity;
+    private Camera2Activity camera2Activity;
     
     @Inject
     public CameraCaptureCallback(Log log) {
@@ -26,5 +26,9 @@ public class CameraCaptureCallback extends CameraCaptureSession.CaptureCallback 
         log.d(TAG, "onCaptureStarted");
         super.onCaptureStarted(session, request, timestamp, frameNumber);
         camera2Activity.startCameraPreview();
+    }
+    
+    public void setCamera2Activity(Camera2Activity camera2Activity) {
+        this.camera2Activity = camera2Activity;
     }
 }

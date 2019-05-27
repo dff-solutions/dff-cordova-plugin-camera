@@ -33,7 +33,7 @@ import com.dff.cordova.plugin.camera.helpers.ImageHelper;
 import com.dff.cordova.plugin.camera.helpers.PermissionHelper;
 import com.dff.cordova.plugin.camera.listeners.OrientationListener;
 import com.dff.cordova.plugin.camera.listeners.SurfaceListener;
-import com.dff.cordova.plugin.camera.listeners.callback.AvailableImageListener;
+import com.dff.cordova.plugin.camera.listeners.AvailableImageListener;
 import com.dff.cordova.plugin.camera.listeners.callback.CameraCaptureStateCallback;
 import com.dff.cordova.plugin.camera.listeners.callback.CameraPreviewStateCallback;
 import com.dff.cordova.plugin.camera.listeners.callback.CameraStateCallback;

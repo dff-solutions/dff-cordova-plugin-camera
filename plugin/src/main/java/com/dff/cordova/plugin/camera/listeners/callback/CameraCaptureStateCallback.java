@@ -46,7 +46,7 @@ public class CameraCaptureStateCallback extends CameraCaptureSession.StateCallba
     }
     
     public void setCamera2Activity(Camera2Activity camera2Activity) {
-        captureListener.camera2Activity = camera2Activity;
+        captureListener.setCamera2Activity(camera2Activity);
         mBackgroundHandler = camera2Activity.mBackgroundHandler;
     }
 }

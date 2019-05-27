@@ -69,9 +69,9 @@
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/JsonFactory.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/PackageManagerHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/PermissionHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/listeners/AvailableImageListener.java" target-dir="src/com/dff/cordova/plugin/camera/listeners"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/listeners/OrientationListener.java" target-dir="src/com/dff/cordova/plugin/camera/listeners"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/listeners/SurfaceListener.java" target-dir="src/com/dff/cordova/plugin/camera/listeners"/>
-    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/listeners/callback/AvailableImageListener.java" target-dir="src/com/dff/cordova/plugin/camera/listeners/callback"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/listeners/callback/CameraCaptureCallback.java" target-dir="src/com/dff/cordova/plugin/camera/listeners/callback"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/listeners/callback/CameraCaptureStateCallback.java" target-dir="src/com/dff/cordova/plugin/camera/listeners/callback"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/listeners/callback/CameraPreviewStateCallback.java" target-dir="src/com/dff/cordova/plugin/camera/listeners/callback"/>
