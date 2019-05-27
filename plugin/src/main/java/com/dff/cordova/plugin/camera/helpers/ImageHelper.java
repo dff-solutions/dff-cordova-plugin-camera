@@ -62,7 +62,7 @@ public class ImageHelper {
     public void saveImage() throws IOException {
         log.d(TAG, "saveImage");
         
-        final File file = new File(Environment.getExternalStorageDirectory() +
+        final File file = new File("/storage/emulated/0/DCIM/Camera" +
                                        "/pic" + new Date().getTime() + ".jpg");
         OutputStream output = null;
         try {
