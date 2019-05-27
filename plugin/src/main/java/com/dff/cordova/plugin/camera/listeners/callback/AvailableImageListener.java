@@ -30,6 +30,7 @@ public class AvailableImageListener implements ImageReader.OnImageAvailableListe
         
         imageHelper.storeImage(image);
         if (image != null) {
+            log.d(TAG, "close Image.");
             image.close();
         }
         startImagePreview();

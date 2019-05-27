@@ -2,7 +2,6 @@ package com.dff.cordova.plugin.camera.helpers;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.media.Image;
 import android.os.Environment;
 import android.util.Base64;
@@ -58,21 +57,10 @@ public class ImageHelper {
             output.write(bytes);
         } finally {
             if (null != output) {
+                log.d(TAG, "close outputStream");
                 output.close();
             }
         }
-        
-    }
-    
-    public void rotateBitMap() {
-        log.d(TAG, "rotateBitMap");
-        // rotate Image
-        Matrix rotateMatrix = new Matrix();
-        rotateMatrix.postRotate(90);
-        Bitmap rotatedBitmap = Bitmap.createBitmap(sBitmap, 0,
-                                                   0, sBitmap.getWidth(), sBitmap.getHeight(),
-                                                   rotateMatrix, false);
-        sBitmap = rotatedBitmap;
         
     }
 }

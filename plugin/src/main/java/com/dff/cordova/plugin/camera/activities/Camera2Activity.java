@@ -102,6 +102,7 @@ public class Camera2Activity extends Activity {
     private CameraManager cameraManager;
     private String cameraId;
     private CameraCharacteristics characteristics;
+    private ImageReader reader;
     
     private int flipMode = 1;
     
@@ -301,18 +302,17 @@ public class Camera2Activity extends Activity {
             
             int width = previewSize.getWidth();
             int height = previewSize.getHeight();
+    
+            log.d(TAG, "previewWidth: " + width);
+            log.d(TAG, "previewHeight: " + height);
             
-            /*
-            if(jpegSizes != null && jpegSizes.length > 0){
-                width = jpegSizes[0].getWidth();
-                height = jpegSizes[0].getHeight();
-            }
-            */
-            
-            
-            //limit size to 720p
-            for(Size size : jpegSizes){
-                if(size.getHeight() <= 720 && height < size.getHeight()){
+            //choose maximum size
+            for (Size size : jpegSizes) {
+                if ((size.getHeight() % previewSize.getHeight()) == 0 && (
+                    size.getWidth() % previewSize.getWidth()) == 0 &&
+                    size.getHeight() > height &&
+                    size.getHeight() <= 1080
+                ) {
                     width = size.getWidth();
                     height = size.getHeight();
                 }
@@ -321,7 +321,7 @@ public class Camera2Activity extends Activity {
             log.d(TAG, "width: " + width);
             log.d(TAG, "height: " + height);
             
-            ImageReader reader = ImageReader.newInstance(width, height, ImageFormat.JPEG,
+            reader = ImageReader.newInstance(width, height, ImageFormat.JPEG,
                                                          1);
             List<Surface> outputSurfaces = new ArrayList<Surface>(2);
             outputSurfaces.add(reader.getSurface());
@@ -376,18 +376,19 @@ public class Camera2Activity extends Activity {
     }
     
     public void startPreviewActivity() {
+        log.d(TAG, "close ImageReader");
+        reader.close();
+        
         if (this.getIntent().getBooleanExtra(TakePhoto.JSON_ARG_WITH_PREVIEW, false)) {
             Intent intent = new Intent(this, PreviewActivity.class);
             startActivityForResult(intent, R.RESULT_OK);
         } else {
             log.d(TAG, "show no PreviewActivity");
-            
             try {
                 imageHelper.saveImage();
             } catch (IOException e) {
                 log.e(TAG, "unable to save image", e);
             }
-           
             Intent returnIntent = new Intent();
             if (r.sBase64Image != null) {
                 returnIntent.putExtra("result", r.sBase64Image);
@@ -398,7 +399,6 @@ public class Camera2Activity extends Activity {
                 setResult(R.RESULT_REPEAT, returnIntent);
             }
             finish();
-            
         }
     }
     
@@ -472,7 +472,7 @@ public class Camera2Activity extends Activity {
         }
         switch (resultCode) {
             case R.RESULT_OK:
-                log.d(TAG, "onActivityResult: setresult = OK");
+                log.d(TAG, "onActivityResult: set result = OK");
                 setResult(R.RESULT_OK, data);
                 closeCamera();
                 finish();
@@ -489,6 +489,5 @@ public class Camera2Activity extends Activity {
             default:
                 break;
         }
-        
     }
 }
