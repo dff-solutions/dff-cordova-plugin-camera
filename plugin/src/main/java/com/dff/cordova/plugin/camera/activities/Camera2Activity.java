@@ -145,8 +145,9 @@ public class Camera2Activity extends Activity {
         flashButton = findViewById(r.getIdIdentifier(FLASH_BUTTON));
         flipButton =  findViewById(r.getIdIdentifier(FLIP_BUTTON));
         
-        orientationEventListener.addImageButton(flashButton);
-        orientationEventListener.addImageButton(flipButton);
+        buttonHelper.addImageButton(flashButton);
+        buttonHelper.addImageButton(flipButton);
+        buttonHelper.addImageButton(captureButton);
         
         textureView = findViewById(r.getIdIdentifier(TEXTURE_VIEW_ID));
         textureView.setSurfaceTextureListener(surfaceListener);
@@ -301,32 +302,15 @@ public class Camera2Activity extends Activity {
         log.d(TAG, "take picture");
         try {
             //avoid error due to double clicks
-            flipButton.setEnabled(false);
-            captureButton.setEnabled(false);
-            flashButton.setEnabled(false);
+            buttonHelper.enableAllButtons(false);
             
-            Size[] jpegSizes =
-                characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
-                    .getOutputSizes(ImageFormat.JPEG);
-            
-            int width = previewSize.getWidth();
-            int height = previewSize.getHeight();
-    
-            //choose maximum size
-            for (Size size : jpegSizes) {
-                if ((size.getHeight() % previewSize.getHeight()) == 0 && (
-                    size.getWidth() % previewSize.getWidth()) == 0 &&
-                    size.getHeight() > height &&
-                    size.getHeight() <= 1080
-                ) {
-                    width = size.getWidth();
-                    height = size.getHeight();
-                }
-            }
-            log.d(TAG, "width: " + width);
-            log.d(TAG, "height: " + height);
-            reader = ImageReader.newInstance(width, height, ImageFormat.JPEG,
-                                                         1);
+            Size optimalSize = imageHelper.getOptimalImageSize(characteristics, previewSize);
+            reader = ImageReader.newInstance(
+                optimalSize.getWidth(),
+                optimalSize.getHeight(),
+                ImageFormat.JPEG,
+                1
+            );
             List<Surface> outputSurfaces = new ArrayList<Surface>(2);
             outputSurfaces.add(reader.getSurface());
             outputSurfaces.add(new Surface(textureView.getSurfaceTexture()));
@@ -336,24 +320,7 @@ public class Camera2Activity extends Activity {
             captureBuilder.addTarget(reader.getSurface());
             captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
     
-            int screenRotation;
-            switch (orientationEventListener.currentRotaion) {
-                case 0:
-                    screenRotation = 90;
-                    break;
-                case 90:
-                    screenRotation = 0;
-                    break;
-                case 180:
-                    screenRotation = 270;
-                    break;
-                case 270:
-                    screenRotation = 180;
-                    break;
-                default:
-                    screenRotation = 90;
-                    break;
-            }
+            int screenRotation = orientationEventListener.getImageRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, screenRotation);
             
             reader.setOnImageAvailableListener(availableImageListener, mBackgroundHandler);
@@ -367,9 +334,7 @@ public class Camera2Activity extends Activity {
                 mBackgroundHandler
             );
     
-            flipButton.setEnabled(true);
-            captureButton.setEnabled(true);
-            flashButton.setEnabled(true);
+            buttonHelper.enableAllButtons(true);
             
         } catch (CameraAccessException e) {
             log.e(TAG, "error while accessing camera", e);

@@ -2,14 +2,10 @@ package com.dff.cordova.plugin.camera.listeners;
 
 import android.content.Context;
 import android.view.OrientationEventListener;
-import android.widget.ImageButton;
 
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 import com.dff.cordova.plugin.camera.helpers.ButtonHelper;
 import com.dff.cordova.plugin.camera.log.Log;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -24,7 +20,6 @@ import javax.inject.Inject;
 public class OrientationListener extends OrientationEventListener {
     private static final String TAG = "OrientationListener";
     private ButtonHelper buttonHelper;
-    private List<ImageButton> imageButtonList = new ArrayList<>();
     public int currentRotaion = 0;
     private Log log;
     
@@ -48,24 +43,47 @@ public class OrientationListener extends OrientationEventListener {
         */
         if ((orientation < 15 || orientation > 345) && currentRotaion != 0) {
             log.d(TAG, "setting rotation to 0");
-            buttonHelper.rotate(currentRotaion, 0, imageButtonList);
+            buttonHelper.rotate(currentRotaion, 0);
             currentRotaion = 0;
         } else if ((orientation >= 75 && orientation < 105) && currentRotaion != 270) {
             log.d(TAG, "setting rotation to -90");
-            buttonHelper.rotate(currentRotaion, 270, imageButtonList);
+            buttonHelper.rotate(currentRotaion, 270);
             currentRotaion = 270;
         } else if ((orientation >= 165 && orientation < 195) && currentRotaion != 180) {
             log.d(TAG, "setting rotation to 180");
-            buttonHelper.rotate(currentRotaion, 180, imageButtonList);
+            buttonHelper.rotate(currentRotaion, 180);
             currentRotaion = 180;
         } else if ((orientation >= 255 && orientation < 285) && currentRotaion != 90) {
             log.d(TAG, "setting rotation to 90");
-            buttonHelper.rotate(currentRotaion, 90, imageButtonList);
+            buttonHelper.rotate(currentRotaion, 90);
             currentRotaion = 90;
         }
     }
     
-    public void addImageButton(ImageButton button) {
-        imageButtonList.add(button);
+    /**
+     * Returns Rotation so the image doesn't need to be rotated.
+     *
+     * @return rotation so the image doesn't need to be rotated.
+     */
+    public int getImageRotation() {
+        int screenRotation;
+        switch (currentRotaion) {
+            case 0:
+                screenRotation = 90;
+                break;
+            case 90:
+                screenRotation = 0;
+                break;
+            case 180:
+                screenRotation = 270;
+                break;
+            case 270:
+                screenRotation = 180;
+                break;
+            default:
+                screenRotation = 90;
+                break;
+        }
+        return screenRotation;
     }
 }

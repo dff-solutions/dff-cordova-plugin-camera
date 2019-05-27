@@ -10,6 +10,8 @@ import com.dff.cordova.plugin.camera.res.R;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +33,7 @@ public class ButtonHelper {
     private R r;
     private Log log;
     private int flashMode = 2;
+    private List<ImageButton> imageButtonList = new ArrayList<>();
     
     @Inject
     public ButtonHelper(R r, Log log) {
@@ -44,9 +47,8 @@ public class ButtonHelper {
      *
      * @param fromDegrees - the start degree value
      * @param toDegree    - the target degree value
-     * @param list        - the list that stored the imagebuttons to be rotated
      */
-    public void rotate(float fromDegrees, float toDegree, List<ImageButton> list) {
+    public void rotate(float fromDegrees, float toDegree) {
         final RotateAnimation rotateAnim = new RotateAnimation(fromDegrees, toDegree,
             RotateAnimation.RELATIVE_TO_SELF, 0.5f,
             RotateAnimation.RELATIVE_TO_SELF, 0.5f);
@@ -54,7 +56,7 @@ public class ButtonHelper {
         rotateAnim.setDuration(250);
         rotateAnim.setFillAfter(true);
 
-        for (ImageButton imageButton : list) {
+        for (ImageButton imageButton : imageButtonList) {
             if (imageButton.getVisibility() != View.GONE) {
                 imageButton.startAnimation(rotateAnim);
             }
@@ -112,6 +114,23 @@ public class ButtonHelper {
             button.setImageResource(r.getDrawableIdentifier(IC_CAMERA_BACK));
         } else {
             button.setImageResource(r.getDrawableIdentifier(IC_CAMERA_FRONT));
+        }
+    }
+    
+    public void addImageButton(ImageButton button) {
+        imageButtonList.add(button);
+    }
+    
+    /**
+     * Enables or disables all buttons.
+     *
+     * @param enable true = enable, false = disable
+     */
+    public void enableAllButtons(boolean enable) {
+        for (ImageButton imageButton : imageButtonList) {
+            if (imageButton.getVisibility() != View.GONE) {
+                imageButton.setEnabled(enable);
+            }
         }
     }
 }

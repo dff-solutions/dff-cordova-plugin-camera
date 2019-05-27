@@ -2,9 +2,11 @@ package com.dff.cordova.plugin.camera.helpers;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
+import android.hardware.camera2.CameraCharacteristics;
 import android.media.Image;
-import android.os.Environment;
 import android.util.Base64;
+import android.util.Size;
 
 import com.dff.cordova.plugin.camera.res.R;
 import com.dff.cordova.plugin.camera.log.Log;
@@ -74,6 +76,33 @@ public class ImageHelper {
                 output.close();
             }
         }
+    }
+    
+    /**
+     * Returns the optimal size for the image.
+     *
+     * @param characteristics properties describing a CameraDevice
+     * @param previewSize size of the prewview screen
+     * @return optimal image size
+     */
+    public Size getOptimalImageSize(CameraCharacteristics characteristics, Size previewSize) {
+        Size[] jpegSizes =
+            characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+                .getOutputSizes(ImageFormat.JPEG);
+            
+        Size optimalSize = previewSize;
+        for (Size size : jpegSizes) {
+            if ((size.getHeight() % previewSize.getHeight()) == 0 && (
+                size.getWidth() % previewSize.getWidth()) == 0 &&
+                size.getHeight() > optimalSize.getHeight() &&
+                size.getHeight() <= 1080
+            ) {
+                optimalSize = size;
+            }
+        }
+        log.d(TAG, "width: " + optimalSize.getWidth());
+        log.d(TAG, "height: " + optimalSize.getHeight());
         
+        return optimalSize;
     }
 }

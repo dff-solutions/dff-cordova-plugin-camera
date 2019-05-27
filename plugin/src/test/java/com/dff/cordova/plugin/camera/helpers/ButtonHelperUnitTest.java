@@ -16,6 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
@@ -53,10 +55,9 @@ public class ButtonHelperUnitTest {
     public void shouldRotateButton(){
         doReturn(View.VISIBLE).when(button).getVisibility();
         
-        ArrayList<ImageButton> list = new ArrayList();
-        list.add(button);
+        buttonHelper.addImageButton(button);
         
-        buttonHelper.rotate(0.0f, 2.0f, list);
+        buttonHelper.rotate(0.0f, 2.0f);
         
         verify(button).getVisibility();
         verify(button).startAnimation(any());
@@ -103,5 +104,18 @@ public class ButtonHelperUnitTest {
         buttonHelper.changeFlipButton(button, CAMERA_FRONT);
     
         verify(button).setImageResource(CAMERA_FRONT);
+    }
+    
+    @Test
+    public void shouldDisableButtons() {
+        buttonHelper.addImageButton(button);
+        
+        buttonHelper.enableAllButtons(false);
+        assertFalse(button.isEnabled());
+        
+        doReturn(true).when(button).isEnabled();
+        
+        buttonHelper.enableAllButtons(true);
+        assertTrue(button.isEnabled());
     }
 }
