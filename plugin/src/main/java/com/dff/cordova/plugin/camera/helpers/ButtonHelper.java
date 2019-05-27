@@ -94,16 +94,12 @@ public class ButtonHelper {
         }
     }
     
-    public String changeFlipButton(ImageButton button, int flipMode) {
+    public void changeFlipButton(ImageButton button, int flipMode) {
         log.d(TAG, "changeCamera");
-        
-        String cameraId = "1";
         if (flipMode == 0) {
             button.setImageResource(r.getDrawableIdentifier(IC_CAMERA_BACK));
         } else {
             button.setImageResource(r.getDrawableIdentifier(IC_CAMERA_FRONT));
         }
-        
-        return cameraId;
     }
 }
