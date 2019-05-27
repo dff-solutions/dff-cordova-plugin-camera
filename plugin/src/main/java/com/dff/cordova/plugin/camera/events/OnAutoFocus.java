@@ -1,5 +1,8 @@
 package com.dff.cordova.plugin.camera.events;
 
+/**
+ * Class with a boolean "isSuccess".
+ */
 public class OnAutoFocus {
 
     private boolean isSuccess;

@@ -13,6 +13,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+/**
+ * Helper class for receiving notifications from the SensorManager when the orientation of
+ * the device has changed.
+ * Has a list of button to rotate them.
+ *
+ * @see <a href="https://developer.android.com/reference/android/view/OrientationEventListener"
+ *     >https://developer.android.com/reference/android/view/OrientationEventListener</a>
+ */
 public class OrientationListener extends OrientationEventListener {
     private static final String TAG = "OrientationListener";
     private ButtonHelper buttonHelper;

@@ -8,6 +8,12 @@ import org.json.JSONObject;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+/**
+ * This class converts a Throwable into a JSONObject.
+ *
+ * @see <a href="https://docs.oracle.com/javase/9/docs/api/java/lang/Throwable.html"
+ *      >https://docs.oracle.com/javase/9/docs/api/java/lang/Throwable.html</a>
+ */
 @Singleton
 public class JsonThrowable {
     private static final String JSON_ARG_CLASSNAME = "className";
@@ -26,7 +32,14 @@ public class JsonThrowable {
         this.jsonStacktrace = jsonStacktrace;
         this.jsonFactory = jsonFactory;
     }
-
+    
+    /**
+     * Converts a throwable into a JSONObject.
+     *
+     * @param e superclass of all errors and exceptions
+     * @return parsed JSONObject or null
+     * @throws JSONException Exception for parsing JSON
+     */
     public JSONObject toJson(Throwable e) throws JSONException {
         JSONObject jsonThrowable = null;
 

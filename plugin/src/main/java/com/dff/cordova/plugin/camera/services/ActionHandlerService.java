@@ -16,6 +16,12 @@ import com.dff.cordova.plugin.camera.log.Log;
 
 import javax.inject.Inject;
 
+/**
+ * ActionHandlerService manages the call of the actions.
+ * Actions are executed in order. (first in first out)
+ *
+ * @see <a href="https://developer.android.com/guide/components/services">https://developer.android.com/guide/components/services</a>
+ */
 @ActionHandlerScope
 public class ActionHandlerService extends Service implements MessageQueue.IdleHandler {
     private static final String TAG = "ActionHandlerService";

@@ -118,7 +118,12 @@ public class PreviewSurfaceView extends SurfaceView {
         this.mEventBus = eventBus;
         this.mEventBus.register(this);
     }
-
+    
+    /**
+     * set the auto focus.
+     *
+     * @param event OnAutoFocus event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAutoFocus(final OnAutoFocus event) {
         Handler handler = new Handler();

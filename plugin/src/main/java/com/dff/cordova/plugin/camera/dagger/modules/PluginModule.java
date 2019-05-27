@@ -17,6 +17,9 @@ import javax.inject.Provider;
 import dagger.Module;
 import dagger.Provides;
 
+/**
+ * Module for dependency injection.
+ */
 @Module
 public class PluginModule {
     private CordovaInterface cordovaInterface;

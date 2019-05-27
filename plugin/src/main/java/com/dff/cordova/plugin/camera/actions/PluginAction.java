@@ -14,6 +14,10 @@ import java.util.Arrays;
 
 import javax.inject.Inject;
 
+/**
+ *  The PluginAction class provides general settings, logging and error handling for actions.
+ *  A PluginAction  subclass has to implement the execute method.
+ */
 public abstract class PluginAction implements Runnable {
     public static final String TAG = "PluginAction";
 

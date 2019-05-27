@@ -6,6 +6,9 @@ import com.dff.cordova.plugin.camera.dagger.annotations.ActionHandlerScope;
 
 import javax.inject.Inject;
 
+/**
+ * This class contains the ActionHandlerService.
+ */
 @ActionHandlerScope
 public class ActionHandlerServiceBinder extends Binder {
     private ActionHandlerService actionHandlerService;

@@ -6,10 +6,16 @@ import com.dff.cordova.plugin.camera.dagger.modules.PluginModule;
 
 import dagger.Subcomponent;
 
+/**
+ * Component for dependency injection.
+ */
 @PluginComponentScope
 @Subcomponent(modules = { PluginModule.class })
 public interface PluginComponent {
-
+    
+    /**
+     * Builder interface.
+     */
     @Subcomponent.Builder
     interface Builder {
         Builder pluginModule(PluginModule module);

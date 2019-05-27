@@ -19,6 +19,9 @@ import java.util.Date;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+/**
+ * Provides methods to store an image.
+ */
 @Singleton
 public class ImageHelper {
     private static final String TAG = "ImageHelper";
@@ -34,6 +37,11 @@ public class ImageHelper {
         this.r = r;
     }
     
+    /**
+     * stores the image as sBase64 String in r.
+     *
+     * @param image given image by the imageReader.
+     */
     public void storeImage(Image image) {
         log.d(TAG, "storeImage");
         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
@@ -46,6 +54,11 @@ public class ImageHelper {
         r.sBase64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
     }
     
+    /**
+     * Saves the image into storage.
+     *
+     * @throws IOException Exception for parsing JSON
+     */
     public void saveImage() throws IOException {
         log.d(TAG, "saveImage");
         

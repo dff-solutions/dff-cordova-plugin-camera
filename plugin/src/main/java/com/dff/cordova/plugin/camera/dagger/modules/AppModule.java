@@ -16,6 +16,9 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
+/**
+ * Module for dependency injection.
+ */
 @Module(subcomponents = {
     ActionHandlerServiceComponent.class,
     PluginComponent.class

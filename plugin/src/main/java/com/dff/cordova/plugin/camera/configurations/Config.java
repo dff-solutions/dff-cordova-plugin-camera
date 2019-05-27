@@ -3,6 +3,9 @@ package com.dff.cordova.plugin.camera.configurations;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+/**
+ * Class to store withPreview flag.
+ */
 @Singleton
 public class Config {
     private boolean mWithPreview = false;

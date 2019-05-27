@@ -47,6 +47,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+/**
+ * Activity to start the camera.
+ * @see <a href="https://developer.android.com/reference/android/hardware/camera2/package-summary.html"
+ *      >https://developer.android.com/reference/android/hardware/camera2/package-summary.html</a>
+ */
 public class Camera2Activity extends Activity {
     private static final String TAG = "Camera2Activity";
     
@@ -113,7 +118,6 @@ public class Camera2Activity extends Activity {
         DaggerManager
             .getInstance()
             .inject(this);
-        
         log.d(TAG, "onCreate");
         
         surfaceListener.setCamera2Activity(this);
@@ -123,7 +127,6 @@ public class Camera2Activity extends Activity {
         availableImageListener.setCamera2Activity(this);
         
         setContentView(r.getLayoutIdentifier(CAMERA_ACTIVITY_LAYOUT));
-    
         cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try {
             for (String id : cameraManager.getCameraIdList()) {
@@ -138,7 +141,6 @@ public class Camera2Activity extends Activity {
         } catch (CameraAccessException e) {
             log.e(TAG, "unable to access camera.", e);
         }
-    
         captureButton = findViewById(r.getIdIdentifier(CAPTURE_BUTTON));
         flashButton = findViewById(r.getIdIdentifier(FLASH_BUTTON));
         flipButton =  findViewById(r.getIdIdentifier(FLIP_BUTTON));
@@ -189,7 +191,6 @@ public class Camera2Activity extends Activity {
         }
     
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        
         startBackgroundThread();
     }
     
@@ -216,6 +217,9 @@ public class Camera2Activity extends Activity {
         super.onPause();
     }
     
+    /**
+     * This methods opens the camera on the camera Manager.
+     */
     @SuppressLint("MissingPermission")
     public void openCamera() {
         log.d(TAG, "opening camera");
@@ -237,6 +241,9 @@ public class Camera2Activity extends Activity {
         
     }
     
+    /**
+     * This method start the camera preview.
+     */
     public void startCameraPreview() {
         try {
             SurfaceTexture texture = textureView.getSurfaceTexture();
@@ -259,7 +266,7 @@ public class Camera2Activity extends Activity {
     }
     
     /**
-     * This methods closes the cameraDevice.
+     * This method closes the cameraDevice.
      */
     public void closeCamera() {
         log.d(TAG, "closing camera");
@@ -269,6 +276,9 @@ public class Camera2Activity extends Activity {
         }
     }
     
+    /**
+     * This method updates the Preview. Changes on the setting affect after the update.
+     */
     public void updatePreview() {
         log.d(TAG, "updatePreview");
         if (cameraDevice == null) {
@@ -303,9 +313,6 @@ public class Camera2Activity extends Activity {
             int width = previewSize.getWidth();
             int height = previewSize.getHeight();
     
-            log.d(TAG, "previewWidth: " + width);
-            log.d(TAG, "previewHeight: " + height);
-            
             //choose maximum size
             for (Size size : jpegSizes) {
                 if ((size.getHeight() % previewSize.getHeight()) == 0 && (
@@ -317,10 +324,8 @@ public class Camera2Activity extends Activity {
                     height = size.getHeight();
                 }
             }
-            
             log.d(TAG, "width: " + width);
             log.d(TAG, "height: " + height);
-            
             reader = ImageReader.newInstance(width, height, ImageFormat.JPEG,
                                                          1);
             List<Surface> outputSurfaces = new ArrayList<Surface>(2);
@@ -350,11 +355,8 @@ public class Camera2Activity extends Activity {
                     screenRotation = 90;
                     break;
             }
-            log.d(TAG, "screenRotation = " + screenRotation);
-            log.d(TAG, "orientationEvent = " + orientationEventListener.currentRotaion);
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, screenRotation);
             
-            log.d(TAG, "set OnImageAvailableListener");
             reader.setOnImageAvailableListener(availableImageListener, mBackgroundHandler);
             
            cameraCaptureStateCallback.mBackgroundHandler = mBackgroundHandler;
@@ -375,6 +377,10 @@ public class Camera2Activity extends Activity {
         }
     }
     
+    /**
+     * When the picture is captured, this method starts the previewActivity.
+     * If the flag withPreview isn't set, the activity will return the image without preview.
+     */
     public void startPreviewActivity() {
         log.d(TAG, "close ImageReader");
         reader.close();

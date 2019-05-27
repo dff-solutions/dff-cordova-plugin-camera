@@ -441,7 +441,12 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
         this.mCaptureImage = captureImage;
         this.mCaptureImage.setOnClickListener(view -> takeImage());
     }
-
+    
+    /**
+     * Switches the camera and the icon of the button.
+     *
+     * @param flipCamera flipCamera button
+     */
     public void setFlipCamera(final ImageButton flipCamera) {
         this.mFlipCamera = flipCamera;
         this.mFlipCamera.setOnClickListener(view -> {

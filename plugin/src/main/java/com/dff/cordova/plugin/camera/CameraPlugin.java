@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 
 import com.dff.cordova.plugin.camera.actions.PluginAction;
 import com.dff.cordova.plugin.camera.configurations.ActionsManager;
-import com.dff.cordova.plugin.camera.configurations.Config;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 import com.dff.cordova.plugin.camera.helpers.PermissionHelper;
@@ -37,9 +36,6 @@ public class CameraPlugin extends CordovaPlugin {
     private static final String[] PERMISSIONS = new String[] {
         Manifest.permission.CAMERA,
     };
-
-    @Inject
-    Config mConfig;
 
     @Inject
     Log log;

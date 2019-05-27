@@ -61,6 +61,12 @@ public class ButtonHelper {
         }
     }
     
+    /**
+     * Changes the image of the button and set the flashMode in the captureRequest.
+     *
+     * @param captureRequest package of settings to capture a image
+     * @param button button with an image
+     */
     public void changeFlashButton(CaptureRequest.Builder captureRequest, ImageButton button) {
         log.d(TAG, "changeFlashMode");
         
@@ -94,6 +100,12 @@ public class ButtonHelper {
         }
     }
     
+    /**
+     * Changes the icon of the button.
+     *
+     * @param button button with image
+     * @param flipMode state of the camera
+     */
     public void changeFlipButton(ImageButton button, int flipMode) {
         log.d(TAG, "changeCamera");
         if (flipMode == 0) {

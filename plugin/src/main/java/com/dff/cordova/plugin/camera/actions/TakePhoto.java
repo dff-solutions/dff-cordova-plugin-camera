@@ -12,6 +12,11 @@ import org.json.JSONException;
 
 import javax.inject.Inject;
 
+/**
+ * Class that provides the action 'takePhoto'.
+ * The action opens a camera activity to allow the user to take a picture.
+ * With a flag can be decided if you want to see a preview of the taken picture.
+ */
 public class TakePhoto extends PluginAction {
     public static final String ACTION = "takePhoto";
 

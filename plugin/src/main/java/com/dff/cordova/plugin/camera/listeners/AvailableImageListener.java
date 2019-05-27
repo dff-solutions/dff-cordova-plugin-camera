@@ -9,6 +9,14 @@ import com.dff.cordova.plugin.camera.log.Log;
 
 import javax.inject.Inject;
 
+/**
+ * Callback interface for being notified that a new image is available.
+ * When a new image is available, it will be stored in the ImageHelper and the
+ * startPrewviewActivity method from Camera2Activity is called.
+ *
+ * @see <a href="https://developer.android.com/reference/android/view/OrientationEventListener"
+ *     >https://developer.android.com/reference/android/view/OrientationEventListener</a>
+ */
 public class AvailableImageListener implements ImageReader.OnImageAvailableListener {
     private final String TAG = "AvailableImageListener";
     private Log log;

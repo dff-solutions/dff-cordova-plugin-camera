@@ -8,6 +8,13 @@ import com.dff.cordova.plugin.camera.log.Log;
 
 import javax.inject.Inject;
 
+/**
+ * Listener that opens the camera when a textureView is available or closes the camera
+ * when the textureView is destroyed.
+ *
+ * @see <a href="https://developer.android.com/reference/android/view/TextureView.SurfaceTextureListener"
+ *     >https://developer.android.com/reference/android/view/TextureView.SurfaceTextureListener</a>
+ */
 public class SurfaceListener implements TextureView.SurfaceTextureListener {
     private final String TAG = "SurfaceListener";
     

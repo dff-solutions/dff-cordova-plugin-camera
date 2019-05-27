@@ -52,6 +52,8 @@ public class CameraInfoHelper {
     /**
      * Print all params of the camera.
      * This method is implemented for test and debug purposes
+     *
+     * @param parameters camera parameters
      */
     public void printParameters(Camera.Parameters parameters) {
         String space = " ";

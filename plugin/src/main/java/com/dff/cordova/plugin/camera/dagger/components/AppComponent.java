@@ -6,6 +6,9 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 
+/**
+ * Component for dependency injection.
+ */
 @Singleton
 @Component(modules = {
     AppModule.class

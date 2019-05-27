@@ -43,7 +43,6 @@ public class DaggerManager {
         if (daggerManager == null) {
             daggerManager = new DaggerManager();
         }
-
         return daggerManager;
     }
 
@@ -51,10 +50,17 @@ public class DaggerManager {
         if (appModule == null && application != null) {
             appModule = new AppModule(application);
         }
-
         return this;
     }
-
+    
+    /**
+     * Provides objects to the PluginModule.
+     *
+     * @param cordovaInterface cordovaInterface
+     * @param pluginPermissions needed permissions
+     * @param cameraPlugin core class
+     * @return Daggermanager
+     */
     public DaggerManager in(
         CordovaInterface cordovaInterface,
         String[] pluginPermissions,
@@ -80,7 +86,12 @@ public class DaggerManager {
         getActionHandlerServiceComponent()
             .inject(actionHandlerService);
     }
-
+    
+    /**
+     * Injects the cameraActivity.
+     *
+     * @param cameraActivity cameraActivity.
+     */
     public void inject(CameraActivity cameraActivity) {
         if (activityComponent == null) {
             activityComponent = DaggerActivityComponent
@@ -88,10 +99,14 @@ public class DaggerManager {
                 .appModule(appModule)
                 .build();
         }
-
         activityComponent.inject(cameraActivity);
     }
     
+    /**
+     * Injects the camera2Activty.
+     *
+     * @param cameraActivity camera2Activity
+     */
     public void inject(Camera2Activity cameraActivity) {
         if (activityComponent == null) {
             activityComponent = DaggerActivityComponent
@@ -99,10 +114,14 @@ public class DaggerManager {
                 .appModule(appModule)
                 .build();
         }
-        
         activityComponent.inject(cameraActivity);
     }
     
+    /**
+     * Injects the previewActivty.
+     *
+     * @param previewActivity the activity
+     */
     public void inject(PreviewActivity previewActivity) {
         if (activityComponent == null) {
             activityComponent = DaggerActivityComponent
@@ -110,7 +129,6 @@ public class DaggerManager {
                 .appModule(appModule)
                 .build();
         }
-        
         activityComponent.inject(previewActivity);
     }
     
@@ -121,7 +139,6 @@ public class DaggerManager {
                 .appModule(appModule)
                 .build();
         }
-
         return appComponent;
     }
 
@@ -132,7 +149,6 @@ public class DaggerManager {
                 .pluginModule(pluginModule)
                 .build();
         }
-
         return pluginComponent;
     }
 
@@ -143,7 +159,6 @@ public class DaggerManager {
                 .actionHandlerModule(new ActionHandlerServiceModule())
                 .build();
         }
-
         return actionHandlerServiceComponent;
     }
 }

@@ -9,6 +9,9 @@ import dagger.Component;
 
 import javax.inject.Singleton;
 
+/**
+ * Component for dependency injection.
+ */
 @Singleton
 @Component(modules = AppModule.class)
 public interface ActivityComponent {

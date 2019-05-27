@@ -6,12 +6,18 @@ import com.dff.cordova.plugin.camera.services.ActionHandlerService;
 
 import dagger.Subcomponent;
 
+/**
+ * Component for dependency injection.
+ */
 @ActionHandlerScope
 @Subcomponent(modules = {
     ActionHandlerServiceModule.class
 })
 public interface ActionHandlerServiceComponent {
-
+    
+    /**
+     * Builder interface.
+     */
     @Subcomponent.Builder
     interface Builder {
         Builder actionHandlerModule(ActionHandlerServiceModule module);
