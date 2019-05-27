@@ -147,7 +147,6 @@ public class Camera2Activity extends Activity {
         
         buttonHelper.addImageButton(flashButton);
         buttonHelper.addImageButton(flipButton);
-        buttonHelper.addImageButton(captureButton);
         
         textureView = findViewById(r.getIdIdentifier(TEXTURE_VIEW_ID));
         textureView.setSurfaceTextureListener(surfaceListener);
