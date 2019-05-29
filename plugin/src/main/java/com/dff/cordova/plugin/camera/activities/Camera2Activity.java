@@ -223,18 +223,17 @@ public class Camera2Activity extends Activity {
     @SuppressLint("MissingPermission")
     public void openCamera() {
         log.d(TAG, "opening camera");
+        buttonHelper.enableAllButtons(true);
+        captureButton.setEnabled(true);
         
         try {
             characteristics =
                 cameraManager.getCameraCharacteristics(cameraId);
-            
             StreamConfigurationMap streamConfigurationMap =
                 characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             
             previewSize = streamConfigurationMap.getOutputSizes(SurfaceTexture.class)[0];
-            
             cameraManager.openCamera(cameraId, cameraStateCallback, null);
-            
         } catch (CameraAccessException e) {
             log.e(TAG, "error while getting cameraId");
         }
@@ -286,8 +285,11 @@ public class Camera2Activity extends Activity {
         }
         captureRequest.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
         try {
-            cameraCaptureSession.setRepeatingRequest(captureRequest.build(), null,
-                                                     null);
+            cameraCaptureSession.setRepeatingRequest(
+                captureRequest.build(),
+                null,
+                null
+            );
         } catch (CameraAccessException e) {
             log.e(TAG, "error while setting repeating request", e);
         }
@@ -295,13 +297,14 @@ public class Camera2Activity extends Activity {
     
     private void takePicture() {
         if (cameraDevice == null) {
-            log.d(TAG, "no cameraDevice");
+            log.e(TAG, "no cameraDevice");
             return;
         }
         log.d(TAG, "take picture");
         try {
             //avoid error due to double clicks
             buttonHelper.enableAllButtons(false);
+            captureButton.setEnabled(false);
             
             Size optimalSize = imageHelper.getOptimalImageSize(characteristics, previewSize);
             reader = ImageReader.newInstance(
@@ -332,9 +335,6 @@ public class Camera2Activity extends Activity {
                 cameraCaptureStateCallback,
                 mBackgroundHandler
             );
-    
-            buttonHelper.enableAllButtons(true);
-            
         } catch (CameraAccessException e) {
             log.e(TAG, "error while accessing camera", e);
         }
