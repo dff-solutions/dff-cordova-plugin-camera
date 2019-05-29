@@ -118,28 +118,4 @@ public class PreviewSurfaceView extends SurfaceView {
         this.mEventBus = eventBus;
         this.mEventBus.register(this);
     }
-    
-    /**
-     * set the auto focus.
-     *
-     * @param event OnAutoFocus event
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAutoFocus(final OnAutoFocus event) {
-        Handler handler = new Handler();
-        handler.postDelayed(() -> {
-            if (event.isSuccess()) {
-                mDrawingView.getPaint().setColor(Color.GREEN);
-            } else {
-                mDrawingView.getPaint().setColor(Color.RED);
-            }
-            mDrawingView.invalidate();
-            Handler handler1 = new Handler();
-            handler1.postDelayed(() -> {
-                mDrawingView.getPaint().setColor(Color.YELLOW);
-                mDrawingView.setHaveTouch(false, null);
-                mDrawingView.invalidate();
-            }, 500);
-        }, 1000);
-    }
 }
