@@ -434,12 +434,10 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
 
     public void setFlashButton(ImageButton flashButton) {
         this.mFlashButton = flashButton;
-        this.mFlashButton.setOnClickListener(view -> changeFlashMode());
     }
 
     public void setCaptureImage(ImageButton captureImage) {
         this.mCaptureImage = captureImage;
-        this.mCaptureImage.setOnClickListener(view -> takeImage());
     }
     
     /**
@@ -448,28 +446,6 @@ public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback 
      * @param flipCamera flipCamera button
      */
     public void setFlipCamera(final ImageButton flipCamera) {
-        this.mFlipCamera = flipCamera;
-        this.mFlipCamera.setOnClickListener(view -> {
-            releaseCamera();
-
-            if (mCameraID == Camera.CameraInfo.CAMERA_FACING_BACK) {
-                mCameraID = Camera.CameraInfo.CAMERA_FACING_FRONT;
-                flipCamera.setImageResource(r.getDrawableIdentifier(IC_CAMERA_FRONT));
-                mFlashButton.clearAnimation();
-                mFlashButton.setVisibility(View.GONE);
-                mFlashButton.setEnabled(false);
-            } else {
-                mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
-                flipCamera.setImageResource(r.getDrawableIdentifier(IC_CAMERA_BACK));
-                mFlashButton.setEnabled(true);
-                mFlashButton.setVisibility(View.VISIBLE);
-            }
-            if (!openCamera(mCameraID)) {
-                //alertCameraDialog ();
-                log.d(TAG, "On surface created : camera could not be opened");
-            } else {
-                log.d(TAG, " camera opened");
-            }
-        });
+    
     }
 }
