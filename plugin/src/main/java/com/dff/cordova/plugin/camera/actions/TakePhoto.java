@@ -21,8 +21,10 @@ public class TakePhoto extends PluginAction {
     public static final String ACTION = "takePhoto";
 
     public static final String JSON_ARG_WITH_PREVIEW = "withPreview";
+    public static final String JSON_ARG_WITH_SAVE = "withSave";
     private static final String[] REQUIRED_ARGS = new String[] {
-        JSON_ARG_WITH_PREVIEW
+        JSON_ARG_WITH_PREVIEW,
+        //JSON_ARG_WITH_SAVE
     };
 
     private Context context;
@@ -43,9 +45,11 @@ public class TakePhoto extends PluginAction {
         super.checkJsonArgs(REQUIRED_ARGS);
 
         boolean withPreview = jsonArgs.getBoolean(JSON_ARG_WITH_PREVIEW);
+        //boolean withSave = jsonArgs.getBoolean(JSON_ARG_WITH_SAVE);
         Intent intent = new Intent(context, Camera2Activity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(JSON_ARG_WITH_PREVIEW, withPreview);
+        intent.putExtra(JSON_ARG_WITH_SAVE, withPreview);
     
         // TODO keep callback and return Photo
         log.d(TAG, "set CallbackContext to r");

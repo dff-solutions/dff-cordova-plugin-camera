@@ -18,6 +18,8 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
+import static com.dff.cordova.plugin.camera.actions.TakePhoto.JSON_ARG_WITH_SAVE;
+
 /**
  * A preview of the taken image before it is saved.
  *
@@ -101,25 +103,31 @@ public class PreviewActivity extends Activity {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    imageHelper.saveImage();
-                } catch (IOException e) {
-                    log.e(TAG, "unable to save image", e);
-                }
-    
-                Intent returnIntent = new Intent();
-                if (r.sBase64Image != null) {
-                    returnIntent.putExtra("result", r.sBase64Image);
-                    setResult(R.RESULT_OK, returnIntent);
-                    log.d(TAG, "finish Preview Activity. Result = ok");
-                } else {
-                    log.e(TAG, "sBase64Image is empty");
-                    log.e(TAG, "repeat capture");
-                    setResult(R.RESULT_REPEAT, returnIntent);
-                }
-                finish();
+                returnImage();
             }
         });
 
+    }
+    
+    private void returnImage() {
+        if (this.getIntent().getBooleanExtra(JSON_ARG_WITH_SAVE, false)) {
+            try {
+                imageHelper.saveImage();
+            } catch (IOException e) {
+                log.e(TAG, "unable to save image", e);
+            }
+        }
+    
+        Intent returnIntent = new Intent();
+        if (r.sBase64Image != null) {
+            returnIntent.putExtra("result", r.sBase64Image);
+            setResult(R.RESULT_OK, returnIntent);
+            log.d(TAG, "finish Preview Activity. Result = ok");
+        } else {
+            log.e(TAG, "sBase64Image is empty");
+            log.e(TAG, "repeat capture");
+            setResult(R.RESULT_REPEAT, returnIntent);
+        }
+        finish();
     }
 }
