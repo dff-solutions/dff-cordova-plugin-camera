@@ -3,6 +3,7 @@ package com.dff.cordova.plugin.camera.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -81,35 +82,43 @@ public class PreviewActivity extends Activity {
         ImageButton repeatButton = findViewById(r.getIdIdentifier(BUTTON_REPEAT));
         ImageButton okButton = findViewById(r.getIdIdentifier(BUTTON_OK));
 
-        cancelButton.setOnClickListener(view -> {
-            setResult(R.RESULT_CANCELED, new Intent());
-            log.d(TAG, "finish Preview Activity. Result = canceled");
-            finish();
-        });
-        repeatButton.setOnClickListener(view -> {
-            setResult(R.RESULT_REPEAT);
-            log.d(TAG, "finish Preview Activity. Result = repeat");
-            finish();
-        });
-        okButton.setOnClickListener(view -> {
-            
-            try {
-                imageHelper.saveImage();
-            } catch (IOException e) {
-                log.e(TAG, "unable to save image", e);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(R.RESULT_CANCELED, new Intent());
+                log.d(TAG, "finish Preview Activity. Result = canceled");
+                finish();
             }
-            
-            Intent returnIntent = new Intent();
-            if (r.sBase64Image != null) {
-                returnIntent.putExtra("result", r.sBase64Image);
-                setResult(R.RESULT_OK, returnIntent);
-            } else {
-                log.e(TAG, "sBase64Image is empty");
-                log.e(TAG, "repeat capture");
-                setResult(R.RESULT_REPEAT, returnIntent);
+        });
+        repeatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(R.RESULT_REPEAT);
+                log.d(TAG, "finish Preview Activity. Result = repeat");
+                finish();
             }
-            log.d(TAG, "finish Preview Activity. Result = ok");
-            finish();
+        });
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    imageHelper.saveImage();
+                } catch (IOException e) {
+                    log.e(TAG, "unable to save image", e);
+                }
+    
+                Intent returnIntent = new Intent();
+                if (r.sBase64Image != null) {
+                    returnIntent.putExtra("result", r.sBase64Image);
+                    setResult(R.RESULT_OK, returnIntent);
+                    log.d(TAG, "finish Preview Activity. Result = ok");
+                } else {
+                    log.e(TAG, "sBase64Image is empty");
+                    log.e(TAG, "repeat capture");
+                    setResult(R.RESULT_REPEAT, returnIntent);
+                }
+                finish();
+            }
         });
 
     }

@@ -37,7 +37,7 @@ public class OrientationListener extends OrientationEventListener {
     
     @Override
     public void onOrientationChanged(int orientation) {
-        /*orientation is inversed.
+        /*orientation is inverse.
           if orientation = 270 we need to rotate to 90
           if orientation = 90  we need to rotate to 270
         */

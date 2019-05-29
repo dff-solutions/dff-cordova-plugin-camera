@@ -151,9 +151,24 @@ public class Camera2Activity extends Activity {
         textureView = findViewById(r.getIdIdentifier(TEXTURE_VIEW_ID));
         textureView.setSurfaceTextureListener(surfaceListener);
         
-        captureButton.setOnClickListener(view -> takePicture());
-        flashButton.setOnClickListener(view -> changeFlashMode());
-        flipButton.setOnClickListener(view -> changeCamera());
+        captureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takePicture();
+            }
+        });
+        flashButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeFlashMode();
+            }
+        });
+        flipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeCamera();
+            }
+        });
     
         boolean hasFlashMode =
             getApplicationContext()
