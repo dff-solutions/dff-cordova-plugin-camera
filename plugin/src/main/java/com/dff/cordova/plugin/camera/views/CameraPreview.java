@@ -40,11 +40,11 @@ import static android.view.OrientationEventListener.ORIENTATION_UNKNOWN;
 public class CameraPreview implements SurfaceHolder.Callback, AutoFocusCallback {
     private static final String TAG = "CameraPreview";
 
-    private static final String IC_CAMERA_FRONT = "ic_switch_cam_front";
-    private static final String IC_CAMERA_BACK = "ic_switch_cam_back";
-    private static final String IC_FLASH_AUTO = "ic_flash_auto_white_24px";
-    private static final String IC_FLASH_OFF = "ic_flash_off_white_24px";
-    private static final String IC_FLASH_ON = "ic_flash_on_white_24px";
+    private static final String IC_CAMERA_FRONT = "camera_ic_switch_cam_front";
+    private static final String IC_CAMERA_BACK = "camera_ic_switch_cam_back";
+    private static final String IC_FLASH_AUTO = "camera_ic_flash_auto_white_24px";
+    private static final String IC_FLASH_OFF = "camera_ic_flash_off_white_24px";
+    private static final String IC_FLASH_ON = "camera_ic_flash_on_white_24px";
 
     private static int sFlashMode;
 

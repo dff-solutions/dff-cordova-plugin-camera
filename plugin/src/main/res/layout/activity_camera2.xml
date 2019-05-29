@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:screenOrientation="portrait"
-        android:src="@drawable/ic_panorama_fish_eye_white_48px">
+        android:src="@drawable/camera_ic_panorama_fish_eye_white_48px">
 
     </TextureView>
 
@@ -25,7 +25,7 @@
         android:layout_marginBottom="16dp"
         android:background="@null"
         android:gravity="center"
-        android:src="@drawable/ic_panorama_fish_eye_white_48px" />
+        android:src="@drawable/camera_ic_panorama_fish_eye_white_48px" />
 
 
     <ImageButton
@@ -37,7 +37,7 @@
         android:layout_marginBottom="32dp"
         android:background="@null"
         android:gravity="center"
-        android:src="@drawable/ic_flash_off_white_24px" />
+        android:src="@drawable/camera_ic_flash_off_white_24px" />
 
     <ImageButton
         android:id="@+id/flip_button"
@@ -49,6 +49,6 @@
         android:layout_marginBottom="32dp"
         android:background="@null"
         android:gravity="center"
-        android:src="@drawable/ic_switch_cam_front" />
+        android:src="@drawable/camera_ic_switch_cam_front" />
 
 </RelativeLayout>

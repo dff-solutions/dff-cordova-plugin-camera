@@ -25,11 +25,11 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class ButtonHelperUnitTest {
-    private static final String IC_CAMERA_FRONT = "ic_switch_cam_front";
-    private static final String IC_CAMERA_BACK = "ic_switch_cam_back";
-    private static final String IC_FLASH_AUTO = "ic_flash_auto_white_24px";
-    private static final String IC_FLASH_OFF = "ic_flash_off_white_24px";
-    private static final String IC_FLASH_ON = "ic_flash_on_white_24px";
+    private static final String IC_CAMERA_FRONT = "camera_ic_switch_cam_front";
+    private static final String IC_CAMERA_BACK = "camera_ic_switch_cam_back";
+    private static final String IC_FLASH_AUTO = "camera_ic_flash_auto_white_24px";
+    private static final String IC_FLASH_OFF = "camera_ic_flash_off_white_24px";
+    private static final String IC_FLASH_ON = "camera_ic_flash_on_white_24px";
     private final int FLASH_ON = 0;
     private final int FLASH_OFF = 1;
     private final int FLASH_AUTO = 2;

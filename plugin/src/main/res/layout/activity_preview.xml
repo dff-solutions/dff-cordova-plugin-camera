@@ -24,7 +24,7 @@
             android:layout_toStartOf="@+id/button_close"
             android:background="@null"
             android:gravity="center"
-            android:src="@drawable/ic_close_white_48px"/>
+            android:src="@drawable/camera_ic_close_white_48px"/>
 
         <ImageButton
             android:id="@+id/button_repeat"
@@ -33,7 +33,7 @@
             android:layout_toStartOf="@+id/button_save"
             android:background="@null"
             android:gravity="center"
-            android:src="@drawable/ic_refresh_white_48px"/>
+            android:src="@drawable/camera_ic_refresh_white_48px"/>
 
         <ImageButton
             android:id="@+id/button_ok"
@@ -41,7 +41,7 @@
             android:layout_height="85dp"
             android:background="@null"
             android:gravity="center"
-            android:src="@drawable/ic_arrow_forward_white_48px"/>
+            android:src="@drawable/camera_ic_arrow_forward_white_48px"/>
 
     </LinearLayout>
 
