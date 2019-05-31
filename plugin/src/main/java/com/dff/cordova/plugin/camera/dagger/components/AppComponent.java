@@ -18,4 +18,6 @@ public interface AppComponent {
     ActionHandlerServiceComponent.Builder actionHandlerServiceComponentBuilder();
 
     PluginComponent.Builder pluginComponentBuilder();
+    
+    ActivityComponent.Builder activityComponentBuilder();
 }

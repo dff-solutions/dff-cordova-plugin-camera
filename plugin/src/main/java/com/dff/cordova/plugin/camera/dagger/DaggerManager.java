@@ -9,9 +9,9 @@ import com.dff.cordova.plugin.camera.dagger.components.ActionHandlerServiceCompo
 import com.dff.cordova.plugin.camera.dagger.components.AppComponent;
 import com.dff.cordova.plugin.camera.dagger.components.ActivityComponent;
 import com.dff.cordova.plugin.camera.dagger.components.DaggerAppComponent;
-import com.dff.cordova.plugin.camera.dagger.components.DaggerActivityComponent;
 import com.dff.cordova.plugin.camera.dagger.components.PluginComponent;
 import com.dff.cordova.plugin.camera.dagger.modules.ActionHandlerServiceModule;
+import com.dff.cordova.plugin.camera.dagger.modules.ActivityModule;
 import com.dff.cordova.plugin.camera.dagger.modules.AppModule;
 import com.dff.cordova.plugin.camera.dagger.modules.PluginModule;
 import com.dff.cordova.plugin.camera.services.ActionHandlerService;
@@ -92,13 +92,7 @@ public class DaggerManager {
      * @param cameraActivity camera2Activity
      */
     public void inject(Camera2Activity cameraActivity) {
-        if (activityComponent == null) {
-            activityComponent = DaggerActivityComponent
-                .builder()
-                .appModule(appModule)
-                .build();
-        }
-        activityComponent.inject(cameraActivity);
+        getActivityComponent().inject(cameraActivity);
     }
     
     /**
@@ -107,13 +101,7 @@ public class DaggerManager {
      * @param previewActivity the activity
      */
     public void inject(PreviewActivity previewActivity) {
-        if (activityComponent == null) {
-            activityComponent = DaggerActivityComponent
-                .builder()
-                .appModule(appModule)
-                .build();
-        }
-        activityComponent.inject(previewActivity);
+        getActivityComponent().inject(previewActivity);
     }
     
     private AppComponent getAppComponent() {
@@ -144,5 +132,16 @@ public class DaggerManager {
                 .build();
         }
         return actionHandlerServiceComponent;
+    }
+
+    private ActivityComponent getActivityComponent() {
+        if(activityComponent == null) {
+            activityComponent = getAppComponent()
+                .activityComponentBuilder()
+                .activityModule(new ActivityModule())
+                .build();
+
+        }
+        return activityComponent;
     }
 }

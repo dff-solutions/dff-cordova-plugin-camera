@@ -66,5 +66,8 @@ public class R {
     public void setCallBackContext(CallbackContext callBackContext) {
         log.d(TAG, "set callbackContext");
         this.callBackContext = callBackContext;
+        if(callBackContext == null) {
+            log.e(TAG, "callbackContext is null");
+        }
     }
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.dff.cordova.plugin.camera.dagger.annotations.ActionHandlerServiceIntent;
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 import com.dff.cordova.plugin.camera.dagger.components.ActionHandlerServiceComponent;
+import com.dff.cordova.plugin.camera.dagger.components.ActivityComponent;
 import com.dff.cordova.plugin.camera.dagger.components.PluginComponent;
 import com.dff.cordova.plugin.camera.services.ActionHandlerService;
 
@@ -21,7 +22,8 @@ import dagger.Provides;
  */
 @Module(subcomponents = {
     ActionHandlerServiceComponent.class,
-    PluginComponent.class
+    PluginComponent.class,
+    ActivityComponent.class
 })
 public class AppModule {
     private Context applicationContext;
