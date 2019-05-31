@@ -164,7 +164,7 @@ public class CameraPlugin extends CordovaPlugin {
         return allGranted;
     }
     
-    public void startActivity(Intent intent){
+    public void startActivity(Intent intent) {
         cordova.startActivityForResult(this, intent, R.RESULT_OK);
     }
 }
