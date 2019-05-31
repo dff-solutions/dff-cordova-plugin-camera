@@ -31,9 +31,9 @@ import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.helpers.ButtonHelper;
 import com.dff.cordova.plugin.camera.helpers.ImageHelper;
 import com.dff.cordova.plugin.camera.helpers.PermissionHelper;
+import com.dff.cordova.plugin.camera.listeners.AvailableImageListener;
 import com.dff.cordova.plugin.camera.listeners.OrientationListener;
 import com.dff.cordova.plugin.camera.listeners.SurfaceListener;
-import com.dff.cordova.plugin.camera.listeners.AvailableImageListener;
 import com.dff.cordova.plugin.camera.listeners.callback.CameraCaptureStateCallback;
 import com.dff.cordova.plugin.camera.listeners.callback.CameraPreviewStateCallback;
 import com.dff.cordova.plugin.camera.listeners.callback.CameraStateCallback;
@@ -108,7 +108,7 @@ public class Camera2Activity extends Activity {
     private HandlerThread mBackgroundThread;
     private CameraManager cameraManager;
     private String cameraId = null;
-    private CameraCharacteristics characteristics;
+    private CameraCharacteristics characteristics = null;
     private ImageReader reader;
     
     private int flipMode = 1;
@@ -234,12 +234,16 @@ public class Camera2Activity extends Activity {
         captureButton.setEnabled(true);
         
         try {
+            /*
             characteristics =
                 cameraManager.getCameraCharacteristics(cameraId);
             StreamConfigurationMap streamConfigurationMap =
                 characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             
             previewSize = streamConfigurationMap.getOutputSizes(SurfaceTexture.class)[0];
+            */
+            previewSize = new Size(1920, 1080);
+            log.d(TAG, "open Camera with manager");
             cameraManager.openCamera(cameraId, cameraStateCallback, null);
         } catch (CameraAccessException e) {
             log.e(TAG, "error while getting cameraId");
@@ -313,7 +317,8 @@ public class Camera2Activity extends Activity {
             buttonHelper.enableAllButtons(false);
             captureButton.setEnabled(false);
             
-            Size optimalSize = imageHelper.getOptimalImageSize(characteristics, previewSize);
+            //Size optimalSize = imageHelper.getOptimalImageSize(characteristics, previewSize);
+            Size optimalSize = previewSize;
             reader = ImageReader.newInstance(
                 optimalSize.getWidth(),
                 optimalSize.getHeight(),
