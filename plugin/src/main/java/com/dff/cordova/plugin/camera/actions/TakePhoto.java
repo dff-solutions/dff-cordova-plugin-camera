@@ -49,9 +49,8 @@ public class TakePhoto extends PluginAction {
         Intent intent = new Intent(context, Camera2Activity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(JSON_ARG_WITH_PREVIEW, withPreview);
-        intent.putExtra(JSON_ARG_WITH_SAVE, withPreview);
-    
-        // TODO keep callback and return Photo
+        intent.putExtra(JSON_ARG_WITH_SAVE, false);
+        
         r.setCallBackContext(callbackContext);
         
         cameraPlugin.startActivity(intent);

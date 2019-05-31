@@ -164,17 +164,6 @@ public class CameraPlugin extends CordovaPlugin {
         return allGranted;
     }
     
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        log.d(TAG, "onActivityResult: requestCode = " + requestCode);
-        log.d(TAG, "onActivityResult: resultCode = " + resultCode);
-        if (requestCode != resultCode) {
-            log.d(TAG, "onActivityResult: not expected result");
-        }
-        log.d(TAG, data.getStringExtra("result"));
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-    
     public void startActivity(Intent intent){
         cordova.startActivityForResult(this, intent, R.RESULT_OK);
     }

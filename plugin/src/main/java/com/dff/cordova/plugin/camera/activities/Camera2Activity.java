@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
+import android.graphics.Point;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -21,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Size;
+import android.view.Display;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
@@ -244,16 +246,12 @@ public class Camera2Activity extends Activity {
         captureButton.setEnabled(true);
         
         try {
+            Display display = getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
             
-            /*
-            characteristics =
-                cameraManager.getCameraCharacteristics(cameraId);
-            StreamConfigurationMap streamConfigurationMap =
-                characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-            
-            previewSize = streamConfigurationMap.getOutputSizes(SurfaceTexture.class)[0];
-            */
-            previewSize = new Size(1920, 1080);
+            previewSize = new Size(size.y, size.x);
+            log.d(TAG, "previewSize " + previewSize.toString());
             log.d(TAG, "open Camera with manager");
             cameraManager.openCamera(cameraId, cameraStateCallback, null);
         } catch (CameraAccessException e) {
@@ -467,7 +465,6 @@ public class Camera2Activity extends Activity {
         switch (resultCode) {
             case R.RESULT_OK:
                 log.d(TAG, "onActivityResult: set result = OK");
-                log.d(TAG, data.getStringExtra("result"));
                 setResult(R.RESULT_OK, data);
                 closeCamera();
                 finish();

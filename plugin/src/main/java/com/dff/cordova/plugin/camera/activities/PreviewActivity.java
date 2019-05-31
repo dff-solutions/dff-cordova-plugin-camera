@@ -120,8 +120,8 @@ public class PreviewActivity extends Activity {
     
         Intent returnIntent = new Intent();
         if (r.sBase64Image != null) {
-            returnIntent.putExtra("result", r.sBase64Image);
-            setResult(R.RESULT_OK, returnIntent);
+            r.getCallBackContext().success(r.sBase64Image);
+            setResult(R.RESULT_OK);
             log.d(TAG, "finish Preview Activity. Result = ok");
         } else {
             log.e(TAG, "sBase64Image is empty");
