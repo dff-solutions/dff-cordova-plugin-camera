@@ -14,6 +14,9 @@ import dagger.Subcomponent;
 @Subcomponent(modules = ActivityModule.class)
 public interface ActivityComponent {
     
+    /**
+     * Builder interface.
+     */
     @Subcomponent.Builder
     interface Builder {
         Builder activityModule(ActivityModule module);
