@@ -107,7 +107,7 @@ public class Camera2Activity extends Activity {
     public Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
     private CameraManager cameraManager;
-    private String cameraId;
+    private String cameraId = null;
     private CameraCharacteristics characteristics;
     private ImageReader reader;
     
@@ -139,10 +139,15 @@ public class Camera2Activity extends Activity {
                     break;
                 }
             }
-            cameraId = cameraManager.getCameraIdList()[0];
-        } catch (CameraAccessException e) {
+    
+            if(cameraId == null){
+                throw new Exception("unable to get back facing camera id");
+            }
+        } catch (Exception e) {
             log.e(TAG, "unable to access camera.", e);
         }
+        
+        
         captureButton = findViewById(r.getIdIdentifier(CAPTURE_BUTTON));
         flashButton = findViewById(r.getIdIdentifier(FLASH_BUTTON));
         flipButton =  findViewById(r.getIdIdentifier(FLIP_BUTTON));
@@ -446,6 +451,7 @@ public class Camera2Activity extends Activity {
         switch (resultCode) {
             case R.RESULT_OK:
                 log.d(TAG, "onActivityResult: set result = OK");
+                log.d(TAG, data.getStringExtra("result"));
                 setResult(R.RESULT_OK, data);
                 closeCamera();
                 finish();

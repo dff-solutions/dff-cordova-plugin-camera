@@ -11,6 +11,7 @@ import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 import com.dff.cordova.plugin.camera.helpers.PermissionHelper;
 import com.dff.cordova.plugin.camera.log.Log;
+import com.dff.cordova.plugin.camera.res.R;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -170,6 +171,11 @@ public class CameraPlugin extends CordovaPlugin {
         if (requestCode != resultCode) {
             log.d(TAG, "onActivityResult: not expected result");
         }
+        log.d(TAG, data.getStringExtra("result"));
         super.onActivityResult(requestCode, resultCode, data);
+    }
+    
+    public void startActivity(Intent intent){
+        cordova.startActivityForResult(this, intent, R.RESULT_OK);
     }
 }
