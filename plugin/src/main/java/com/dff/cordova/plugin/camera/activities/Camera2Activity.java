@@ -420,7 +420,7 @@ public class Camera2Activity extends Activity {
             mBackgroundThread = null;
             mBackgroundHandler = null;
         } catch (InterruptedException e) {
-            log.e(TAG, "unablte to stop background thread", e);
+            log.e(TAG, "unable to stop background thread", e);
         }
     }
     

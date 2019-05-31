@@ -16,10 +16,10 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class JsonThrowable {
-    private static final String JSON_ARG_CLASSNAME = "className";
-    private static final String JSON_ARG_MESSAGE = "message";
-    private static final String JSON_ARG_CAUSE = "cause";
-    private static final String JSON_ARG_STACKTRACE = "stackTrace";
+    public static final String JSON_ARG_CLASSNAME = "className";
+    public static final String JSON_ARG_MESSAGE = "message";
+    public static final String JSON_ARG_CAUSE = "cause";
+    public static final String JSON_ARG_STACKTRACE = "stackTrace";
 
     private JsonStacktrace jsonStacktrace;
     private JsonFactory jsonFactory;

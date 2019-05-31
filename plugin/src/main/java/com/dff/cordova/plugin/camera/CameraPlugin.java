@@ -34,7 +34,7 @@ public class CameraPlugin extends CordovaPlugin {
     private static final int PERMISSION_REQUEST_CODE = 0;
     // contains dangerous permissions
     // @see https://developer.android.com/guide/topics/permissions/overview.html#normal-dangerous
-    private static final String[] PERMISSIONS = new String[] {
+    public static final String[] PERMISSIONS = new String[] {
         Manifest.permission.CAMERA,
     };
 
