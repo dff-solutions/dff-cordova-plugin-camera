@@ -112,6 +112,7 @@ public class Camera2Activity extends Activity {
     private ImageReader reader;
     
     private int flipMode = 1;
+    private int supportedHardwareLevel;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,10 +137,12 @@ public class Camera2Activity extends Activity {
                 int cameraOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
                 if (cameraOrientation == CameraCharacteristics.LENS_FACING_BACK) {
                     cameraId = id;
+                    supportedHardwareLevel = 
+                        characteristics.get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL);
                     break;
                 }
             }
-    
+            
             if(cameraId == null){
                 throw new Exception("unable to get back facing camera id");
             }
@@ -234,6 +237,7 @@ public class Camera2Activity extends Activity {
         captureButton.setEnabled(true);
         
         try {
+            
             /*
             characteristics =
                 cameraManager.getCameraCharacteristics(cameraId);
