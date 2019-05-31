@@ -16,7 +16,6 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
-import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.Handler;
@@ -150,7 +149,7 @@ public class Camera2Activity extends Activity {
             log.e(TAG, "unable to access camera.", e);
         }
     
-        if(cameraId == null){
+        if (cameraId == null) {
             log.d(TAG, "set cameraId to first camera from list");
             try {
                 cameraId = cameraManager.getCameraIdList()[0];
@@ -160,7 +159,7 @@ public class Camera2Activity extends Activity {
             supportedHardwareLevel =
                 CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED;
         }
-        
+        log.d(TAG, "supported hardware level = " + supportedHardwareLevel);
         
         captureButton = findViewById(r.getIdIdentifier(CAPTURE_BUTTON));
         flashButton = findViewById(r.getIdIdentifier(FLASH_BUTTON));
@@ -327,9 +326,17 @@ public class Camera2Activity extends Activity {
             //avoid error due to double clicks
             buttonHelper.enableAllButtons(false);
             captureButton.setEnabled(false);
+    
+            Size optimalSize;
+            if (supportedHardwareLevel >
+                CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED) {
+                
+                characteristics = cameraManager.getCameraCharacteristics(cameraId);
+                optimalSize = imageHelper.getOptimalImageSize(characteristics);
+            } else {
+                optimalSize = previewSize;
+            }
             
-            //Size optimalSize = imageHelper.getOptimalImageSize(characteristics, previewSize);
-            Size optimalSize = previewSize;
             reader = ImageReader.newInstance(
                 optimalSize.getWidth(),
                 optimalSize.getHeight(),

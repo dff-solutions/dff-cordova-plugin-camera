@@ -3,7 +3,9 @@ package com.dff.cordova.plugin.camera.helpers;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
+import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.util.Base64;
 import android.util.Size;
@@ -82,14 +84,17 @@ public class ImageHelper {
      * Returns the optimal size for the image.
      *
      * @param characteristics properties describing a CameraDevice
-     * @param previewSize size of the prewview screen
      * @return optimal image size
      */
-    public Size getOptimalImageSize(CameraCharacteristics characteristics, Size previewSize) {
+    public Size getOptimalImageSize(CameraCharacteristics characteristics) {
         Size[] jpegSizes =
             characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
                 .getOutputSizes(ImageFormat.JPEG);
-            
+        StreamConfigurationMap streamConfigurationMap =
+            characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+    
+        Size previewSize = streamConfigurationMap.getOutputSizes(SurfaceTexture.class)[0];
+        
         Size optimalSize = previewSize;
         for (Size size : jpegSizes) {
             if ((size.getHeight() % previewSize.getHeight()) == 0 && (
