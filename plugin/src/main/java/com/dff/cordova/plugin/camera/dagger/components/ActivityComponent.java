@@ -4,12 +4,8 @@ import com.dff.cordova.plugin.camera.activities.Camera2Activity;
 import com.dff.cordova.plugin.camera.activities.PreviewActivity;
 import com.dff.cordova.plugin.camera.dagger.annotations.ActivityScope;
 import com.dff.cordova.plugin.camera.dagger.modules.ActivityModule;
-import com.dff.cordova.plugin.camera.dagger.modules.AppModule;
 
-import dagger.Component;
 import dagger.Subcomponent;
-
-import javax.inject.Singleton;
 
 /**
  * Component for dependency injection.

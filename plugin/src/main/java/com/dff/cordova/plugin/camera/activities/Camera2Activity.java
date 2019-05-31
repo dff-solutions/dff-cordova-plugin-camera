@@ -42,6 +42,8 @@ import com.dff.cordova.plugin.camera.listeners.callback.CameraStateCallback;
 import com.dff.cordova.plugin.camera.log.Log;
 import com.dff.cordova.plugin.camera.res.R;
 
+import org.apache.cordova.CallbackContext;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -385,7 +387,9 @@ public class Camera2Activity extends Activity {
             }
             Intent returnIntent = new Intent();
             if (r.sBase64Image != null) {
-                returnIntent.putExtra("result", r.sBase64Image);
+                for (CallbackContext callbackContext : r.getCallBackContexts()) {
+                    callbackContext.success(r.sBase64Image);
+                }
                 setResult(R.RESULT_OK, returnIntent);
             } else {
                 log.e(TAG, "sBase64Image is empty");

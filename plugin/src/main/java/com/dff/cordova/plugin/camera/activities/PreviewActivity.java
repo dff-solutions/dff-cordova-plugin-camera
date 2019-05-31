@@ -14,6 +14,8 @@ import com.dff.cordova.plugin.camera.helpers.ImageHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 import com.dff.cordova.plugin.camera.res.R;
 
+import org.apache.cordova.CallbackContext;
+
 import java.io.IOException;
 
 import javax.inject.Inject;
@@ -120,7 +122,9 @@ public class PreviewActivity extends Activity {
     
         Intent returnIntent = new Intent();
         if (r.sBase64Image != null) {
-            r.getCallBackContext().success(r.sBase64Image);
+            for (CallbackContext callbackContext : r.getCallBackContexts()) {
+                callbackContext.success(r.sBase64Image);
+            }
             setResult(R.RESULT_OK);
             log.d(TAG, "finish Preview Activity. Result = ok");
         } else {

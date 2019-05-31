@@ -51,7 +51,7 @@ public class TakePhoto extends PluginAction {
         intent.putExtra(JSON_ARG_WITH_PREVIEW, withPreview);
         intent.putExtra(JSON_ARG_WITH_SAVE, false);
         
-        r.setCallBackContext(callbackContext);
+        r.addCallBackContext(callbackContext);
         
         cameraPlugin.startActivity(intent);
     }

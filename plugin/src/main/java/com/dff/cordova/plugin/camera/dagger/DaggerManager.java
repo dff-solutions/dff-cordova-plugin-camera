@@ -135,7 +135,7 @@ public class DaggerManager {
     }
 
     private ActivityComponent getActivityComponent() {
-        if(activityComponent == null) {
+        if (activityComponent == null) {
             activityComponent = getAppComponent()
                 .activityComponentBuilder()
                 .activityModule(new ActivityModule())

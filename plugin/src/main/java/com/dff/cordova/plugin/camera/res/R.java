@@ -9,6 +9,8 @@ import com.dff.cordova.plugin.camera.log.Log;
 
 import org.apache.cordova.CallbackContext;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -57,17 +59,13 @@ public class R {
 
     public Bitmap sBitmap;
     public String sBase64Image;
-    private CallbackContext callBackContext;
+    private ArrayList<CallbackContext> callbackContextList = new ArrayList<>();
     
-    public CallbackContext getCallBackContext() {
-        return callBackContext;
+    public ArrayList<CallbackContext> getCallBackContexts() {
+        return callbackContextList;
     }
     
-    public void setCallBackContext(CallbackContext callBackContext) {
-        log.d(TAG, "set callbackContext");
-        this.callBackContext = callBackContext;
-        if(callBackContext == null) {
-            log.e(TAG, "callbackContext is null");
-        }
+    public void addCallBackContext(CallbackContext callBackContext) {
+        callbackContextList.add(callBackContext);
     }
 }
