@@ -38,7 +38,6 @@
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/actions/PluginAction.java" target-dir="src/com/dff/cordova/plugin/camera/actions"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/actions/TakePhoto.java" target-dir="src/com/dff/cordova/plugin/camera/actions"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/activities/Camera2Activity.java" target-dir="src/com/dff/cordova/plugin/camera/activities"/>
-    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/activities/CameraActivity.java" target-dir="src/com/dff/cordova/plugin/camera/activities"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/activities/PreviewActivity.java" target-dir="src/com/dff/cordova/plugin/camera/activities"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/classes/json/JsonDto.java" target-dir="src/com/dff/cordova/plugin/camera/classes/json"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/classes/json/JsonStacktrace.java" target-dir="src/com/dff/cordova/plugin/camera/classes/json"/>
@@ -46,7 +45,6 @@
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/configurations/ActionHandler.java" target-dir="src/com/dff/cordova/plugin/camera/configurations"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/configurations/ActionHandlerThread.java" target-dir="src/com/dff/cordova/plugin/camera/configurations"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/configurations/ActionsManager.java" target-dir="src/com/dff/cordova/plugin/camera/configurations"/>
-    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/configurations/Config.java" target-dir="src/com/dff/cordova/plugin/camera/configurations"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/DaggerManager.java" target-dir="src/com/dff/cordova/plugin/camera/dagger"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/ActionHandlerScope.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/ActionHandlerServiceIntent.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
@@ -61,10 +59,8 @@
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/modules/ActionHandlerServiceModule.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/modules"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/modules/AppModule.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/modules"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/modules/PluginModule.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/modules"/>
-    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/events/OnAutoFocus.java" target-dir="src/com/dff/cordova/plugin/camera/events"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/exceptions/UnexpectedExceptionHandler.java" target-dir="src/com/dff/cordova/plugin/camera/exceptions"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/ButtonHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
-    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/CameraInfoHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/ImageHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/JsonFactory.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/helpers/PackageManagerHelper.java" target-dir="src/com/dff/cordova/plugin/camera/helpers"/>
@@ -81,9 +77,6 @@
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/res/R.java" target-dir="src/com/dff/cordova/plugin/camera/res"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/services/ActionHandlerService.java" target-dir="src/com/dff/cordova/plugin/camera/services"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/services/ActionHandlerServiceBinder.java" target-dir="src/com/dff/cordova/plugin/camera/services"/>
-    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/views/CameraPreview.java" target-dir="src/com/dff/cordova/plugin/camera/views"/>
-    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/views/DrawingView.java" target-dir="src/com/dff/cordova/plugin/camera/views"/>
-    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/views/PreviewSurfaceView.java" target-dir="src/com/dff/cordova/plugin/camera/views"/>
     <source-file src="plugin/src/main/res/drawable/camera_ic_arrow_forward_white_48px.xml" target-dir="res/drawable"/>
     <source-file src="plugin/src/main/res/drawable/camera_ic_close_white_48px.xml" target-dir="res/drawable"/>
     <source-file src="plugin/src/main/res/drawable/camera_ic_flash_auto_white_24px.xml" target-dir="res/drawable"/>
@@ -93,7 +86,6 @@
     <source-file src="plugin/src/main/res/drawable/camera_ic_refresh_white_48px.xml" target-dir="res/drawable"/>
     <source-file src="plugin/src/main/res/drawable/camera_ic_switch_cam_back.xml" target-dir="res/drawable"/>
     <source-file src="plugin/src/main/res/drawable/camera_ic_switch_cam_front.xml" target-dir="res/drawable"/>
-    <source-file src="plugin/src/main/res/layout/activity_camera.xml" target-dir="res/layout"/>
     <source-file src="plugin/src/main/res/layout/activity_camera2.xml" target-dir="res/layout"/>
     <source-file src="plugin/src/main/res/layout/activity_preview.xml" target-dir="res/layout"/>
     <framework custom="true" src="plugin/build-camera-plugin.gradle" type="gradleReference"/>
