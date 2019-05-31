@@ -142,15 +142,19 @@ public class Camera2Activity extends Activity {
                     break;
                 }
             }
-            
-            if(cameraId == null){
-                log.d(TAG, "set cameraId to first camera from list");
-                cameraId = cameraManager.getCameraIdList()[0];
-                supportedHardwareLevel =
-                    CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED;
-            }
         } catch (Exception e) {
             log.e(TAG, "unable to access camera.", e);
+        }
+    
+        if(cameraId == null){
+            log.d(TAG, "set cameraId to first camera from list");
+            try {
+                cameraId = cameraManager.getCameraIdList()[0];
+            } catch (CameraAccessException e) {
+                log.e(TAG, "unable to hardcode cameraId");
+            }
+            supportedHardwareLevel =
+                CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED;
         }
         
         
