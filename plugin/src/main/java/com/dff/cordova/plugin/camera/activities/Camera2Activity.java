@@ -43,14 +43,11 @@ import com.dff.cordova.plugin.camera.res.R;
 
 import org.apache.cordova.CallbackContext;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import static com.dff.cordova.plugin.camera.actions.TakePhoto.JSON_ARG_WITH_SAVE;
 
 /**
  * Activity to start the camera.
@@ -159,6 +156,7 @@ public class Camera2Activity extends Activity {
             supportedHardwareLevel =
                 CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED;
         }
+        log.d(TAG, "cameraId = " + cameraId);
         log.d(TAG, "supported hardware level = " + supportedHardwareLevel);
         
         captureButton = findViewById(r.getIdIdentifier(CAPTURE_BUTTON));
@@ -380,18 +378,9 @@ public class Camera2Activity extends Activity {
         
         if (this.getIntent().getBooleanExtra(TakePhoto.JSON_ARG_WITH_PREVIEW, false)) {
             Intent intent = new Intent(this, PreviewActivity.class);
-            boolean withSave = this.getIntent().getBooleanExtra(JSON_ARG_WITH_SAVE, false);
-            intent.putExtra(JSON_ARG_WITH_SAVE, withSave);
             startActivityForResult(intent, R.RESULT_OK);
         } else {
             log.d(TAG, "show no PreviewActivity");
-            if (this.getIntent().getBooleanExtra(JSON_ARG_WITH_SAVE, false)) {
-                try {
-                    imageHelper.saveImage();
-                } catch (IOException e) {
-                    log.e(TAG, "unable to save image", e);
-                }
-            }
             Intent returnIntent = new Intent();
             if (r.sBase64Image != null) {
                 for (CallbackContext callbackContext : r.getCallBackContexts()) {

@@ -16,11 +16,8 @@ import com.dff.cordova.plugin.camera.res.R;
 
 import org.apache.cordova.CallbackContext;
 
-import java.io.IOException;
-
 import javax.inject.Inject;
 
-import static com.dff.cordova.plugin.camera.actions.TakePhoto.JSON_ARG_WITH_SAVE;
 
 /**
  * A preview of the taken image before it is saved.
@@ -112,14 +109,6 @@ public class PreviewActivity extends Activity {
     }
     
     private void returnImage() {
-        if (this.getIntent().getBooleanExtra(JSON_ARG_WITH_SAVE, false)) {
-            try {
-                imageHelper.saveImage();
-            } catch (IOException e) {
-                log.e(TAG, "unable to save image", e);
-            }
-        }
-    
         Intent returnIntent = new Intent();
         if (r.sBase64Image != null) {
             for (CallbackContext callbackContext : r.getCallBackContexts()) {
