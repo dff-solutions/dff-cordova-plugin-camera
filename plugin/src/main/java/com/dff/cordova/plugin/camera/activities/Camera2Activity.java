@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
 import android.graphics.Point;
 import android.graphics.SurfaceTexture;
@@ -51,8 +50,9 @@ import javax.inject.Inject;
 
 /**
  * Activity to start the camera.
+ *
  * @see <a href="https://developer.android.com/reference/android/hardware/camera2/package-summary.html"
- *      >https://developer.android.com/reference/android/hardware/camera2/package-summary.html</a>
+ * >https://developer.android.com/reference/android/hardware/camera2/package-summary.html</a>
  */
 public class Camera2Activity extends Activity {
     private static final String TAG = "Camera2Activity";
@@ -104,8 +104,8 @@ public class Camera2Activity extends Activity {
     private ImageButton captureButton;
     private ImageButton flashButton;
     private ImageButton flipButton;
-    public Handler mBackgroundHandler;
-    private HandlerThread mBackgroundThread;
+    public Handler backgroundHandler;
+    private HandlerThread backgroundThread;
     private CameraManager cameraManager;
     private String cameraId = null;
     private CameraCharacteristics characteristics = null;
@@ -117,7 +117,7 @@ public class Camera2Activity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    
+        
         DaggerManager
             .getInstance()
             .inject(this);
@@ -131,6 +131,7 @@ public class Camera2Activity extends Activity {
         
         setContentView(r.getLayoutIdentifier(CAMERA_ACTIVITY_LAYOUT));
         cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        buttonHelper.cameraManager = cameraManager;
         try {
             for (String id : cameraManager.getCameraIdList()) {
                 CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(id);
@@ -145,13 +146,14 @@ public class Camera2Activity extends Activity {
         } catch (Exception e) {
             log.e(TAG, "unable to access camera.", e);
         }
-    
+        
         if (cameraId == null) {
-            log.d(TAG, "set cameraId to first camera from list");
+            log.d(TAG, "Unable to set cameraId automatically");
+            log.d(TAG, "Set cameraId to first camera from cameraIdList");
             try {
                 cameraId = cameraManager.getCameraIdList()[0];
             } catch (CameraAccessException e) {
-                log.e(TAG, "unable to hardcode cameraId");
+                log.e(TAG, "unable to set cameraId from cameraIdList");
             }
             supportedHardwareLevel =
                 CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED;
@@ -161,7 +163,7 @@ public class Camera2Activity extends Activity {
         
         captureButton = findViewById(r.getIdIdentifier(CAPTURE_BUTTON));
         flashButton = findViewById(r.getIdIdentifier(FLASH_BUTTON));
-        flipButton =  findViewById(r.getIdIdentifier(FLIP_BUTTON));
+        flipButton = findViewById(r.getIdIdentifier(FLIP_BUTTON));
         
         buttonHelper.addImageButton(flashButton);
         buttonHelper.addImageButton(flipButton);
@@ -187,35 +189,18 @@ public class Camera2Activity extends Activity {
                 changeCamera();
             }
         });
-    
-        boolean hasFlashMode =
-            getApplicationContext()
-                .getPackageManager()
-                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
         
-        if (!hasFlashMode) {
-            flashButton.setEnabled(false);
-            flashButton.setVisibility(View.GONE);
-        }
+        buttonHelper.checkFlash(getApplicationContext(), flashButton);
+        buttonHelper.checkFrontCamera(getApplicationContext(), flipButton);
         
-        boolean hasFrontCamera =
-            getApplicationContext()
-                .getPackageManager()
-                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT);
-        
-        if (!hasFrontCamera) {
-            flipButton.setEnabled(false);
-            flipButton.setVisibility(View.GONE);
-        }
-    
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         startBackgroundThread();
     }
     
     @Override
     protected void onResume() {
-        super.onResume();
         log.d(TAG, "onResume");
+        super.onResume();
         startBackgroundThread();
         orientationEventListener.enable();
         
@@ -243,7 +228,7 @@ public class Camera2Activity extends Activity {
         log.d(TAG, "opening camera");
         buttonHelper.enableAllButtons(true);
         captureButton.setEnabled(true);
-        
+        buttonHelper.cameraId = cameraId;
         try {
             Display display = getWindowManager().getDefaultDisplay();
             Point size = new Point();
@@ -255,7 +240,6 @@ public class Camera2Activity extends Activity {
         } catch (CameraAccessException e) {
             log.e(TAG, "error while getting cameraId");
         }
-        
     }
     
     /**
@@ -275,7 +259,7 @@ public class Camera2Activity extends Activity {
                 cameraPreviewStateCallback,
                 null
             );
-    
+            
             this.orientationEventListener.enable();
         } catch (CameraAccessException e) {
             log.e(TAG, "error while creating caputureRequest");
@@ -323,7 +307,7 @@ public class Camera2Activity extends Activity {
             //avoid error due to double clicks
             buttonHelper.enableAllButtons(false);
             captureButton.setEnabled(false);
-    
+            
             Size optimalSize;
             if (supportedHardwareLevel >
                 CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED) {
@@ -349,22 +333,21 @@ public class Camera2Activity extends Activity {
                 cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             captureBuilder.addTarget(reader.getSurface());
             captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
-    
+            
             int screenRotation = orientationEventListener.getImageRotation();
             int sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
             int jpegOrientation = (screenRotation + sensorOrientation + 270) % 360;
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, jpegOrientation);
             
+            reader.setOnImageAvailableListener(availableImageListener, backgroundHandler);
             
-            reader.setOnImageAvailableListener(availableImageListener, mBackgroundHandler);
-            
-           cameraCaptureStateCallback.mBackgroundHandler = mBackgroundHandler;
-           cameraCaptureStateCallback.captureBuilder = captureBuilder;
+            cameraCaptureStateCallback.mBackgroundHandler = backgroundHandler;
+            cameraCaptureStateCallback.captureBuilder = captureBuilder;
             
             cameraDevice.createCaptureSession(
                 outputSurfaces,
                 cameraCaptureStateCallback,
-                mBackgroundHandler
+                backgroundHandler
             );
         } catch (CameraAccessException e) {
             log.e(TAG, "error while accessing camera", e);
@@ -392,25 +375,24 @@ public class Camera2Activity extends Activity {
                 setResult(R.RESULT_OK, returnIntent);
             } else {
                 log.e(TAG, "sBase64Image is empty");
-                log.e(TAG, "repeat capture");
-                setResult(R.RESULT_REPEAT, returnIntent);
+                setResult(R.RESULT_CANCELED, returnIntent);
             }
             finish();
         }
     }
     
     protected void startBackgroundThread() {
-        mBackgroundThread = new HandlerThread("Camera Background");
-        mBackgroundThread.start();
-        mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
+        backgroundThread = new HandlerThread("Camera Background");
+        backgroundThread.start();
+        backgroundHandler = new Handler(backgroundThread.getLooper());
     }
     
     protected void stopBackgroundThread() {
-        mBackgroundThread.quitSafely();
+        backgroundThread.quitSafely();
         try {
-            mBackgroundThread.join();
-            mBackgroundThread = null;
-            mBackgroundHandler = null;
+            backgroundThread.join();
+            backgroundThread = null;
+            backgroundHandler = null;
         } catch (InterruptedException e) {
             log.e(TAG, "unable to stop background thread", e);
         }

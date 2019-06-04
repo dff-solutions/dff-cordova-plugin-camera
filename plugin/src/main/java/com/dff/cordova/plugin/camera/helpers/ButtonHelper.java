@@ -1,5 +1,8 @@
 package com.dff.cordova.plugin.camera.helpers;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.view.View;
 import android.view.animation.RotateAnimation;
@@ -17,9 +20,6 @@ import java.util.List;
 /**
  * Helper classes to rotate a image button with a specific target degree.
  *
- * @author Anthony Nahas
- * @version 1.1
- * @since 8.2.2017
  */
 @Singleton
 public class ButtonHelper {
@@ -33,6 +33,8 @@ public class ButtonHelper {
     private R r;
     private Log log;
     private int flashMode = 2;
+    public String cameraId;
+    public CameraManager cameraManager;
     private List<ImageButton> imageButtonList = new ArrayList<>();
     
     @Inject
@@ -65,8 +67,7 @@ public class ButtonHelper {
     
     /**
      * Changes the image of the button and set the flashMode in the captureRequest.
-     *
-     * @param captureRequest package of settings to capture a image
+     *  @param captureRequest package of settings to capture a image
      * @param button button with an image
      */
     public void changeFlashButton(CaptureRequest.Builder captureRequest, ImageButton button) {
@@ -100,6 +101,7 @@ public class ButtonHelper {
             default:
                 break;
         }
+        
     }
     
     /**
@@ -131,6 +133,46 @@ public class ButtonHelper {
             if (imageButton.getVisibility() != View.GONE) {
                 imageButton.setEnabled(enable);
             }
+        }
+    }
+    
+    /**
+     * Hides the button when there is no flashMode.
+     *
+     * @param applicationContext information of the application environment
+     * @param flashButton button to switch flashMode
+     */
+    public void checkFlash(Context applicationContext, ImageButton flashButton) {
+        boolean hasFlashMode =
+            applicationContext
+                .getPackageManager()
+                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+        
+        
+    
+        if (!hasFlashMode) {
+            log.d(TAG, "disable changeFlash button");
+            flashButton.setEnabled(false);
+            flashButton.setVisibility(View.GONE);
+        }
+    }
+    
+    /**
+     * Hides the button when the device does not have a front camera.
+     *
+     * @param applicationContext information of the application environment
+     * @param flipButton button to switch cameras
+     */
+    public void checkFrontCamera(Context applicationContext, ImageButton flipButton) {
+        boolean hasFrontCamera =
+            applicationContext
+                .getPackageManager()
+                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT);
+    
+        if (!hasFrontCamera) {
+            log.d(TAG, "disable changeCamera button");
+            flipButton.setEnabled(false);
+            flipButton.setVisibility(View.GONE);
         }
     }
 }
