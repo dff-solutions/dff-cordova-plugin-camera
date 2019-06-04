@@ -103,10 +103,9 @@ public class ImageHelper {
                 size.getHeight() <= 1080
             ) {
                 optimalSize = size;
+                log.d(TAG, "set size: " + optimalSize);
             }
         }
-        log.d(TAG, "width: " + optimalSize.getWidth());
-        log.d(TAG, "height: " + optimalSize.getHeight());
         
         return optimalSize;
     }

@@ -251,7 +251,6 @@ public class Camera2Activity extends Activity {
             
             previewSize = new Size(size.y, size.x);
             log.d(TAG, "previewSize " + previewSize.toString());
-            log.d(TAG, "open Camera with manager");
             cameraManager.openCamera(cameraId, cameraStateCallback, null);
         } catch (CameraAccessException e) {
             log.e(TAG, "error while getting cameraId");
@@ -331,6 +330,7 @@ public class Camera2Activity extends Activity {
                 
                 characteristics = cameraManager.getCameraCharacteristics(cameraId);
                 optimalSize = imageHelper.getOptimalImageSize(characteristics);
+                log.d(TAG, "optimal Image Size = " + optimalSize.toString());
             } else {
                 optimalSize = previewSize;
             }
@@ -351,7 +351,10 @@ public class Camera2Activity extends Activity {
             captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
     
             int screenRotation = orientationEventListener.getImageRotation();
-            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, screenRotation);
+            int sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
+            int jpegOrientation = (screenRotation + sensorOrientation + 270) % 360;
+            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, jpegOrientation);
+            
             
             reader.setOnImageAvailableListener(availableImageListener, mBackgroundHandler);
             
