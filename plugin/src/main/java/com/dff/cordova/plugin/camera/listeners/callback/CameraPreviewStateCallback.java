@@ -10,7 +10,7 @@ import javax.inject.Inject;
 
 /**
  * A callback object for receiving updates about the state of a camera capture session.
- * Update the preview.
+ * Updates the preview.
  *
  * @see <a href="https://developer.android.com/reference/android/hardware/camera2/CameraCaptureSession.StateCallback.html"
  *     >https://developer.android.com/reference/android/hardware/camera2/CameraCaptureSession.StateCallback.html</a>

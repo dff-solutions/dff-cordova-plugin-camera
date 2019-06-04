@@ -9,7 +9,7 @@ import com.dff.cordova.plugin.camera.log.Log;
 import javax.inject.Inject;
 
 /**
- * A callback objects for receiving updates about the state of a camera device.
+ * A callback object for receiving updates about the state of a camera device.
  * Starts the camera preview when the camera is opened.
  *
  * @see <a href="https://developer.android.com/reference/android/hardware/camera2/CameraDevice.StateCallback.html"

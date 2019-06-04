@@ -12,7 +12,7 @@ import javax.inject.Inject;
 /**
  * Helper class for receiving notifications from the SensorManager when the orientation of
  * the device has changed.
- * Has a list of button to rotate them.
+ * Also has a method to return the rotation for the taken image.
  *
  * @see <a href="https://developer.android.com/reference/android/view/OrientationEventListener"
  *     >https://developer.android.com/reference/android/view/OrientationEventListener</a>

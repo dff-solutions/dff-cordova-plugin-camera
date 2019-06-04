@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 /**
  * A callback object for receiving updates about the state of a camera capture session.
- * Stats the capturing of the image.
+ * Starts the capturing of the image.
  *
  * @see <a href="https://developer.android.com/reference/android/hardware/camera2/CameraCaptureSession.StateCallback.html"
  *     >https://developer.android.com/reference/android/hardware/camera2/CameraCaptureSession.StateCallback.html</a>
@@ -54,6 +54,6 @@ public class CameraCaptureStateCallback extends CameraCaptureSession.StateCallba
     
     public void setCamera2Activity(Camera2Activity camera2Activity) {
         captureListener.setCamera2Activity(camera2Activity);
-        mBackgroundHandler = camera2Activity.mBackgroundHandler;
+        mBackgroundHandler = camera2Activity.backgroundHandler;
     }
 }
