@@ -29,8 +29,8 @@ errors. It should rollback or provide a backup for affected data.
  * @param {CameraOptions} args for optional function.
  * @return {string} image as base64 string.
  */
-Shuttleworker2Plugin
-    .countShuttles(
+CameraPlugin
+    .takePhoto(
         (success) => console.info(!!success),
         console.error,
         {
