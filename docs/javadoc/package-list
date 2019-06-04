@@ -7,10 +7,10 @@ com.dff.cordova.plugin.camera.dagger
 com.dff.cordova.plugin.camera.dagger.annotations
 com.dff.cordova.plugin.camera.dagger.components
 com.dff.cordova.plugin.camera.dagger.modules
-com.dff.cordova.plugin.camera.events
 com.dff.cordova.plugin.camera.exceptions
 com.dff.cordova.plugin.camera.helpers
+com.dff.cordova.plugin.camera.listeners
+com.dff.cordova.plugin.camera.listeners.callback
 com.dff.cordova.plugin.camera.log
 com.dff.cordova.plugin.camera.res
 com.dff.cordova.plugin.camera.services
-com.dff.cordova.plugin.camera.views
