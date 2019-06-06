@@ -44,41 +44,19 @@ $ npm i cordova && ionic
 - or
 - ionic plugin add [https://github.com/dff-solutions/dff-cordova-plugin-camera.git]()
 
-## Documentation
-- <a href="https://dff-solutions.github.io/dff-cordova-plugin-camera/" target="_blank" >JAVA DOC</a>
+## [Usage](./docs/USAGE.md)
 
-## Methods
+Please read [Wiki](https://github.com/dff-solutions/dff-cordova-plugin-camera/wiki)
+before [Usage](./docs/USAGE.md).
 
-###### Assumption
+For Ionic/Angular projects use [dff.ionic-native](https://github.com/dff-solutions/dff.ionic-native)
+as wrapper.
 
-- Success Callback Function
-```js
-var success = function(base64) {
-  // (Y) do what every you want...with the image as base64! 
-}
-```
+## [Contributing](./docs/CONTRIBUTING.md)
 
-- Error Callback Function
-```js
-var error = function(errorMsg) {
-    console.log(errorMsg);
-  // (Y) do what every you want...! 
-}
-```
+As a developer please see [Contributing](./docs/CONTRIBUTING.md)
+when making changes to the plugin.
 
-#### takePhoto
-```js
-let params = {
-    withPreview : true, // default false
-    withPicindicator : false // default false
-}
+## Issues
 
-/**
- * Call the camera activity in order to take a photo.
- *
- * @param success - Success callback function with an image as base64
- * @param error - Error callback function
- * @param withPreview - whether a preview for the taken image is to provide | true or false
- */
-CameraPlugin.takePhoto(success,error,params); // withPreview == true
-```
+Issues are tracked by [YouTrack](https://dff.myjetbrains.com/youtrack/issues/DCP?q=plugin:Camera%20).
