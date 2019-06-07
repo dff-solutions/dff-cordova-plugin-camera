@@ -8,6 +8,7 @@ import com.dff.cordova.plugin.camera.activities.PreviewActivity;
 import com.dff.cordova.plugin.camera.dagger.components.ActionHandlerServiceComponent;
 import com.dff.cordova.plugin.camera.dagger.components.AppComponent;
 import com.dff.cordova.plugin.camera.dagger.components.ActivityComponent;
+import com.dff.cordova.plugin.camera.dagger.components.CameraActivityComponent;
 import com.dff.cordova.plugin.camera.dagger.components.DaggerAppComponent;
 import com.dff.cordova.plugin.camera.dagger.components.PluginComponent;
 import com.dff.cordova.plugin.camera.dagger.modules.ActionHandlerServiceModule;
@@ -32,6 +33,7 @@ public class DaggerManager {
     private ActionHandlerServiceComponent actionHandlerServiceComponent;
     private PluginComponent pluginComponent;
     private ActivityComponent activityComponent;
+    private CameraActivityComponent cameraActivityComponent;
 
     private AppModule appModule;
     private PluginModule pluginModule;
@@ -87,21 +89,21 @@ public class DaggerManager {
     }
     
     /**
-     * Injects the camera2Activty.
-     *
-     * @param cameraActivity camera2Activity
-     */
-    public void inject(CameraActivity cameraActivity) {
-        getActivityComponent().inject(cameraActivity);
-    }
-    
-    /**
      * Injects the previewActivty.
      *
      * @param previewActivity the activity
      */
     public void inject(PreviewActivity previewActivity) {
         getActivityComponent().inject(previewActivity);
+    }
+    
+    /**
+     * Injects the cameraActivty.
+     *
+     * @param cameraActivity the activity
+     */
+    public void inject(CameraActivity cameraActivity) {
+        getCameraActivityComponent().inject(cameraActivity);
     }
     
     private AppComponent getAppComponent() {
@@ -143,5 +145,14 @@ public class DaggerManager {
 
         }
         return activityComponent;
+    }
+    
+    private CameraActivityComponent getCameraActivityComponent() {
+        if (cameraActivityComponent == null) {
+            cameraActivityComponent = getActivityComponent()
+                .cameraActivityComponentBuilder()
+                .build();
+        }
+        return  cameraActivityComponent;
     }
 }

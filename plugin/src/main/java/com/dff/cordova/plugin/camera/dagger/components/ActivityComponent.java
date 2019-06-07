@@ -24,7 +24,7 @@ public interface ActivityComponent {
         ActivityComponent build();
     }
     
-    void inject(CameraActivity cameraActivity);
+    CameraActivityComponent.Builder cameraActivityComponentBuilder();
     
     void inject(PreviewActivity previewActivity);
 }
