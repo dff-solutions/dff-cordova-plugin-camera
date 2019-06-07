@@ -3,7 +3,7 @@ package com.dff.cordova.plugin.camera.listeners;
 import android.media.Image;
 import android.media.ImageReader;
 
-import com.dff.cordova.plugin.camera.activities.Camera2Activity;
+import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.helpers.ImageHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 
@@ -12,7 +12,7 @@ import javax.inject.Inject;
 /**
  * Callback interface for being notified that a new image is available.
  * When a new image is available, it will be stored in the ImageHelper and the
- * startPrewviewActivity method from Camera2Activity is called.
+ * startPrewviewActivity method from CameraActivity is called.
  *
  * @see <a href="https://developer.android.com/reference/android/view/OrientationEventListener"
  *     >https://developer.android.com/reference/android/view/OrientationEventListener</a>
@@ -20,7 +20,7 @@ import javax.inject.Inject;
 public class AvailableImageListener implements ImageReader.OnImageAvailableListener {
     private final String TAG = "AvailableImageListener";
     private Log log;
-    private Camera2Activity camera2Activity;
+    private CameraActivity cameraActivity;
     private ImageHelper imageHelper;
     
     @Inject
@@ -42,10 +42,10 @@ public class AvailableImageListener implements ImageReader.OnImageAvailableListe
             image.close();
         }
         log.d(TAG, "startImagePreview");
-        camera2Activity.startPreviewActivity();
+        cameraActivity.startPreviewActivity();
     }
     
-    public void setCamera2Activity(Camera2Activity camera2Activity) {
-        this.camera2Activity = camera2Activity;
+    public void setCameraActivity(CameraActivity cameraActivity) {
+        this.cameraActivity = cameraActivity;
     }
 }

@@ -3,7 +3,7 @@ package com.dff.cordova.plugin.camera.listeners;
 import android.graphics.SurfaceTexture;
 import android.view.TextureView;
 
-import com.dff.cordova.plugin.camera.activities.Camera2Activity;
+import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import javax.inject.Inject;
@@ -18,7 +18,7 @@ import javax.inject.Inject;
 public class SurfaceListener implements TextureView.SurfaceTextureListener {
     private final String TAG = "SurfaceListener";
     
-    private Camera2Activity camera2Activity;
+    private CameraActivity cameraActivity;
     private Log log;
     
     @Inject
@@ -31,7 +31,7 @@ public class SurfaceListener implements TextureView.SurfaceTextureListener {
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
         log.d(TAG, "surface texture available");
-        camera2Activity.openCamera();
+        cameraActivity.openCamera();
     }
     
     @Override
@@ -42,7 +42,7 @@ public class SurfaceListener implements TextureView.SurfaceTextureListener {
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
         log.d(TAG, "surface texture destroyed");
-        camera2Activity.closeCamera();
+        cameraActivity.closeCamera();
         return false;
     }
     
@@ -51,7 +51,7 @@ public class SurfaceListener implements TextureView.SurfaceTextureListener {
     
     }
     
-    public void setCamera2Activity(Camera2Activity camera2Activity) {
-        this.camera2Activity = camera2Activity;
+    public void setCameraActivity(CameraActivity cameraActivity) {
+        this.cameraActivity = cameraActivity;
     }
 }

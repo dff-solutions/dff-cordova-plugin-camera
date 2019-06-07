@@ -3,7 +3,7 @@ package com.dff.cordova.plugin.camera.dagger;
 import android.app.Application;
 
 import com.dff.cordova.plugin.camera.CameraPlugin;
-import com.dff.cordova.plugin.camera.activities.Camera2Activity;
+import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.activities.PreviewActivity;
 import com.dff.cordova.plugin.camera.dagger.components.ActionHandlerServiceComponent;
 import com.dff.cordova.plugin.camera.dagger.components.AppComponent;
@@ -91,7 +91,7 @@ public class DaggerManager {
      *
      * @param cameraActivity camera2Activity
      */
-    public void inject(Camera2Activity cameraActivity) {
+    public void inject(CameraActivity cameraActivity) {
         getActivityComponent().inject(cameraActivity);
     }
     

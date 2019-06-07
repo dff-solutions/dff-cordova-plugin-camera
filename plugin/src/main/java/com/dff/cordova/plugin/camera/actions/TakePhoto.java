@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.dff.cordova.plugin.camera.CameraPlugin;
-import com.dff.cordova.plugin.camera.activities.Camera2Activity;
+import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.res.R;
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 
@@ -43,7 +43,7 @@ public class TakePhoto extends PluginAction {
         super.checkJsonArgs(REQUIRED_ARGS);
 
         boolean withPreview = jsonArgs.getBoolean(JSON_ARG_WITH_PREVIEW);
-        Intent intent = new Intent(context, Camera2Activity.class);
+        Intent intent = new Intent(context, CameraActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(JSON_ARG_WITH_PREVIEW, withPreview);
         

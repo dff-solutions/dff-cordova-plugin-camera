@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.dff.cordova.plugin.camera.activities.Camera2Activity">
+    tools:context="com.dff.cordova.plugin.camera.activities.CameraActivity">
 
     <TextureView
         android:id="@+id/texture"
