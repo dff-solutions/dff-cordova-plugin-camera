@@ -12,11 +12,11 @@ import com.dff.cordova.plugin.camera.classes.CameraState;
 import com.dff.cordova.plugin.camera.log.Log;
 import com.dff.cordova.plugin.camera.res.R;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Helper classes to rotate a image button with a specific target degree.

@@ -31,6 +31,7 @@ import com.dff.cordova.plugin.camera.actions.TakePhoto;
 import com.dff.cordova.plugin.camera.classes.CameraState;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.helpers.ButtonHelper;
+import com.dff.cordova.plugin.camera.helpers.CallbackContextHelper;
 import com.dff.cordova.plugin.camera.helpers.ImageHelper;
 import com.dff.cordova.plugin.camera.helpers.PermissionHelper;
 import com.dff.cordova.plugin.camera.listeners.AvailableImageListener;
@@ -41,8 +42,6 @@ import com.dff.cordova.plugin.camera.listeners.callback.CameraPreviewStateCallba
 import com.dff.cordova.plugin.camera.listeners.callback.CameraStateCallback;
 import com.dff.cordova.plugin.camera.log.Log;
 import com.dff.cordova.plugin.camera.res.R;
-
-import org.apache.cordova.CallbackContext;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -97,6 +96,9 @@ public class CameraActivity extends Activity {
     
     @Inject
     ImageHelper imageHelper;
+    
+    @Inject
+    CallbackContextHelper contextHelper;
     
     public CameraDevice cameraDevice;
     private TextureView textureView;
@@ -479,11 +481,10 @@ public class CameraActivity extends Activity {
     
     private void returnImage() {
         if (imageHelper.getBase64Image() != null) {
-            for (CallbackContext callbackContext : r.getCallBackContexts()) {
-                callbackContext.success(imageHelper.getBase64Image());
-            }
+            contextHelper.sendAllSuccess(imageHelper.getBase64Image());
         } else {
-            log.e(TAG, "sBase64Image is empty");
+            log.e(TAG, "base64Image is empty");
+            contextHelper.sendAllError("unable to return image");
         }
     }
 }

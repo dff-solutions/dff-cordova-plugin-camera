@@ -5,10 +5,6 @@ import android.content.res.Resources;
 
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 
-import org.apache.cordova.CallbackContext;
-
-import java.util.ArrayList;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -20,7 +16,6 @@ import javax.inject.Singleton;
  * @since 05.01.2017
  */
 @Singleton
-@SuppressWarnings("PMD.LooseCoupling")
 public class R {
     private static final String DEF_TYPE_LAYOUT = "layout";
     private static final String DEF_TYPE_ID = "id";
@@ -51,13 +46,5 @@ public class R {
     public static final int RESULT_REPEAT = 2;
     public static final int RESULT_CANCELED = 3;
     
-    private ArrayList<CallbackContext> callbackContextList = new ArrayList<>();
     
-    public ArrayList<CallbackContext> getCallBackContexts() {
-        return callbackContextList;
-    }
-    
-    public void addCallBackContext(CallbackContext callBackContext) {
-        callbackContextList.add(callBackContext);
-    }
 }
