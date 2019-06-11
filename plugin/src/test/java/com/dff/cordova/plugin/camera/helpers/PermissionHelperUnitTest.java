@@ -1,5 +1,6 @@
 package com.dff.cordova.plugin.camera.helpers;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.ActivityCompat;
@@ -48,6 +49,10 @@ public class PermissionHelperUnitTest {
     private Activity mActivity;
 
     private PermissionHelper mPermissionHelper;
+    
+    public static final String[] PERMISSIONS = new String[] {
+        Manifest.permission.CAMERA,
+    };
 
     @Before
     public void setup() {
@@ -61,11 +66,11 @@ public class PermissionHelperUnitTest {
             .when(ContextCompat.checkSelfPermission(eq(mContext), anyString()))
             .thenReturn(PERMISSION_GRANTED);
 
-        boolean result = mPermissionHelper.hasAllPermissions(CameraPlugin.PERMISSIONS);
+        boolean result = mPermissionHelper.hasAllPermissions(PERMISSIONS);
         Assertions.assertTrue(result);
 
         PowerMockito.verifyStatic(ContextCompat.class, times(1));
-        ContextCompat.checkSelfPermission(mContext, CameraPlugin.PERMISSIONS[0]);
+        ContextCompat.checkSelfPermission(mContext, PERMISSIONS[0]);
     }
 
     @Test
@@ -73,14 +78,14 @@ public class PermissionHelperUnitTest {
         PowerMockito.mockStatic(ContextCompat.class);
 
         Mockito
-            .when(ContextCompat.checkSelfPermission(eq(mContext), eq(CameraPlugin.PERMISSIONS[0])))
+            .when(ContextCompat.checkSelfPermission(eq(mContext), eq(PERMISSIONS[0])))
             .thenReturn(PERMISSION_DENIED);
 
-        boolean result = mPermissionHelper.hasAllPermissions(CameraPlugin.PERMISSIONS);
+        boolean result = mPermissionHelper.hasAllPermissions(PERMISSIONS);
         Assertions.assertFalse(result);
 
         PowerMockito.verifyStatic(ContextCompat.class, times(1));
-        ContextCompat.checkSelfPermission(mContext, CameraPlugin.PERMISSIONS[0]);
+        ContextCompat.checkSelfPermission(mContext, PERMISSIONS[0]);
     }
 
     @Test
@@ -90,14 +95,14 @@ public class PermissionHelperUnitTest {
             .when(ActivityCompat
                 .shouldShowRequestPermissionRationale(
                     eq(mActivity),
-                    eq(CameraPlugin.PERMISSIONS[0])
+                    eq(PERMISSIONS[0])
                 ))
             .thenReturn(true);
 
         boolean result = mPermissionHelper
             .shouldShowRequestPermissionRationale(
                 mActivity,
-                CameraPlugin.PERMISSIONS
+                PERMISSIONS
             );
         Assertions.assertTrue(result);
     }
@@ -109,14 +114,14 @@ public class PermissionHelperUnitTest {
             .when(ActivityCompat
                 .shouldShowRequestPermissionRationale(
                     eq(mActivity),
-                    eq(CameraPlugin.PERMISSIONS[0])
+                    eq(PERMISSIONS[0])
                 ))
             .thenReturn(false);
 
         boolean result = mPermissionHelper
             .shouldShowRequestPermissionRationale(
                 mActivity,
-                CameraPlugin.PERMISSIONS
+                PERMISSIONS
             );
         Assertions.assertFalse(result);
     }

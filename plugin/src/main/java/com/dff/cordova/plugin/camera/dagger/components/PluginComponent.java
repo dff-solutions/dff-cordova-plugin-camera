@@ -2,6 +2,7 @@ package com.dff.cordova.plugin.camera.dagger.components;
 
 import com.dff.cordova.plugin.camera.CameraPlugin;
 import com.dff.cordova.plugin.camera.dagger.annotations.PluginComponentScope;
+import com.dff.cordova.plugin.camera.dagger.annotations.PluginPermissions;
 import com.dff.cordova.plugin.camera.dagger.modules.PluginModule;
 
 import dagger.Subcomponent;
@@ -24,4 +25,7 @@ public interface PluginComponent {
     }
 
     void inject(CameraPlugin plugin);
+    
+    @PluginPermissions
+    String[] providePluginPermissions();
 }

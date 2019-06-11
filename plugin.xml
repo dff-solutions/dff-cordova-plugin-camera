@@ -46,6 +46,7 @@
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/configurations/ActionHandler.java" target-dir="src/com/dff/cordova/plugin/camera/configurations"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/configurations/ActionHandlerThread.java" target-dir="src/com/dff/cordova/plugin/camera/configurations"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/configurations/ActionsManager.java" target-dir="src/com/dff/cordova/plugin/camera/configurations"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/configurations/CameraHandlerThread.java" target-dir="src/com/dff/cordova/plugin/camera/configurations"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/DaggerManager.java" target-dir="src/com/dff/cordova/plugin/camera/dagger"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/ActionHandlerScope.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/ActionHandlerServiceIntent.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>

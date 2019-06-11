@@ -1,5 +1,6 @@
 package com.dff.cordova.plugin.camera.dagger;
 
+import android.Manifest;
 import android.app.Application;
 
 import com.dff.cordova.plugin.camera.CameraPlugin;
@@ -29,6 +30,12 @@ import org.apache.cordova.CordovaInterface;
  */
 public class DaggerManager {
     private static DaggerManager daggerManager;
+    
+    // contains dangerous permissions
+    // @see https://developer.android.com/guide/topics/permissions/overview.html#normal-dangerous
+    public static final String[] PERMISSIONS = new String[] {
+        Manifest.permission.CAMERA,
+    };
 
     private AppComponent appComponent;
     private ActionHandlerServiceComponent actionHandlerServiceComponent;
@@ -60,19 +67,17 @@ public class DaggerManager {
      * Provides objects to the PluginModule.
      *
      * @param cordovaInterface cordovaInterface
-     * @param pluginPermissions needed permissions
      * @param cameraPlugin core class
      * @return Daggermanager
      */
     public DaggerManager in(
         CordovaInterface cordovaInterface,
-        String[] pluginPermissions,
         CameraPlugin cameraPlugin
     ) {
         if (pluginModule == null) {
             pluginModule = new PluginModule(
                 cordovaInterface,
-                pluginPermissions,
+                PERMISSIONS,
                 cameraPlugin
             );
         }

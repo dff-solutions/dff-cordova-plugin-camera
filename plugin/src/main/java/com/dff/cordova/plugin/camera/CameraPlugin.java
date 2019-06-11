@@ -1,11 +1,11 @@
 package com.dff.cordova.plugin.camera;
 
-import android.Manifest;
 import android.content.pm.PackageManager;
 
 import com.dff.cordova.plugin.camera.actions.PluginAction;
 import com.dff.cordova.plugin.camera.configurations.ActionsManager;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
+import com.dff.cordova.plugin.camera.dagger.annotations.PluginPermissions;
 import com.dff.cordova.plugin.camera.helpers.PermissionHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 
@@ -28,11 +28,6 @@ public class CameraPlugin extends CordovaPlugin {
     private static final String TAG = "CameraPlugin";
 
     private static final int PERMISSION_REQUEST_CODE = 0;
-    // contains dangerous permissions
-    // @see https://developer.android.com/guide/topics/permissions/overview.html#normal-dangerous
-    public static final String[] PERMISSIONS = new String[] {
-        Manifest.permission.CAMERA,
-    };
 
     @Inject
     Log log;
@@ -42,6 +37,10 @@ public class CameraPlugin extends CordovaPlugin {
 
     @Inject
     PermissionHelper permissionHelper;
+    
+    @Inject
+    @PluginPermissions
+    String[] pluginPermissions;
     
     /**
      * Initializing the plugin by setting and allocating important information and objects.
@@ -53,7 +52,7 @@ public class CameraPlugin extends CordovaPlugin {
         DaggerManager
             .getInstance()
             .in(cordova.getActivity().getApplication())
-            .in(cordova, PERMISSIONS, this)
+            .in(cordova, this)
             .inject(this);
     }
 
@@ -107,7 +106,7 @@ public class CameraPlugin extends CordovaPlugin {
                 // actions are queued and PERMISSIONS might be granted when action is running
                 log.w(TAG, String.format(
                     "required permissions %s not granted",
-                    Arrays.toString(PERMISSIONS)
+                    Arrays.toString(pluginPermissions)
                 ));
             }
 
@@ -139,15 +138,16 @@ public class CameraPlugin extends CordovaPlugin {
      * @return True if all permissions are granted false otherwise
      */
     private boolean requestPermissions() {
-        boolean allGranted = permissionHelper.hasAllPermissions(PERMISSIONS);
+        boolean allGranted = permissionHelper.hasAllPermissions(pluginPermissions);
         boolean showPermissionRationale = permissionHelper
-            .shouldShowRequestPermissionRationale(cordova.getActivity(), PERMISSIONS);
+            .shouldShowRequestPermissionRationale(cordova.getActivity(), pluginPermissions);
 
         log.d(TAG, String.format("all permissions granted: %b", allGranted));
 
         if (!allGranted && showPermissionRationale) {
-            log.d(TAG, String.format("request permissions for %s", Arrays.toString(PERMISSIONS)));
-            cordova.requestPermissions(this, PERMISSION_REQUEST_CODE, PERMISSIONS);
+            log.d(TAG, String.format("request permissions for %s",
+                                     Arrays.toString(pluginPermissions)));
+            cordova.requestPermissions(this, PERMISSION_REQUEST_CODE, pluginPermissions);
         }
 
         return allGranted;
