@@ -19,6 +19,9 @@ import javax.inject.Inject;
  */
 public class OrientationListener extends OrientationEventListener {
     private static final String TAG = "OrientationListener";
+    
+    //should be between 0 and 45. Else it might cause errors.
+    private final int orientationRange = 15;
     private ButtonHelper buttonHelper;
     public int currentRotaion = 0;
     private Log log;
@@ -41,19 +44,39 @@ public class OrientationListener extends OrientationEventListener {
           if orientation = 270 we need to rotate to 90
           if orientation = 90  we need to rotate to 270
         */
-        if ((orientation < 15 || orientation > 345) && currentRotaion != 0) {
+        
+        if ((
+            orientation >= (360 - orientationRange) ||
+            orientation <= (orientationRange)) &&
+            currentRotaion != 0
+        ) {
             log.d(TAG, "setting rotation to 0");
             buttonHelper.rotate(currentRotaion, 0);
             currentRotaion = 0;
-        } else if ((orientation >= 75 && orientation < 105) && currentRotaion != 270) {
+            
+        } else if ((
+            orientation >= 90 - orientationRange &&
+            orientation <= 90 + orientationRange) &&
+            currentRotaion != 270
+        ) {
             log.d(TAG, "setting rotation to -90");
             buttonHelper.rotate(currentRotaion, 270);
             currentRotaion = 270;
-        } else if ((orientation >= 165 && orientation < 195) && currentRotaion != 180) {
+            
+        } else if ((
+            orientation >= 180 - orientationRange &&
+            orientation <= 180 + orientationRange) &&
+            currentRotaion != 180
+        ) {
             log.d(TAG, "setting rotation to 180");
             buttonHelper.rotate(currentRotaion, 180);
             currentRotaion = 180;
-        } else if ((orientation >= 255 && orientation < 285) && currentRotaion != 90) {
+            
+        } else if ((
+            orientation >= 270 - orientationRange &&
+            orientation <= 270 + orientationRange) &&
+            currentRotaion != 90
+        ) {
             log.d(TAG, "setting rotation to 90");
             buttonHelper.rotate(currentRotaion, 90);
             currentRotaion = 90;
