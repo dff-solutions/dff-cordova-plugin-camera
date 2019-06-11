@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 
+import com.dff.cordova.plugin.camera.classes.CameraState;
 import com.dff.cordova.plugin.camera.log.Log;
 import com.dff.cordova.plugin.camera.res.R;
 
@@ -106,13 +107,12 @@ public class ButtonHelper {
     
     /**
      * Changes the icon of the button.
-     *
-     * @param button button with image
+     *  @param button button with image
      * @param flipMode state of the camera
      */
-    public void changeFlipButton(ImageButton button, int flipMode) {
+    public void changeFlipButton(ImageButton button, CameraState flipMode) {
         log.d(TAG, "changeCamera");
-        if (flipMode == 0) {
+        if (flipMode == CameraState.BACK) {
             button.setImageResource(r.getDrawableIdentifier(IC_CAMERA_BACK));
         } else {
             button.setImageResource(r.getDrawableIdentifier(IC_CAMERA_FRONT));
@@ -147,8 +147,6 @@ public class ButtonHelper {
             applicationContext
                 .getPackageManager()
                 .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-        
-        
     
         if (!hasFlashMode) {
             log.d(TAG, "disable changeFlash button");

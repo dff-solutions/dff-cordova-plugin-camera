@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
 import android.graphics.Point;
 import android.graphics.SurfaceTexture;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.dff.cordova.plugin.camera.actions.TakePhoto;
+import com.dff.cordova.plugin.camera.classes.CameraState;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.helpers.ButtonHelper;
 import com.dff.cordova.plugin.camera.helpers.ImageHelper;
@@ -57,7 +59,7 @@ import javax.inject.Inject;
 public class CameraActivity extends Activity {
     private static final String TAG = "CameraActivity";
     
-    public static final String CAMERA_ACTIVITY_LAYOUT = "activity_camera2";
+    public static final String CAMERA_ACTIVITY_LAYOUT = "cameraplugin_activity_camera";
     public static final String TEXTURE_VIEW_ID = "texture";
     public static final String CAPTURE_BUTTON = "capture_button";
     public static final String FLASH_BUTTON = "flash_button";
@@ -111,11 +113,21 @@ public class CameraActivity extends Activity {
     private CameraCharacteristics characteristics = null;
     private ImageReader reader;
     
-    private int flipMode = 1;
+    private CameraState cameraState = CameraState.BACK;
     private int supportedHardwareLevel = 0;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        boolean hasCamera =
+            getApplicationContext()
+                .getPackageManager()
+                .hasSystemFeature(PackageManager.FEATURE_CAMERA);
+        
+        if (!hasCamera) {
+            setResult(R.RESULT_CANCELED);
+            finish();
+        }
+        
         super.onCreate(savedInstanceState);
         
         //DaggerAppComponent.builder().build().activityComponentBuilder().build()
@@ -408,7 +420,7 @@ public class CameraActivity extends Activity {
     }
     
     private void changeCamera() {
-        if (flipMode == 0) {
+        if (cameraState == CameraState.FRONT) {
             log.d(TAG, "flip to back camera");
             try {
                 for (String id : cameraManager.getCameraIdList()) {
@@ -423,7 +435,7 @@ public class CameraActivity extends Activity {
             } catch (CameraAccessException e) {
                 log.e(TAG, "unable to access camera", e);
             }
-            flipMode = 1;
+            cameraState = CameraState.BACK;
         } else {
             log.d(TAG, "flip to front camera");
             try {
@@ -439,9 +451,9 @@ public class CameraActivity extends Activity {
             } catch (CameraAccessException e) {
                 log.e(TAG, "unable to access camera", e);
             }
-            flipMode = 0;
+            cameraState = CameraState.FRONT;
         }
-        buttonHelper.changeFlipButton(flipButton, flipMode);
+        buttonHelper.changeFlipButton(flipButton, cameraState);
         closeCamera();
         openCamera();
     }

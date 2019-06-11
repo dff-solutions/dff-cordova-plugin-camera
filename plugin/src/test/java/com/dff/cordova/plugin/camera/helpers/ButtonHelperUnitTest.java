@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 
+import com.dff.cordova.plugin.camera.classes.CameraState;
 import com.dff.cordova.plugin.camera.res.R;
 import com.dff.cordova.plugin.camera.log.Log;
 
@@ -33,8 +34,8 @@ public class ButtonHelperUnitTest {
     private final int FLASH_ON = 0;
     private final int FLASH_OFF = 1;
     private final int FLASH_AUTO = 2;
-    private final int CAMERA_BACK = 0;
-    private final int CAMERA_FRONT = 1;
+    private final CameraState CAMERA_BACK = CameraState.BACK;
+    private final CameraState CAMERA_FRONT = CameraState.FRONT;
     
     @Mock
     ImageButton button;
@@ -94,16 +95,16 @@ public class ButtonHelperUnitTest {
     
     @Test
     public void shouldChangeCamera() {
-        doReturn(CAMERA_BACK).when(r).getDrawableIdentifier(IC_CAMERA_BACK);
-        doReturn(CAMERA_FRONT).when(r).getDrawableIdentifier(IC_CAMERA_FRONT);
+        doReturn(CAMERA_BACK.ordinal()).when(r).getDrawableIdentifier(IC_CAMERA_BACK);
+        doReturn(CAMERA_FRONT.ordinal()).when(r).getDrawableIdentifier(IC_CAMERA_FRONT);
         
         buttonHelper.changeFlipButton(button, CAMERA_BACK);
         
-        verify(button).setImageResource(CAMERA_BACK);
+        verify(button).setImageResource(CAMERA_BACK.ordinal());
         
         buttonHelper.changeFlipButton(button, CAMERA_FRONT);
     
-        verify(button).setImageResource(CAMERA_FRONT);
+        verify(button).setImageResource(CAMERA_FRONT.ordinal());
     }
     
     @Test
