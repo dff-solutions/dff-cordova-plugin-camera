@@ -23,14 +23,16 @@ public class CameraCaptureStateCallback extends CameraCaptureSession.StateCallba
     private CameraCaptureCallback captureListener;
     public CaptureRequest.Builder captureBuilder;
     private Log log;
-    public Handler mBackgroundHandler;
+    public Handler handler;
     
     @Inject
     public CameraCaptureStateCallback(
         CameraCaptureCallback cameraCaptureCallback,
+        Handler handler,
         Log log
     ) {
         this.captureListener = cameraCaptureCallback;
+        this.handler = handler;
         this.log = log;
     }
     
@@ -39,7 +41,7 @@ public class CameraCaptureStateCallback extends CameraCaptureSession.StateCallba
         log.d(TAG, "onConfigured");
         try {
             session.capture(captureBuilder.build(), captureListener,
-                            mBackgroundHandler);
+                            handler);
         } catch (CameraAccessException e) {
             log.e(TAG, "error while accessing camera", e);
         }
@@ -54,6 +56,5 @@ public class CameraCaptureStateCallback extends CameraCaptureSession.StateCallba
     
     public void setCamera2Activity(CameraActivity cameraActivity) {
         captureListener.setCameraActivity(cameraActivity);
-        mBackgroundHandler = cameraActivity.backgroundHandler;
     }
 }

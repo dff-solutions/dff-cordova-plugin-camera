@@ -39,7 +39,7 @@ public class CameraCaptureStateCallbackUnitTest {
     
     @BeforeEach
     public void setup() {
-        cameraCaptureStateCallback.mBackgroundHandler = handler;
+        cameraCaptureStateCallback.handler = handler;
         cameraCaptureStateCallback.captureBuilder = builder;
     }
     

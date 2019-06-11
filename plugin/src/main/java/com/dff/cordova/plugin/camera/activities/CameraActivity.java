@@ -19,7 +19,6 @@ import android.hardware.camera2.CaptureRequest;
 import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.util.Size;
 import android.view.Display;
 import android.view.Surface;
@@ -100,6 +99,9 @@ public class CameraActivity extends Activity {
     @Inject
     CallbackContextHelper contextHelper;
     
+    @Inject
+    Handler backgroundHandler;
+    
     public CameraDevice cameraDevice;
     private TextureView textureView;
     private Size previewSize;
@@ -108,8 +110,6 @@ public class CameraActivity extends Activity {
     private ImageButton captureButton;
     private ImageButton flashButton;
     private ImageButton flipButton;
-    public Handler backgroundHandler;
-    private HandlerThread backgroundThread;
     private CameraManager cameraManager;
     private String cameraId = null;
     private CameraCharacteristics characteristics = null;
@@ -212,14 +212,13 @@ public class CameraActivity extends Activity {
         buttonHelper.checkFrontCamera(getApplicationContext(), flipButton);
         
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        startBackgroundThread();
+        log.e(TAG, backgroundHandler.toString());
     }
     
     @Override
     protected void onResume() {
         log.d(TAG, "onResume");
         super.onResume();
-        startBackgroundThread();
         orientationEventListener.enable();
         
         if (textureView.isAvailable()) {
@@ -232,7 +231,6 @@ public class CameraActivity extends Activity {
     @Override
     protected void onPause() {
         log.d(TAG, "onPause");
-        stopBackgroundThread();
         closeCamera();
         orientationEventListener.disable();
         super.onPause();
@@ -359,7 +357,7 @@ public class CameraActivity extends Activity {
             
             reader.setOnImageAvailableListener(availableImageListener, backgroundHandler);
             
-            cameraCaptureStateCallback.mBackgroundHandler = backgroundHandler;
+            cameraCaptureStateCallback.handler = backgroundHandler;
             cameraCaptureStateCallback.captureBuilder = captureBuilder;
             
             cameraDevice.createCaptureSession(
@@ -388,23 +386,6 @@ public class CameraActivity extends Activity {
             log.d(TAG, "show no PreviewActivity");
             returnImage();
             finish();
-        }
-    }
-    
-    protected void startBackgroundThread() {
-        backgroundThread = new HandlerThread("Camera Background");
-        backgroundThread.start();
-        backgroundHandler = new Handler(backgroundThread.getLooper());
-    }
-    
-    protected void stopBackgroundThread() {
-        backgroundThread.quitSafely();
-        try {
-            backgroundThread.join();
-            backgroundThread = null;
-            backgroundHandler = null;
-        } catch (InterruptedException e) {
-            log.e(TAG, "unable to stop background thread", e);
         }
     }
     
@@ -463,12 +444,14 @@ public class CameraActivity extends Activity {
                 setResult(R.RESULT_OK, data);
                 returnImage();
                 closeCamera();
+                backgroundHandler.getLooper().quitSafely();
                 finish();
                 break;
             case R.RESULT_CANCELED:
                 log.d(TAG, "onActivityResult: set result = canceled");
                 setResult(R.RESULT_CANCELED);
                 closeCamera();
+                backgroundHandler.getLooper().quitSafely();
                 finish();
                 break;
             case R.RESULT_REPEAT:
