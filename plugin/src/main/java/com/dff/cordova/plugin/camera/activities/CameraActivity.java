@@ -380,19 +380,11 @@ public class CameraActivity extends Activity {
         
         if (this.getIntent().getBooleanExtra(TakePhoto.JSON_ARG_WITH_PREVIEW, false)) {
             Intent intent = new Intent(this, PreviewActivity.class);
+            intent.putExtra("image", imageHelper.getBytes());
             startActivityForResult(intent, R.RESULT_OK);
         } else {
             log.d(TAG, "show no PreviewActivity");
-            Intent returnIntent = new Intent();
-            if (r.sBase64Image != null) {
-                for (CallbackContext callbackContext : r.getCallBackContexts()) {
-                    callbackContext.success(r.sBase64Image);
-                }
-                setResult(R.RESULT_OK, returnIntent);
-            } else {
-                log.e(TAG, "sBase64Image is empty");
-                setResult(R.RESULT_CANCELED, returnIntent);
-            }
+            returnImage();
             finish();
         }
     }
@@ -467,6 +459,7 @@ public class CameraActivity extends Activity {
             case R.RESULT_OK:
                 log.d(TAG, "onActivityResult: set result = OK");
                 setResult(R.RESULT_OK, data);
+                returnImage();
                 closeCamera();
                 finish();
                 break;
@@ -481,6 +474,16 @@ public class CameraActivity extends Activity {
                 break;
             default:
                 break;
+        }
+    }
+    
+    private void returnImage() {
+        if (imageHelper.getBase64Image() != null) {
+            for (CallbackContext callbackContext : r.getCallBackContexts()) {
+                callbackContext.success(imageHelper.getBase64Image());
+            }
+        } else {
+            log.e(TAG, "sBase64Image is empty");
         }
     }
 }

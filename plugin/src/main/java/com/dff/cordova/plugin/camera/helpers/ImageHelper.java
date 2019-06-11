@@ -1,16 +1,14 @@
 package com.dff.cordova.plugin.camera.helpers;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
+import android.os.Environment;
 import android.util.Base64;
 import android.util.Size;
 
-import com.dff.cordova.plugin.camera.res.R;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import java.io.File;
@@ -29,16 +27,16 @@ import javax.inject.Singleton;
 @Singleton
 public class ImageHelper {
     private static final String TAG = "ImageHelper";
+    private final String imageName = "pic";
+    private final int sizeLimit = 1080;
     
-    public Bitmap sBitmap;
     private byte[] bytes;
     private Log log;
-    private R r;
+    private String base64Image;
     
     @Inject
-    public ImageHelper(Log log, R r) {
+    public ImageHelper(Log log) {
         this.log = log;
-        this.r = r;
     }
     
     /**
@@ -51,11 +49,8 @@ public class ImageHelper {
         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
         bytes = new byte[buffer.capacity()];
         buffer.get(bytes);
-        sBitmap = BitmapFactory
-            .decodeByteArray(bytes, 0, bytes.length);
         
-        //rotateBitMap();
-        r.sBase64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+        base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
     }
     
     /**
@@ -66,8 +61,9 @@ public class ImageHelper {
     public void saveImage() throws IOException {
         log.d(TAG, "saveImage");
         
-        final File file = new File("/storage/emulated/0/DCIM/Camera" +
-                                       "/pic" + new Date().getTime() + ".jpg");
+        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        String name = imageName + new Date().getTime() + ".jpg";
+        final File file = new File(path, name);
         OutputStream output = null;
         try {
             output = new FileOutputStream(file);
@@ -82,6 +78,7 @@ public class ImageHelper {
     
     /**
      * Returns the optimal size for the image.
+     * The optimal size is limited to 1080 pixel height.
      *
      * @param characteristics properties describing a CameraDevice
      * @return optimal image size
@@ -94,13 +91,16 @@ public class ImageHelper {
             characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
     
         Size previewSize = streamConfigurationMap.getOutputSizes(SurfaceTexture.class)[0];
-        
         Size optimalSize = previewSize;
+        
+        /*
+        Checks if a size is modulo to the preview size and smaller then the given sizeLimit
+         */
         for (Size size : jpegSizes) {
             if ((size.getHeight() % previewSize.getHeight()) == 0 && (
                 size.getWidth() % previewSize.getWidth()) == 0 &&
                 size.getHeight() > optimalSize.getHeight() &&
-                size.getHeight() <= 1080
+                size.getHeight() <= sizeLimit
             ) {
                 optimalSize = size;
                 log.d(TAG, "set size: " + optimalSize);
@@ -108,5 +108,14 @@ public class ImageHelper {
         }
         
         return optimalSize;
+    }
+    
+    public String getBase64Image() {
+        return base64Image;
+    }
+    
+    public byte[] getBytes() {
+        byte[] copy = bytes.clone();
+        return copy;
     }
 }

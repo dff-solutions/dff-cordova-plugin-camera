@@ -51,7 +51,6 @@ public class R {
     public static final int RESULT_REPEAT = 2;
     public static final int RESULT_CANCELED = 3;
     
-    public String sBase64Image;
     private ArrayList<CallbackContext> callbackContextList = new ArrayList<>();
     
     public ArrayList<CallbackContext> getCallBackContexts() {

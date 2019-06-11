@@ -2,6 +2,8 @@ package com.dff.cordova.plugin.camera.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -10,11 +12,8 @@ import android.widget.Toast;
 
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.exceptions.UnexpectedExceptionHandler;
-import com.dff.cordova.plugin.camera.helpers.ImageHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 import com.dff.cordova.plugin.camera.res.R;
-
-import org.apache.cordova.CallbackContext;
 
 import javax.inject.Inject;
 
@@ -44,9 +43,6 @@ public class PreviewActivity extends Activity {
     R r;
     
     @Inject
-    ImageHelper imageHelper;
-    
-    @Inject
     UnexpectedExceptionHandler unexpectedExceptionHandler;
 
     /**
@@ -64,18 +60,21 @@ public class PreviewActivity extends Activity {
         DaggerManager
             .getInstance()
             .inject(this);
-
+        
         Thread.currentThread().setUncaughtExceptionHandler(unexpectedExceptionHandler);
 
         log.d(TAG, "onCreate");
         setContentView(r.getLayoutIdentifier(PREVIEW_ACTIVITY_LAYOUT));
         ImageView imageView = findViewById(r.getIdIdentifier(IMAGE_VIEW_PREVIEW_ID));
-        
-        if (imageHelper.sBitmap != null) {
-            imageView.setImageBitmap(imageHelper.sBitmap);
+    
+        byte[] imageBytes = getIntent().getByteArrayExtra("image");
+        Bitmap bitmap = BitmapFactory
+            .decodeByteArray(imageBytes, 0, imageBytes.length);
+        if (bitmap != null) {
+            imageView.setImageBitmap(bitmap);
         } else {
             Toast
-                .makeText(this,"Error while previewing the image 5125", Toast.LENGTH_LONG)
+                .makeText(this,"Error while previewing the image. ", Toast.LENGTH_LONG)
                 .show();
         }
 
@@ -102,25 +101,10 @@ public class PreviewActivity extends Activity {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                returnImage();
+                setResult(R.RESULT_OK);
+                log.d(TAG, "finish Preview Activity. Result = ok");
+                finish();
             }
         });
-
-    }
-    
-    private void returnImage() {
-        Intent returnIntent = new Intent();
-        if (r.sBase64Image != null) {
-            for (CallbackContext callbackContext : r.getCallBackContexts()) {
-                callbackContext.success(r.sBase64Image);
-            }
-            setResult(R.RESULT_OK);
-            log.d(TAG, "finish Preview Activity. Result = ok");
-        } else {
-            log.e(TAG, "sBase64Image is empty");
-            log.e(TAG, "repeat capture");
-            setResult(R.RESULT_REPEAT, returnIntent);
-        }
-        finish();
     }
 }
