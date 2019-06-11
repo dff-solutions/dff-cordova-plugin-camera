@@ -2,6 +2,8 @@
 
 <!-- TOC depthFrom:2 -->
 
+- [Interfaces](#interfaces)
+    - [TakePhotoOptions](#takephotooptions)
 - [Actions](#actions)
     - [takePhoto](#takephoto)
 
@@ -10,6 +12,20 @@
 This plugin is available via the global `CameraPlugin`.
 
 For more details read the [CameraPlugin Wiki](https://github.com/dff-solutions/dff-cordova-plugin-camera/wiki).
+
+## Interfaces
+
+### TakePhotoOptions
+
+Configuration for the capturing process.
+```ts
+interface TakePhotoOptions {
+    /**
+     * If preview of the taken picture should be shown
+     */
+  withPreview?: boolean;
+}
+```
 
 ## Actions
 
