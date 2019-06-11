@@ -3,7 +3,6 @@ package com.dff.cordova.plugin.camera.actions;
 import android.content.Context;
 import android.content.Intent;
 
-import com.dff.cordova.plugin.camera.CameraPlugin;
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.res.R;
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
@@ -27,17 +26,15 @@ public class TakePhoto extends PluginAction {
 
     private Context context;
     private R r;
-    private CameraPlugin cameraPlugin;
 
     @Inject
-    public TakePhoto(@ApplicationContext Context context, R r, CameraPlugin cameraPlugin) {
+    public TakePhoto(@ApplicationContext Context context, R r) {
         this.context = context;
         this.r = r;
-        this.cameraPlugin = cameraPlugin;
         needsArgs = true;
         requiresPermissions = true;
     }
-
+    
     @Override
     protected void execute() throws JSONException {
         super.checkJsonArgs(REQUIRED_ARGS);
@@ -49,7 +46,7 @@ public class TakePhoto extends PluginAction {
         
         r.addCallBackContext(callbackContext);
         
-        cameraPlugin.startActivity(intent);
+        context.startActivity(intent);
     }
 
     @Override

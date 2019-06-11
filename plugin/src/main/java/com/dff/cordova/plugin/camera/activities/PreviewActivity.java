@@ -31,7 +31,7 @@ import javax.inject.Inject;
 public class PreviewActivity extends Activity {
     private static final String TAG = "PreviewActivity";
 
-    private static final String PREVIEW_ACTIVITY_LAYOUT = "activity_preview";
+    private static final String PREVIEW_ACTIVITY_LAYOUT = "cameraplugin_activity_preview";
     private static final String IMAGE_VIEW_PREVIEW_ID = "image_view";
     private static final String BUTTON_CANCEL = "button_cancel";
     private static final String BUTTON_REPEAT = "button_repeat";
