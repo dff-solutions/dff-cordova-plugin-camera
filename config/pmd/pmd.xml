@@ -8,6 +8,5 @@
         <priority>3</priority>
         <exclude name="GuardLogStatement"/>
         <exclude name="UseVarargs"/>
-        <exclude name="LooseCoupling"/>
     </rule>
 </ruleset>

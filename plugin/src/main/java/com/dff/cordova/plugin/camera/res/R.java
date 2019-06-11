@@ -20,6 +20,7 @@ import javax.inject.Singleton;
  * @since 05.01.2017
  */
 @Singleton
+@SuppressWarnings("PMD.LooseCoupling")
 public class R {
     private static final String DEF_TYPE_LAYOUT = "layout";
     private static final String DEF_TYPE_ID = "id";
