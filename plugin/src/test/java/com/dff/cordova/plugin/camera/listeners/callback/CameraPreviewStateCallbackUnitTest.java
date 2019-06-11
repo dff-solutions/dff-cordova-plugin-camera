@@ -3,7 +3,7 @@ package com.dff.cordova.plugin.camera.listeners.callback;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
 
-import com.dff.cordova.plugin.camera.activities.Camera2Activity;
+import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +24,7 @@ public class CameraPreviewStateCallbackUnitTest {
     Log log;
     
     @Mock
-    Camera2Activity camera2Activity;
+    CameraActivity cameraActivity;
     
     @Mock
     CameraDevice device;
@@ -37,17 +37,17 @@ public class CameraPreviewStateCallbackUnitTest {
     
     @BeforeEach
     public void setup() {
-        cameraPreviewStateCallback.setCamera2Activity(camera2Activity);
+        cameraPreviewStateCallback.setCameraActivity(cameraActivity);
     }
     
     @Test
     public void onCofiguredTest() {
         cameraPreviewStateCallback.onConfigured(cameraCaptureSession);
-        verify(camera2Activity, never()).updatePreview();
+        verify(cameraActivity, never()).updatePreview();
         
-        camera2Activity.cameraDevice = device;
+        cameraActivity.cameraDevice = device;
         cameraPreviewStateCallback.onConfigured(cameraCaptureSession);
-        verify(camera2Activity).updatePreview();
-        assertEquals(camera2Activity.cameraCaptureSession, cameraCaptureSession);
+        verify(cameraActivity).updatePreview();
+        assertEquals(cameraActivity.cameraCaptureSession, cameraCaptureSession);
     }
 }

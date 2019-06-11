@@ -3,7 +3,7 @@ package com.dff.cordova.plugin.camera.listeners.callback;
 import android.hardware.camera2.CameraDevice;
 import android.support.annotation.NonNull;
 
-import com.dff.cordova.plugin.camera.activities.Camera2Activity;
+import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import javax.inject.Inject;
@@ -18,7 +18,7 @@ import javax.inject.Inject;
 public class CameraStateCallback extends CameraDevice.StateCallback {
     private final String TAG = "CameraStateCallback";
     
-    private Camera2Activity camera2Activity;
+    private CameraActivity cameraActivity;
     private Log log;
     
     @Inject
@@ -31,14 +31,14 @@ public class CameraStateCallback extends CameraDevice.StateCallback {
     @Override
     public void onOpened(@NonNull CameraDevice camera) {
         log.d(TAG, "starting camera preview");
-        camera2Activity.cameraDevice = camera;
-        camera2Activity.startCameraPreview();
+        cameraActivity.cameraDevice = camera;
+        cameraActivity.startCameraPreview();
     }
     
     @Override
     public void onDisconnected(@NonNull CameraDevice camera) {
         log.d(TAG, "disconnecting cameraDevice");
-        camera2Activity.closeCamera();
+        cameraActivity.closeCamera();
     }
     
     @Override
@@ -65,11 +65,11 @@ public class CameraStateCallback extends CameraDevice.StateCallback {
         }
         log.e(TAG, errorText + ". closing camera. errorCode: " + error);
         
-        camera2Activity.closeCamera();
-        camera2Activity.finish();
+        cameraActivity.closeCamera();
+        cameraActivity.finish();
     }
     
-    public void setCamera2Activity(Camera2Activity camera2Activity) {
-        this.camera2Activity = camera2Activity;
+    public void setCameraActivity(CameraActivity cameraActivity) {
+        this.cameraActivity = cameraActivity;
     }
 }

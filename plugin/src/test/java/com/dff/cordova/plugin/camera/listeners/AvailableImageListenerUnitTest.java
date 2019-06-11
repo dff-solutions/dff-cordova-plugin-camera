@@ -3,7 +3,7 @@ package com.dff.cordova.plugin.camera.listeners;
 import android.media.Image;
 import android.media.ImageReader;
 
-import com.dff.cordova.plugin.camera.activities.Camera2Activity;
+import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.helpers.ImageHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 
@@ -27,7 +27,7 @@ public class AvailableImageListenerUnitTest {
     ImageHelper imageHelper;
     
     @Mock
-    Camera2Activity camera2Activity;
+    CameraActivity cameraActivity;
     
     @Mock
     ImageReader reader;
@@ -40,7 +40,7 @@ public class AvailableImageListenerUnitTest {
     
     @BeforeEach
     public void setup() {
-        imageListener.setCamera2Activity(camera2Activity);
+        imageListener.setCameraActivity(cameraActivity);
     }
     
     @Test
@@ -51,6 +51,6 @@ public class AvailableImageListenerUnitTest {
         
         verify(imageHelper).storeImage(image);
         verify(image).close();
-        verify(camera2Activity).startPreviewActivity();
+        verify(cameraActivity).startPreviewActivity();
     }
 }

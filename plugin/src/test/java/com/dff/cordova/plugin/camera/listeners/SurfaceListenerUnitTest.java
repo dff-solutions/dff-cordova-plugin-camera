@@ -2,7 +2,7 @@ package com.dff.cordova.plugin.camera.listeners;
 
 import android.graphics.SurfaceTexture;
 
-import com.dff.cordova.plugin.camera.activities.Camera2Activity;
+import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +23,7 @@ public class SurfaceListenerUnitTest {
     Log log;
     
     @Mock
-    Camera2Activity camera2Activity;
+    CameraActivity cameraActivity;
     
     @Mock
     SurfaceTexture surfaceTexture;
@@ -33,20 +33,20 @@ public class SurfaceListenerUnitTest {
     
     @BeforeEach
     public void setup(){
-        surfaceListener.setCamera2Activity(camera2Activity);
+        surfaceListener.setCameraActivity(cameraActivity);
     }
     
     @Test
     public void surfaceAvailableTest() {
         surfaceListener.onSurfaceTextureAvailable(surfaceTexture, 0 , 0);
-        verify(camera2Activity).openCamera();
-        verify(camera2Activity, never()).closeCamera();
+        verify(cameraActivity).openCamera();
+        verify(cameraActivity, never()).closeCamera();
     }
     
     @Test void surfaceDestroyedTest() {
         boolean result = surfaceListener.onSurfaceTextureDestroyed(surfaceTexture);
-        verify(camera2Activity, never()).openCamera();
-        verify(camera2Activity).closeCamera();
+        verify(cameraActivity, never()).openCamera();
+        verify(cameraActivity).closeCamera();
         assertFalse(result);
     }
 }

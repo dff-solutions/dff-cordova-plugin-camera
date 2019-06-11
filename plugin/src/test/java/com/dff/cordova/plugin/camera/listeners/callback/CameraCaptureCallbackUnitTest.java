@@ -3,7 +3,7 @@ package com.dff.cordova.plugin.camera.listeners.callback;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CaptureRequest;
 
-import com.dff.cordova.plugin.camera.activities.Camera2Activity;
+import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +22,7 @@ public class CameraCaptureCallbackUnitTest {
     Log log;
     
     @Mock
-    Camera2Activity camera2Activity;
+    CameraActivity cameraActivity;
     
     @Mock
     CameraCaptureSession cameraCaptureSession;
@@ -35,12 +35,12 @@ public class CameraCaptureCallbackUnitTest {
     
     @BeforeEach
     public void setup() {
-        cameraCaptureCallback.setCamera2Activity(camera2Activity);
+        cameraCaptureCallback.setCameraActivity(cameraActivity);
     }
     
     @Test
     public void onCaptureStartedTest() {
         cameraCaptureCallback.onCaptureStarted(cameraCaptureSession, request, 0,0);
-        verify(camera2Activity).startCameraPreview();
+        verify(cameraActivity).startCameraPreview();
     }
 }

@@ -6,7 +6,7 @@ import android.hardware.camera2.CaptureRequest;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 
-import com.dff.cordova.plugin.camera.activities.Camera2Activity;
+import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import javax.inject.Inject;
@@ -52,8 +52,8 @@ public class CameraCaptureStateCallback extends CameraCaptureSession.StateCallba
         log.e(TAG, "session to string: " + session.toString());
     }
     
-    public void setCamera2Activity(Camera2Activity camera2Activity) {
-        captureListener.setCamera2Activity(camera2Activity);
-        mBackgroundHandler = camera2Activity.backgroundHandler;
+    public void setCamera2Activity(CameraActivity cameraActivity) {
+        captureListener.setCameraActivity(cameraActivity);
+        mBackgroundHandler = cameraActivity.backgroundHandler;
     }
 }

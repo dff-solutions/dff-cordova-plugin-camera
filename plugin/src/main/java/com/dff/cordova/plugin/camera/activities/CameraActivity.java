@@ -54,8 +54,8 @@ import javax.inject.Inject;
  * @see <a href="https://developer.android.com/reference/android/hardware/camera2/package-summary.html"
  * >https://developer.android.com/reference/android/hardware/camera2/package-summary.html</a>
  */
-public class Camera2Activity extends Activity {
-    private static final String TAG = "Camera2Activity";
+public class CameraActivity extends Activity {
+    private static final String TAG = "CameraActivity";
     
     public static final String CAMERA_ACTIVITY_LAYOUT = "activity_camera2";
     public static final String TEXTURE_VIEW_ID = "texture";
@@ -118,16 +118,20 @@ public class Camera2Activity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        //DaggerAppComponent.builder().build().activityComponentBuilder().build()
+        // .cameraActivityComponentBuilder().build().inject(this);
+        
         DaggerManager
             .getInstance()
             .inject(this);
+        
         log.d(TAG, "onCreate");
         
-        surfaceListener.setCamera2Activity(this);
-        cameraStateCallback.setCamera2Activity(this);
-        cameraPreviewStateCallback.setCamera2Activity(this);
+        surfaceListener.setCameraActivity(this);
+        cameraStateCallback.setCameraActivity(this);
+        cameraPreviewStateCallback.setCameraActivity(this);
         cameraCaptureStateCallback.setCamera2Activity(this);
-        availableImageListener.setCamera2Activity(this);
+        availableImageListener.setCameraActivity(this);
         
         setContentView(r.getLayoutIdentifier(CAMERA_ACTIVITY_LAYOUT));
         cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);

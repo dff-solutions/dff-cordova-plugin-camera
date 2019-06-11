@@ -2,7 +2,7 @@ package com.dff.cordova.plugin.camera.listeners.callback;
 
 import android.hardware.camera2.CameraDevice;
 
-import com.dff.cordova.plugin.camera.activities.Camera2Activity;
+import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 public class CameraStateCallbackUnitTest {
     
     @Mock
-    Camera2Activity camera2Activity;
+    CameraActivity cameraActivity;
     
     @Mock
     CameraDevice device;
@@ -32,28 +32,28 @@ public class CameraStateCallbackUnitTest {
     
     @BeforeEach
     public void setup() {
-        cameraStateCallback.setCamera2Activity(camera2Activity);
+        cameraStateCallback.setCameraActivity(cameraActivity);
     }
     
     @Test
     public void onErrorTest() {
         cameraStateCallback.onError(device, 0);
         
-        verify(camera2Activity).closeCamera();
-        verify(camera2Activity).finish();
+        verify(cameraActivity).closeCamera();
+        verify(cameraActivity).finish();
     }
     
     @Test
     public void onDisconnectedTest() {
         cameraStateCallback.onDisconnected(device);
-        verify(camera2Activity).closeCamera();
+        verify(cameraActivity).closeCamera();
     }
     
     @Test
     public void onOpenedTest() {
         cameraStateCallback.onOpened(device);
         
-        assertEquals(device, camera2Activity.cameraDevice);
-        verify(camera2Activity).startCameraPreview();
+        assertEquals(device, cameraActivity.cameraDevice);
+        verify(cameraActivity).startCameraPreview();
     }
 }

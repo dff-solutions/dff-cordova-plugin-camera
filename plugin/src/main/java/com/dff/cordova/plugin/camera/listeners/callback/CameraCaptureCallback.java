@@ -4,7 +4,7 @@ import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CaptureRequest;
 import android.support.annotation.NonNull;
 
-import com.dff.cordova.plugin.camera.activities.Camera2Activity;
+import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import javax.inject.Inject;
@@ -22,7 +22,7 @@ import javax.inject.Inject;
 public class CameraCaptureCallback extends CameraCaptureSession.CaptureCallback {
     private static final String TAG = "CameraCaptureCallback";
     private Log log;
-    private Camera2Activity camera2Activity;
+    private CameraActivity cameraActivity;
     
     @Inject
     public CameraCaptureCallback(Log log) {
@@ -35,10 +35,10 @@ public class CameraCaptureCallback extends CameraCaptureSession.CaptureCallback 
                                  long timestamp, long frameNumber) {
         log.d(TAG, "onCaptureStarted");
         super.onCaptureStarted(session, request, timestamp, frameNumber);
-        camera2Activity.startCameraPreview();
+        cameraActivity.startCameraPreview();
     }
     
-    public void setCamera2Activity(Camera2Activity camera2Activity) {
-        this.camera2Activity = camera2Activity;
+    public void setCameraActivity(CameraActivity cameraActivity) {
+        this.cameraActivity = cameraActivity;
     }
 }
