@@ -4,6 +4,7 @@ import android.graphics.SurfaceTexture;
 import android.view.TextureView;
 
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
+import com.dff.cordova.plugin.camera.dagger.annotations.CameraActivityScope;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import javax.inject.Inject;
@@ -15,6 +16,7 @@ import javax.inject.Inject;
  * @see <a href="https://developer.android.com/reference/android/view/TextureView.SurfaceTextureListener"
  *     >https://developer.android.com/reference/android/view/TextureView.SurfaceTextureListener</a>
  */
+@CameraActivityScope
 public class SurfaceListener implements TextureView.SurfaceTextureListener {
     private final String TAG = "SurfaceListener";
     
@@ -54,4 +56,5 @@ public class SurfaceListener implements TextureView.SurfaceTextureListener {
     public void setCameraActivity(CameraActivity cameraActivity) {
         this.cameraActivity = cameraActivity;
     }
+    
 }

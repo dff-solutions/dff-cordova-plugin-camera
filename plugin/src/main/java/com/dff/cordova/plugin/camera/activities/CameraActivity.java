@@ -48,8 +48,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.android.AndroidInjection;
-
 /**
  * Activity to start the camera.
  *
@@ -118,12 +116,15 @@ public class CameraActivity extends Activity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
+        
+        //DaggerAppComponent.builder().build().activityComponentBuilder().build()
+        // .cameraActivityComponentBuilder().build().inject(this);
         
         DaggerManager
             .getInstance()
             .inject(this);
+        
         log.d(TAG, "onCreate");
         
         surfaceListener.setCameraActivity(this);
