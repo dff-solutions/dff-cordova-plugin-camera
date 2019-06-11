@@ -17,8 +17,8 @@
     </config-file>
     <config-file parent="/manifest" target="AndroidManifest.xml">
       <uses-permission android:name="android.permission.CAMERA"/>
-      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-      <uses-feature android:name="android.hardware.camera.autofocus"/>
+      <uses-feature android:name="android.hardware.camera"/>
+      <uses-feature android:name="android.hardware.camera.flash"/>
     </config-file>
     <config-file parent="/manifest/application" target="AndroidManifest.xml">
       <service android:name="com.dff.cordova.plugin.camera.services.ActionHandlerService"/>
@@ -39,6 +39,7 @@
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/actions/TakePhoto.java" target-dir="src/com/dff/cordova/plugin/camera/actions"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/activities/CameraActivity.java" target-dir="src/com/dff/cordova/plugin/camera/activities"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/activities/PreviewActivity.java" target-dir="src/com/dff/cordova/plugin/camera/activities"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/classes/CameraState.java" target-dir="src/com/dff/cordova/plugin/camera/classes"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/classes/json/JsonDto.java" target-dir="src/com/dff/cordova/plugin/camera/classes/json"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/classes/json/JsonStacktrace.java" target-dir="src/com/dff/cordova/plugin/camera/classes/json"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/classes/json/JsonThrowable.java" target-dir="src/com/dff/cordova/plugin/camera/classes/json"/>
@@ -92,8 +93,8 @@
     <source-file src="plugin/src/main/res/drawable/camera_ic_refresh_white_48px.xml" target-dir="res/drawable"/>
     <source-file src="plugin/src/main/res/drawable/camera_ic_switch_cam_back.xml" target-dir="res/drawable"/>
     <source-file src="plugin/src/main/res/drawable/camera_ic_switch_cam_front.xml" target-dir="res/drawable"/>
-    <source-file src="plugin/src/main/res/layout/activity_camera2.xml" target-dir="res/layout"/>
-    <source-file src="plugin/src/main/res/layout/activity_preview.xml" target-dir="res/layout"/>
+    <source-file src="plugin/src/main/res/layout/cameraplugin_activity_camera.xml" target-dir="res/layout"/>
+    <source-file src="plugin/src/main/res/layout/cameraplugin_activity_preview.xml" target-dir="res/layout"/>
     <framework custom="true" src="plugin/build-camera-plugin.gradle" type="gradleReference"/>
   </platform>
 </plugin>
