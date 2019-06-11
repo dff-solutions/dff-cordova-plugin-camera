@@ -6,11 +6,12 @@ import com.dff.cordova.plugin.camera.CameraPlugin;
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.activities.PreviewActivity;
 import com.dff.cordova.plugin.camera.dagger.components.ActionHandlerServiceComponent;
-import com.dff.cordova.plugin.camera.dagger.components.AppComponent;
 import com.dff.cordova.plugin.camera.dagger.components.ActivityComponent;
+import com.dff.cordova.plugin.camera.dagger.components.AppComponent;
 import com.dff.cordova.plugin.camera.dagger.components.CameraActivityComponent;
 import com.dff.cordova.plugin.camera.dagger.components.DaggerAppComponent;
 import com.dff.cordova.plugin.camera.dagger.components.PluginComponent;
+import com.dff.cordova.plugin.camera.dagger.components.PreviewActivityComponent;
 import com.dff.cordova.plugin.camera.dagger.modules.ActionHandlerServiceModule;
 import com.dff.cordova.plugin.camera.dagger.modules.ActivityModule;
 import com.dff.cordova.plugin.camera.dagger.modules.AppModule;
@@ -34,6 +35,7 @@ public class DaggerManager {
     private PluginComponent pluginComponent;
     private ActivityComponent activityComponent;
     private CameraActivityComponent cameraActivityComponent;
+    private PreviewActivityComponent previewActivityComponent;
 
     private AppModule appModule;
     private PluginModule pluginModule;
@@ -94,7 +96,7 @@ public class DaggerManager {
      * @param previewActivity the activity
      */
     public void inject(PreviewActivity previewActivity) {
-        getActivityComponent().inject(previewActivity);
+        getPreviewActivityComponent().inject(previewActivity);
     }
     
     /**
@@ -154,5 +156,14 @@ public class DaggerManager {
                 .build();
         }
         return  cameraActivityComponent;
+    }
+    
+    private PreviewActivityComponent getPreviewActivityComponent() {
+        if (previewActivityComponent == null) {
+            previewActivityComponent = getActivityComponent()
+                .previewActivityComponentBuilder()
+                .build();
+        }
+        return  previewActivityComponent;
     }
 }
