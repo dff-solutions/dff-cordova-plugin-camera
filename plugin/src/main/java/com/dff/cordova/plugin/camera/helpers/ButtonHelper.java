@@ -1,6 +1,5 @@
 package com.dff.cordova.plugin.camera.helpers;
 
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
@@ -37,11 +36,13 @@ public class ButtonHelper {
     public String cameraId;
     public CameraManager cameraManager;
     private List<ImageButton> imageButtonList = new ArrayList<>();
+    private PackageManager packageManager;
     
     @Inject
-    public ButtonHelper(R r, Log log) {
+    public ButtonHelper(R r, Log log,PackageManager packageManager) {
         this.r = r;
         this.log = log;
+        this.packageManager = packageManager;
     }
 
     /**
@@ -139,14 +140,10 @@ public class ButtonHelper {
     /**
      * Hides the button when there is no flashMode.
      *
-     * @param applicationContext information of the application environment
      * @param flashButton button to switch flashMode
      */
-    public void checkFlash(Context applicationContext, ImageButton flashButton) {
-        boolean hasFlashMode =
-            applicationContext
-                .getPackageManager()
-                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+    public void checkFlash(ImageButton flashButton) {
+        boolean hasFlashMode = packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     
         if (!hasFlashMode) {
             log.d(TAG, "disable changeFlash button");
@@ -158,14 +155,11 @@ public class ButtonHelper {
     /**
      * Hides the button when the device does not have a front camera.
      *
-     * @param applicationContext information of the application environment
      * @param flipButton button to switch cameras
      */
-    public void checkFrontCamera(Context applicationContext, ImageButton flipButton) {
-        boolean hasFrontCamera =
-            applicationContext
-                .getPackageManager()
-                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT);
+    public void checkFrontCamera(ImageButton flipButton) {
+        boolean hasFrontCamera = packageManager
+            .hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT);
     
         if (!hasFrontCamera) {
             log.d(TAG, "disable changeCamera button");

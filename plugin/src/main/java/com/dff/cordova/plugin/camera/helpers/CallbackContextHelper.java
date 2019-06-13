@@ -32,13 +32,14 @@ public class CallbackContextHelper {
     }
     
     public void sendAllSuccess(String success) {
-        log.d(TAG, "send " + success + "as result");
+        log.d(TAG, "send result");
         for (CallbackContext callbackContext : callbackContextList) {
             callbackContext.success(success);
         }
     }
     
     public void sendAllError(String error) {
+        log.e(TAG, "send error: " + error);
         for (CallbackContext callbackContext : callbackContextList) {
             callbackContext.error(error);
         }

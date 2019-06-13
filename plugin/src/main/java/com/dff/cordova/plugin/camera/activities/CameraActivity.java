@@ -104,6 +104,9 @@ public class CameraActivity extends Activity {
     Handler backgroundHandler;
     
     @Inject
+    PackageManager packageManager;
+    
+    @Inject
     @PreviewActivityIntent
     Intent previewActivityIntent;
     
@@ -125,27 +128,22 @@ public class CameraActivity extends Activity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        boolean hasCamera =
-            getApplicationContext()
-                .getPackageManager()
-                .hasSystemFeature(PackageManager.FEATURE_CAMERA);
-        
+        //DaggerAppComponent.builder().build().activityComponentBuilder().build()
+        // .cameraActivityComponentBuilder().build().inject(this);
+    
+        DaggerManager
+            .getInstance()
+            .inject(this);
+    
+        boolean hasCamera = packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA);
         if (!hasCamera) {
             log.e(TAG, "device has no camera");
             setResult(R.RESULT_CANCELED);
             finish();
         }
         
-        super.onCreate(savedInstanceState);
-        
-        //DaggerAppComponent.builder().build().activityComponentBuilder().build()
-        // .cameraActivityComponentBuilder().build().inject(this);
-        
-        DaggerManager
-            .getInstance()
-            .inject(this);
-        
         log.d(TAG, "onCreate");
+        super.onCreate(savedInstanceState);
         
         surfaceListener.setCameraActivity(this);
         cameraStateCallback.setCameraActivity(this);
@@ -214,8 +212,8 @@ public class CameraActivity extends Activity {
             }
         });
         
-        buttonHelper.checkFlash(getApplicationContext(), flashButton);
-        buttonHelper.checkFrontCamera(getApplicationContext(), flipButton);
+        buttonHelper.checkFlash(flashButton);
+        buttonHelper.checkFrontCamera(flipButton);
         
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
@@ -270,7 +268,7 @@ public class CameraActivity extends Activity {
         try {
             SurfaceTexture texture = textureView.getSurfaceTexture();
             texture.setDefaultBufferSize(previewSize.getWidth(), previewSize.getHeight());
-            captureRequest = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+            captureRequest = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             Surface surface = new Surface(texture);
             captureRequest.addTarget(surface);
             
@@ -295,6 +293,7 @@ public class CameraActivity extends Activity {
             log.d(TAG, "closing camera");
             cameraDevice.close();
             cameraDevice = null;
+            log.d(TAG, "closeCamera: cameraDevice is null? " + (cameraDevice == null));
         }
     }
     
@@ -303,7 +302,7 @@ public class CameraActivity extends Activity {
      */
     public void updatePreview() {
         log.d(TAG, "updatePreview");
-        log.d(TAG, "cameraDevice is null? " + (cameraDevice == null));
+        log.d(TAG, "updatePreview: cameraDevice is null? " + (cameraDevice == null));
     
         if (cameraDevice == null) {
             log.e(TAG, "no cameraDevice");
@@ -359,8 +358,8 @@ public class CameraActivity extends Activity {
             captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
             
             int screenRotation = orientationEventListener.getImageRotation();
-            int sensorOrientation = 180;
-            if (characteristics != null){
+            int sensorOrientation = 0;
+            if (characteristics != null) {
                 sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
             }
             int jpegOrientation = (screenRotation + sensorOrientation + 270) % 360;

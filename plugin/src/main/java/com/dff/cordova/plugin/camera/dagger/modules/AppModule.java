@@ -2,6 +2,7 @@ package com.dff.cordova.plugin.camera.dagger.modules;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.activities.PreviewActivity;
@@ -31,9 +32,11 @@ import dagger.Provides;
 })
 public class AppModule {
     private Context applicationContext;
+    private PackageManager packageManager;
 
     public AppModule(Context context) {
         applicationContext = context;
+        packageManager = context.getPackageManager();
     }
 
     @Provides
@@ -55,16 +58,19 @@ public class AppModule {
     }
     
     @Provides
-    @Singleton
     @CameraActivityIntent
     Intent provideCameraActivityIntent(@ApplicationContext Context context) {
         return new Intent(context, CameraActivity.class);
     }
     
     @Provides
-    @Singleton
     @PreviewActivityIntent
     Intent providePreviewActivityIntent(@ApplicationContext Context context) {
         return new Intent(context, PreviewActivity.class);
+    }
+    
+    @Provides
+    PackageManager providePackageManager() {
+        return packageManager;
     }
 }
