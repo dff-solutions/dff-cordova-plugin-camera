@@ -3,7 +3,7 @@ package com.dff.cordova.plugin.camera.listeners;
 import android.content.Context;
 import android.widget.ImageButton;
 
-import com.dff.cordova.plugin.camera.helpers.ButtonHelper;
+import com.dff.cordova.plugin.camera.helpers.CameraButtonHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import org.junit.jupiter.api.Test;
@@ -12,11 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,7 +26,7 @@ public class OrientationListenerUnitTest {
     Context context;
     
     @Mock
-    ButtonHelper buttonHelper;
+    CameraButtonHelper buttonHelper;
     
     @Mock
     ImageButton button;

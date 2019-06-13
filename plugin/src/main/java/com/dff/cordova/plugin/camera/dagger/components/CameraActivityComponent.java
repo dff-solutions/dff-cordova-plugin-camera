@@ -2,6 +2,7 @@ package com.dff.cordova.plugin.camera.dagger.components;
 
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.dagger.annotations.CameraActivityScope;
+import com.dff.cordova.plugin.camera.dagger.modules.CameraActivityModule;
 
 import dagger.Subcomponent;
 
@@ -9,7 +10,9 @@ import dagger.Subcomponent;
  * Component for dependency injection.
  */
 @CameraActivityScope
-@Subcomponent
+@Subcomponent(modules = {
+    CameraActivityModule.class
+})
 public interface CameraActivityComponent {
     
     /**

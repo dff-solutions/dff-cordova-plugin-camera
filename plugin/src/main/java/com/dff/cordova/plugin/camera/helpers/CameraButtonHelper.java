@@ -18,12 +18,15 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * Helper classes to rotate a image button with a specific target degree.
- *
+ * Helper class to manage button functionality.
+ * The Helper can rotate the buttons and change the icon based on the chosen function.
+ * Flash mode and camera mode can be checked and changed.
+ * Supported Flash modes are single flash, auto flash and no flash
+ * Camera modes are front or back camera
  */
 @Singleton
-public class ButtonHelper {
-    private static final String TAG = "ButtonHelper";
+public class CameraButtonHelper {
+    private static final String TAG = "CameraButtonHelper";
     private static final String IC_CAMERA_FRONT = "camera_ic_switch_cam_front";
     private static final String IC_CAMERA_BACK = "camera_ic_switch_cam_back";
     private static final String IC_FLASH_AUTO = "camera_ic_flash_auto_white_24px";
@@ -39,7 +42,7 @@ public class ButtonHelper {
     private PackageManager packageManager;
     
     @Inject
-    public ButtonHelper(R r, Log log,PackageManager packageManager) {
+    public CameraButtonHelper(R r, Log log, PackageManager packageManager) {
         this.r = r;
         this.log = log;
         this.packageManager = packageManager;

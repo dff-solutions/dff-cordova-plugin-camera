@@ -2,7 +2,6 @@ package com.dff.cordova.plugin.camera.helpers;
 
 import android.hardware.camera2.CaptureRequest;
 import android.view.View;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 
 import com.dff.cordova.plugin.camera.classes.CameraState;
@@ -14,8 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -50,7 +47,7 @@ public class ButtonHelperUnitTest {
     R r;
     
     @InjectMocks
-    ButtonHelper buttonHelper;
+    CameraButtonHelper buttonHelper;
     
     @Test
     public void shouldRotateButton(){

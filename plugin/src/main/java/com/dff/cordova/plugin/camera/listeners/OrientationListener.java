@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.OrientationEventListener;
 
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
-import com.dff.cordova.plugin.camera.helpers.ButtonHelper;
+import com.dff.cordova.plugin.camera.helpers.CameraButtonHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import javax.inject.Inject;
@@ -22,7 +22,7 @@ public class OrientationListener extends OrientationEventListener {
     
     //should be between 0 and 45. Else it might cause errors.
     private final int orientationRange = 15;
-    private ButtonHelper buttonHelper;
+    private CameraButtonHelper buttonHelper;
     public int currentRotaion = 0;
     private Log log;
     
@@ -30,7 +30,7 @@ public class OrientationListener extends OrientationEventListener {
     public OrientationListener(
         @ApplicationContext Context context,
         Log log,
-        ButtonHelper buttonHelper
+        CameraButtonHelper buttonHelper
     ) {
         super(context);
         this.buttonHelper = buttonHelper;

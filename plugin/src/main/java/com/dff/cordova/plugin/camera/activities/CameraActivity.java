@@ -2,7 +2,6 @@ package com.dff.cordova.plugin.camera.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -30,7 +29,7 @@ import com.dff.cordova.plugin.camera.actions.TakePhoto;
 import com.dff.cordova.plugin.camera.classes.CameraState;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.dagger.annotations.PreviewActivityIntent;
-import com.dff.cordova.plugin.camera.helpers.ButtonHelper;
+import com.dff.cordova.plugin.camera.helpers.CameraButtonHelper;
 import com.dff.cordova.plugin.camera.helpers.CallbackContextHelper;
 import com.dff.cordova.plugin.camera.helpers.ImageHelper;
 import com.dff.cordova.plugin.camera.helpers.PermissionHelper;
@@ -92,7 +91,7 @@ public class CameraActivity extends Activity {
     CameraCaptureStateCallback cameraCaptureStateCallback;
     
     @Inject
-    ButtonHelper buttonHelper;
+    CameraButtonHelper buttonHelper;
     
     @Inject
     ImageHelper imageHelper;
@@ -110,6 +109,9 @@ public class CameraActivity extends Activity {
     @PreviewActivityIntent
     Intent previewActivityIntent;
     
+    @Inject
+    CameraManager cameraManager;
+    
     public CameraDevice cameraDevice;
     private TextureView textureView;
     private Size previewSize;
@@ -118,7 +120,6 @@ public class CameraActivity extends Activity {
     private ImageButton captureButton;
     private ImageButton flashButton;
     private ImageButton flipButton;
-    private CameraManager cameraManager;
     private String cameraId = null;
     private CameraCharacteristics characteristics = null;
     private ImageReader reader;
@@ -152,7 +153,6 @@ public class CameraActivity extends Activity {
         availableImageListener.setCameraActivity(this);
         
         setContentView(r.getLayoutIdentifier(CAMERA_ACTIVITY_LAYOUT));
-        cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         buttonHelper.cameraManager = cameraManager;
         try {
             for (String id : cameraManager.getCameraIdList()) {
