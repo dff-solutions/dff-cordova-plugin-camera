@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
+import com.dff.cordova.plugin.camera.activities.PreviewActivity;
 import com.dff.cordova.plugin.camera.dagger.annotations.ActionHandlerServiceIntent;
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 import com.dff.cordova.plugin.camera.dagger.annotations.CameraActivityIntent;
+import com.dff.cordova.plugin.camera.dagger.annotations.PreviewActivityIntent;
 import com.dff.cordova.plugin.camera.dagger.components.ActionHandlerServiceComponent;
 import com.dff.cordova.plugin.camera.dagger.components.ActivityComponent;
 import com.dff.cordova.plugin.camera.dagger.components.PluginComponent;
@@ -57,5 +59,12 @@ public class AppModule {
     @CameraActivityIntent
     Intent provideCameraActivityIntent(@ApplicationContext Context context) {
         return new Intent(context, CameraActivity.class);
+    }
+    
+    @Provides
+    @Singleton
+    @PreviewActivityIntent
+    Intent providePreviewActivityIntent(@ApplicationContext Context context) {
+        return new Intent(context, PreviewActivity.class);
     }
 }

@@ -26,7 +26,7 @@ public class TakePhoto extends PluginAction {
 
     private Context context;
     private CallbackContextHelper contextHelper;
-    private Intent intent;
+    private Intent cameraActivityIntent;
 
     @Inject
     public TakePhoto(
@@ -36,7 +36,7 @@ public class TakePhoto extends PluginAction {
     ) {
         this.context = context;
         this.contextHelper = contextHelper;
-        this.intent = intent;
+        this.cameraActivityIntent = intent;
         needsArgs = true;
         requiresPermissions = true;
     }
@@ -46,12 +46,12 @@ public class TakePhoto extends PluginAction {
         super.checkJsonArgs(REQUIRED_ARGS);
 
         boolean withPreview = jsonArgs.getBoolean(JSON_ARG_WITH_PREVIEW);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra(JSON_ARG_WITH_PREVIEW, withPreview);
+        cameraActivityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        cameraActivityIntent.putExtra(JSON_ARG_WITH_PREVIEW, withPreview);
         
         contextHelper.addCallBackContext(callbackContext);
         
-        context.startActivity(intent);
+        context.startActivity(cameraActivityIntent);
     }
 
     @Override

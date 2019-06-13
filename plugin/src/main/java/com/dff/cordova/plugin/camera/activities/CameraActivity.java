@@ -29,6 +29,7 @@ import android.widget.ImageButton;
 import com.dff.cordova.plugin.camera.actions.TakePhoto;
 import com.dff.cordova.plugin.camera.classes.CameraState;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
+import com.dff.cordova.plugin.camera.dagger.annotations.PreviewActivityIntent;
 import com.dff.cordova.plugin.camera.helpers.ButtonHelper;
 import com.dff.cordova.plugin.camera.helpers.CallbackContextHelper;
 import com.dff.cordova.plugin.camera.helpers.ImageHelper;
@@ -102,6 +103,10 @@ public class CameraActivity extends Activity {
     @Inject
     Handler backgroundHandler;
     
+    @Inject
+    @PreviewActivityIntent
+    Intent previewActivityIntent;
+    
     public CameraDevice cameraDevice;
     private TextureView textureView;
     private Size previewSize;
@@ -126,6 +131,7 @@ public class CameraActivity extends Activity {
                 .hasSystemFeature(PackageManager.FEATURE_CAMERA);
         
         if (!hasCamera) {
+            log.e(TAG, "device has no camera");
             setResult(R.RESULT_CANCELED);
             finish();
         }
@@ -212,7 +218,6 @@ public class CameraActivity extends Activity {
         buttonHelper.checkFrontCamera(getApplicationContext(), flipButton);
         
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        log.e(TAG, backgroundHandler.toString());
     }
     
     @Override
@@ -286,8 +291,8 @@ public class CameraActivity extends Activity {
      * This method closes the cameraDevice.
      */
     public void closeCamera() {
-        log.d(TAG, "closing camera");
         if (cameraDevice != null) {
+            log.d(TAG, "closing camera");
             cameraDevice.close();
             cameraDevice = null;
         }
@@ -298,8 +303,11 @@ public class CameraActivity extends Activity {
      */
     public void updatePreview() {
         log.d(TAG, "updatePreview");
+        log.d(TAG, "cameraDevice is null? " + (cameraDevice == null));
+    
         if (cameraDevice == null) {
             log.e(TAG, "no cameraDevice");
+            return;
         }
         captureRequest.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
         try {
@@ -351,7 +359,10 @@ public class CameraActivity extends Activity {
             captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
             
             int screenRotation = orientationEventListener.getImageRotation();
-            int sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
+            int sensorOrientation = 180;
+            if (characteristics != null){
+                sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
+            }
             int jpegOrientation = (screenRotation + sensorOrientation + 270) % 360;
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, jpegOrientation);
             
@@ -379,9 +390,8 @@ public class CameraActivity extends Activity {
         reader.close();
         
         if (this.getIntent().getBooleanExtra(TakePhoto.JSON_ARG_WITH_PREVIEW, false)) {
-            Intent intent = new Intent(this, PreviewActivity.class);
-            intent.putExtra("image", imageHelper.getBytes());
-            startActivityForResult(intent, R.RESULT_OK);
+            previewActivityIntent.putExtra("image", imageHelper.getBytes());
+            startActivityForResult(previewActivityIntent, R.RESULT_OK);
         } else {
             log.d(TAG, "show no PreviewActivity");
             returnImage();

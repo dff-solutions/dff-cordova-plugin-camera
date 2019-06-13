@@ -57,6 +57,7 @@
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/CameraActivityScope.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/PluginComponentScope.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/PluginPermissions.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/PreviewActivityIntent.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/annotations/PreviewActivityScope.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/annotations"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/components/ActionHandlerServiceComponent.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/components"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/dagger/components/ActivityComponent.java" target-dir="src/com/dff/cordova/plugin/camera/dagger/components"/>
