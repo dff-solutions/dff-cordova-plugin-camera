@@ -60,9 +60,6 @@ public class CameraActivity extends Activity {
     
     public static final String CAMERA_ACTIVITY_LAYOUT = "cameraplugin_activity_camera";
     public static final String TEXTURE_VIEW_ID = "texture";
-    public static final String CAPTURE_BUTTON = "capture_button";
-    public static final String FLASH_BUTTON = "flash_button";
-    public static final String FLIP_BUTTON = "flip_button";
     
     @Inject
     SurfaceListener surfaceListener;
@@ -117,20 +114,14 @@ public class CameraActivity extends Activity {
     CameraHelper cameraHelper;
     
     private CameraDevice cameraDevice;
-    private Object cameraLock = new Object();
+    public Object cameraLock = new Object();
     private TextureView textureView;
     private Size previewSize;
     public CameraCaptureSession cameraCaptureSession;
     private CaptureRequest.Builder captureRequest;
-    private ImageButton captureButton;
-    private ImageButton flashButton;
-    private ImageButton flipButton;
-    private String cameraId = null;
     private CameraCharacteristics characteristics = null;
     private ImageReader reader;
-    
-    private CameraState cameraState = CameraState.BACK;
-    private int supportedHardwareLevel = 0;
+    public String cameraId = null;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,67 +141,12 @@ public class CameraActivity extends Activity {
         super.onCreate(savedInstanceState);
         
         setContentView(r.getLayoutIdentifier(CAMERA_ACTIVITY_LAYOUT));
-        buttonHelper.cameraManager = cameraManager;
-        try {
-            for (String id : cameraManager.getCameraIdList()) {
-                CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(id);
-                int cameraOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
-                if (cameraOrientation == CameraCharacteristics.LENS_FACING_BACK) {
-                    cameraId = id;
-                    supportedHardwareLevel =
-                        characteristics.get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL);
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            log.e(TAG, "unable to access camera.", e);
-        }
-        
-        if (cameraId == null) {
-            log.d(TAG, "Unable to set cameraId automatically");
-            log.d(TAG, "Set cameraId to first camera from cameraIdList");
-            try {
-                cameraId = cameraManager.getCameraIdList()[0];
-            } catch (CameraAccessException e) {
-                log.e(TAG, "unable to set cameraId from cameraIdList");
-            }
-            supportedHardwareLevel =
-                CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED;
-        }
-        log.d(TAG, "cameraId = " + cameraId);
-        log.d(TAG, "supported hardware level = " + supportedHardwareLevel);
-        
-        captureButton = findViewById(r.getIdIdentifier(CAPTURE_BUTTON));
-        flashButton = findViewById(r.getIdIdentifier(FLASH_BUTTON));
-        flipButton = findViewById(r.getIdIdentifier(FLIP_BUTTON));
-        
-        buttonHelper.addImageButton(flashButton);
-        buttonHelper.addImageButton(flipButton);
+        cameraHelper.initCameraId();
         
         textureView = findViewById(r.getIdIdentifier(TEXTURE_VIEW_ID));
         textureView.setSurfaceTextureListener(surfaceListener);
         
-        captureButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                takePicture();
-            }
-        });
-        flashButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeFlashMode();
-            }
-        });
-        flipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeCamera();
-            }
-        });
-        
-        buttonHelper.checkFlash(flashButton);
-        buttonHelper.checkFrontCamera(flipButton);
+        buttonHelper.initButtons();
         
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
@@ -241,10 +177,8 @@ public class CameraActivity extends Activity {
      */
     @SuppressLint("MissingPermission")
     public void openCamera() {
-        log.d(TAG, "opening camera");
+        log.d(TAG, "opening camera with id " + cameraId);
         buttonHelper.enableAllButtons(true);
-        captureButton.setEnabled(true);
-        buttonHelper.cameraId = cameraId;
         try {
             Display display = getWindowManager().getDefaultDisplay();
             Point size = new Point();
@@ -321,7 +255,7 @@ public class CameraActivity extends Activity {
         }
     }
     
-    private void takePicture() {
+    public void takePicture() {
         if (getCameraDevice() == null) {
             log.e(TAG, "no cameraDevice");
             return;
@@ -330,13 +264,14 @@ public class CameraActivity extends Activity {
         try {
             //avoid error due to double clicks
             buttonHelper.enableAllButtons(false);
-            captureButton.setEnabled(false);
             
             Size optimalSize;
-            if (supportedHardwareLevel >
+            if (cameraHelper.getSupportedHardwareLevel() >
                 CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED) {
                 
-                characteristics = cameraManager.getCameraCharacteristics(cameraId);
+                characteristics = cameraManager
+                    .getCameraCharacteristics(cameraId);
+                
                 optimalSize = imageHelper.getOptimalImageSize(characteristics);
                 log.d(TAG, "optimal Image Size = " + optimalSize.toString());
             } else {
@@ -390,7 +325,6 @@ public class CameraActivity extends Activity {
         reader.close();
         
         if (this.getIntent().getBooleanExtra(TakePhoto.JSON_ARG_WITH_PREVIEW, false)) {
-            previewActivityIntent.putExtra("image", imageHelper.getBytes());
             startActivityForResult(previewActivityIntent, R.RESULT_OK);
         } else {
             log.d(TAG, "show no PreviewActivity");
@@ -399,48 +333,9 @@ public class CameraActivity extends Activity {
         }
     }
     
-    private void changeFlashMode() {
-        buttonHelper.changeFlashButton(captureRequest, flashButton);
+    public void changeFlashMode() {
+        buttonHelper.changeFlashButton(captureRequest);
         updatePreview();
-    }
-    
-    private void changeCamera() {
-        if (cameraState == CameraState.FRONT) {
-            log.d(TAG, "flip to back camera");
-            try {
-                for (String id : cameraManager.getCameraIdList()) {
-                    CameraCharacteristics characteristics =
-                        cameraManager.getCameraCharacteristics(id);
-                    int cameraOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
-                    if (cameraOrientation == CameraCharacteristics.LENS_FACING_BACK) {
-                        cameraId = id;
-                        log.d(TAG, "cameraId: " + id);
-                    }
-                }
-            } catch (CameraAccessException e) {
-                log.e(TAG, "unable to access camera", e);
-            }
-            cameraState = CameraState.BACK;
-        } else {
-            log.d(TAG, "flip to front camera");
-            try {
-                for (String id : cameraManager.getCameraIdList()) {
-                    CameraCharacteristics characteristics =
-                        cameraManager.getCameraCharacteristics(id);
-                    int cameraOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
-                    if (cameraOrientation == CameraCharacteristics.LENS_FACING_FRONT) {
-                        cameraId = id;
-                        log.d(TAG, "cameraId: " + id);
-                    }
-                }
-            } catch (CameraAccessException e) {
-                log.e(TAG, "unable to access camera", e);
-            }
-            cameraState = CameraState.FRONT;
-        }
-        buttonHelper.changeFlipButton(flipButton, cameraState);
-        closeCamera();
-        openCamera();
     }
     
     @Override

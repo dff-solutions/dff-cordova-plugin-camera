@@ -1,13 +1,17 @@
 package com.dff.cordova.plugin.camera.helpers;
 
 import android.content.pm.PackageManager;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.view.View;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 
+import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.classes.CameraState;
+import com.dff.cordova.plugin.camera.dagger.annotations.CameraActivityScope;
 import com.dff.cordova.plugin.camera.log.Log;
 import com.dff.cordova.plugin.camera.res.R;
 
@@ -15,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * Helper class to manage button functionality.
@@ -24,7 +27,6 @@ import javax.inject.Singleton;
  * Supported Flash modes are single flash, auto flash and no flash
  * Camera modes are front or back camera
  */
-@Singleton
 public class CameraButtonHelper {
     private static final String TAG = "CameraButtonHelper";
     private static final String IC_CAMERA_FRONT = "camera_ic_switch_cam_front";
@@ -32,20 +34,60 @@ public class CameraButtonHelper {
     private static final String IC_FLASH_AUTO = "camera_ic_flash_auto_white_24px";
     private static final String IC_FLASH_OFF = "camera_ic_flash_off_white_24px";
     private static final String IC_FLASH_ON = "camera_ic_flash_on_white_24px";
+    public static final String CAPTURE_BUTTON = "capture_button";
+    public static final String FLASH_BUTTON = "flash_button";
+    public static final String FLIP_BUTTON = "flip_button";
     
     private R r;
     private Log log;
     private int flashMode = 2;
-    public String cameraId;
-    public CameraManager cameraManager;
     private List<ImageButton> imageButtonList = new ArrayList<>();
     private PackageManager packageManager;
+    private ImageButton captureButton;
+    private ImageButton flashButton;
+    private ImageButton flipButton;
+    private CameraActivity cameraActivity;
+    private CameraState cameraState = CameraState.BACK;
+    private CameraManager cameraManager;
     
     @Inject
-    public CameraButtonHelper(R r, Log log, PackageManager packageManager) {
+    public CameraButtonHelper(R r, Log log, PackageManager packageManager,
+                              CameraActivity cameraActivity, CameraManager cameraManager
+                              ) {
         this.r = r;
         this.log = log;
         this.packageManager = packageManager;
+        this.cameraActivity = cameraActivity;
+        this.cameraManager = cameraManager;
+    }
+    
+    public void initButtons()
+    {
+        captureButton = cameraActivity.findViewById(r.getIdIdentifier(CAPTURE_BUTTON));
+        flashButton = cameraActivity.findViewById(r.getIdIdentifier(FLASH_BUTTON));
+        flipButton = cameraActivity.findViewById(r.getIdIdentifier(FLIP_BUTTON));
+    
+        captureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cameraActivity.takePicture();
+            }
+        });
+        flashButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cameraActivity.changeFlashMode();
+            }
+        });
+        flipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeCamera();
+            }
+        });
+        
+        checkFlash();
+        checkFrontCamera();
     }
 
     /**
@@ -73,15 +115,14 @@ public class CameraButtonHelper {
     /**
      * Changes the image of the button and set the flashMode in the captureRequest.
      *  @param captureRequest package of settings to capture a image
-     * @param button button with an image
      */
-    public void changeFlashButton(CaptureRequest.Builder captureRequest, ImageButton button) {
+    public void changeFlashButton(CaptureRequest.Builder captureRequest) {
         log.d(TAG, "changeFlashMode");
         
         switch (flashMode) {
             case 0:
                 log.d(TAG, "single flash / flash on");
-                button.setImageResource(r.getDrawableIdentifier(IC_FLASH_ON));
+                flashButton.setImageResource(r.getDrawableIdentifier(IC_FLASH_ON));
                 captureRequest.set(CaptureRequest.CONTROL_AE_MODE,
                                    CaptureRequest.CONTROL_AE_MODE_ON_ALWAYS_FLASH);
                 captureRequest.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_SINGLE);
@@ -89,7 +130,7 @@ public class CameraButtonHelper {
                 break;
             case 1:
                 log.d(TAG, "flash off");
-                button.setImageResource(r.getDrawableIdentifier(IC_FLASH_OFF));
+                flashButton.setImageResource(r.getDrawableIdentifier(IC_FLASH_OFF));
                 captureRequest.set(CaptureRequest.CONTROL_AE_MODE,
                                    CaptureRequest.CONTROL_AE_MODE_ON);
                 captureRequest.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
@@ -97,7 +138,7 @@ public class CameraButtonHelper {
                 break;
             case 2:
                 log.d(TAG, "auto flash");
-                button.setImageResource(r.getDrawableIdentifier(IC_FLASH_AUTO));
+                flashButton.setImageResource(r.getDrawableIdentifier(IC_FLASH_AUTO));
                 captureRequest.set(CaptureRequest.CONTROL_AE_MODE,
                                    CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
                 captureRequest.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
@@ -111,20 +152,15 @@ public class CameraButtonHelper {
     
     /**
      * Changes the icon of the button.
-     *  @param button button with image
      * @param flipMode state of the camera
      */
-    public void changeFlipButton(ImageButton button, CameraState flipMode) {
+    public void changeFlipButton(CameraState flipMode) {
         log.d(TAG, "changeCamera");
         if (flipMode == CameraState.BACK) {
-            button.setImageResource(r.getDrawableIdentifier(IC_CAMERA_BACK));
+            flipButton.setImageResource(r.getDrawableIdentifier(IC_CAMERA_BACK));
         } else {
-            button.setImageResource(r.getDrawableIdentifier(IC_CAMERA_FRONT));
+            flipButton.setImageResource(r.getDrawableIdentifier(IC_CAMERA_FRONT));
         }
-    }
-    
-    public void addImageButton(ImageButton button) {
-        imageButtonList.add(button);
     }
     
     /**
@@ -133,19 +169,15 @@ public class CameraButtonHelper {
      * @param enable true = enable, false = disable
      */
     public void enableAllButtons(boolean enable) {
-        for (ImageButton imageButton : imageButtonList) {
-            if (imageButton.getVisibility() != View.GONE) {
-                imageButton.setEnabled(enable);
-            }
-        }
+        flipButton.setEnabled(enable);
+        captureButton.setEnabled(enable);
+        flashButton.setEnabled(enable);
     }
     
     /**
      * Hides the button when there is no flashMode.
-     *
-     * @param flashButton button to switch flashMode
      */
-    public void checkFlash(ImageButton flashButton) {
+    public void checkFlash() {
         boolean hasFlashMode = packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     
         if (!hasFlashMode) {
@@ -157,10 +189,8 @@ public class CameraButtonHelper {
     
     /**
      * Hides the button when the device does not have a front camera.
-     *
-     * @param flipButton button to switch cameras
      */
-    public void checkFrontCamera(ImageButton flipButton) {
+    public void checkFrontCamera() {
         boolean hasFrontCamera = packageManager
             .hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT);
     
@@ -169,5 +199,44 @@ public class CameraButtonHelper {
             flipButton.setEnabled(false);
             flipButton.setVisibility(View.GONE);
         }
+    }
+    
+    public void changeCamera() {
+        if (cameraState == CameraState.FRONT) {
+            log.d(TAG, "flip to back camera");
+            try {
+                for (String id : cameraManager.getCameraIdList()) {
+                    CameraCharacteristics characteristics =
+                        cameraManager.getCameraCharacteristics(id);
+                    int cameraOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
+                    if (cameraOrientation == CameraCharacteristics.LENS_FACING_BACK) {
+                        cameraActivity.cameraId = id;
+                        log.d(TAG, "cameraId: " + id);
+                    }
+                }
+            } catch (CameraAccessException e) {
+                log.e(TAG, "unable to access camera", e);
+            }
+            cameraState = CameraState.BACK;
+        } else {
+            log.d(TAG, "flip to front camera");
+            try {
+                for (String id : cameraManager.getCameraIdList()) {
+                    CameraCharacteristics characteristics =
+                        cameraManager.getCameraCharacteristics(id);
+                    int cameraOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
+                    if (cameraOrientation == CameraCharacteristics.LENS_FACING_FRONT) {
+                        cameraActivity.cameraId = id;
+                        log.d(TAG, "cameraId: " + id);
+                    }
+                }
+            } catch (CameraAccessException e) {
+                log.e(TAG, "unable to access camera", e);
+            }
+            cameraState = CameraState.FRONT;
+        }
+        changeFlipButton(cameraState);
+        cameraActivity.closeCamera();
+        cameraActivity.openCamera();
     }
 }

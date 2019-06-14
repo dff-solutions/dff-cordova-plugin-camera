@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.exceptions.UnexpectedExceptionHandler;
+import com.dff.cordova.plugin.camera.helpers.ImageHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 import com.dff.cordova.plugin.camera.res.R;
 
@@ -44,6 +45,9 @@ public class PreviewActivity extends Activity {
     
     @Inject
     UnexpectedExceptionHandler unexpectedExceptionHandler;
+    
+    @Inject
+    ImageHelper imageHelper;
 
     /**
      * On creating the activity, initialize all components needed to preview the taken image.
@@ -67,7 +71,7 @@ public class PreviewActivity extends Activity {
         setContentView(r.getLayoutIdentifier(PREVIEW_ACTIVITY_LAYOUT));
         ImageView imageView = findViewById(r.getIdIdentifier(IMAGE_VIEW_PREVIEW_ID));
     
-        byte[] imageBytes = getIntent().getByteArrayExtra("image");
+        byte[] imageBytes = imageHelper.getBytes();
         Bitmap bitmap = BitmapFactory
             .decodeByteArray(imageBytes, 0, imageBytes.length);
         if (bitmap != null) {

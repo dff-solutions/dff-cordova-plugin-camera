@@ -30,11 +30,12 @@ public class CameraPreviewStateCallback extends CameraCaptureSession.StateCallba
     @Override
     public void onConfigured(@NonNull CameraCaptureSession captureSession) {
         log.d(TAG, "onConfigured");
-        if (null == cameraActivity.getCameraDevice()) {
-            log.d(TAG, "no cameraDevice");
-            return;
+        synchronized (cameraActivity.cameraLock) {
+            if (null == cameraActivity.getCameraDevice()) {
+                log.d(TAG, "no cameraDevice");
+                return;
+            }
         }
-    
         cameraActivity.cameraCaptureSession = captureSession;
         cameraActivity.updatePreview();
     }
