@@ -25,9 +25,11 @@ public class SurfaceListener implements TextureView.SurfaceTextureListener {
     
     @Inject
     public SurfaceListener(
-        Log log
+        Log log,
+        CameraActivity cameraActivity
     ) {
         this.log = log;
+        this.cameraActivity = cameraActivity;
     }
     
     @Override
@@ -52,9 +54,4 @@ public class SurfaceListener implements TextureView.SurfaceTextureListener {
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
     
     }
-    
-    public void setCameraActivity(CameraActivity cameraActivity) {
-        this.cameraActivity = cameraActivity;
-    }
-    
 }

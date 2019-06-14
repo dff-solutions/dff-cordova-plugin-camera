@@ -5,7 +5,6 @@ import android.hardware.camera2.CameraDevice;
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.log.Log;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,11 +29,6 @@ public class CameraStateCallbackUnitTest {
     @InjectMocks
     CameraStateCallback cameraStateCallback;
     
-    @BeforeEach
-    public void setup() {
-        cameraStateCallback.setCameraActivity(cameraActivity);
-    }
-    
     @Test
     public void onErrorTest() {
         cameraStateCallback.onError(device, 0);
@@ -53,7 +47,6 @@ public class CameraStateCallbackUnitTest {
     public void onOpenedTest() {
         cameraStateCallback.onOpened(device);
         
-        assertEquals(device, cameraActivity.cameraDevice);
         verify(cameraActivity).startCameraPreview();
     }
 }

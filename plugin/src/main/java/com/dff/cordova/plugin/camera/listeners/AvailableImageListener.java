@@ -26,10 +26,12 @@ public class AvailableImageListener implements ImageReader.OnImageAvailableListe
     @Inject
     public AvailableImageListener(
         Log log,
-        ImageHelper imageHelper
+        ImageHelper imageHelper,
+        CameraActivity cameraActivity
     ) {
         this.log = log;
         this.imageHelper = imageHelper;
+        this.cameraActivity = cameraActivity;
     }
     
     @Override
@@ -43,9 +45,5 @@ public class AvailableImageListener implements ImageReader.OnImageAvailableListe
         }
         log.d(TAG, "startImagePreview");
         cameraActivity.startPreviewActivity();
-    }
-    
-    public void setCameraActivity(CameraActivity cameraActivity) {
-        this.cameraActivity = cameraActivity;
     }
 }

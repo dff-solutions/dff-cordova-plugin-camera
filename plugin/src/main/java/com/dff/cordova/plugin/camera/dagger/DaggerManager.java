@@ -16,6 +16,7 @@ import com.dff.cordova.plugin.camera.dagger.components.PreviewActivityComponent;
 import com.dff.cordova.plugin.camera.dagger.modules.ActionHandlerServiceModule;
 import com.dff.cordova.plugin.camera.dagger.modules.ActivityModule;
 import com.dff.cordova.plugin.camera.dagger.modules.AppModule;
+import com.dff.cordova.plugin.camera.dagger.modules.CameraActivityModule;
 import com.dff.cordova.plugin.camera.dagger.modules.PluginModule;
 import com.dff.cordova.plugin.camera.services.ActionHandlerService;
 
@@ -46,6 +47,7 @@ public class DaggerManager {
 
     private AppModule appModule;
     private PluginModule pluginModule;
+    private CameraActivityModule cameraActivityModule;
 
     private DaggerManager() {}
 
@@ -59,6 +61,13 @@ public class DaggerManager {
     public DaggerManager in(Application application) {
         if (appModule == null && application != null) {
             appModule = new AppModule(application);
+        }
+        return this;
+    }
+    
+    public DaggerManager in(CameraActivity cameraActivity) {
+        if (cameraActivity != null) {
+            cameraActivityModule = new CameraActivityModule(cameraActivity);
         }
         return this;
     }
@@ -155,11 +164,12 @@ public class DaggerManager {
     }
     
     private CameraActivityComponent getCameraActivityComponent() {
-        if (cameraActivityComponent == null) {
+       
             cameraActivityComponent = getActivityComponent()
                 .cameraActivityComponentBuilder()
+                .cameraActivityModule(cameraActivityModule)
                 .build();
-        }
+        
         return  cameraActivityComponent;
     }
     

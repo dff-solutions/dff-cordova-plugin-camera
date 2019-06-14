@@ -22,14 +22,15 @@ public class CameraPreviewStateCallback extends CameraCaptureSession.StateCallba
     private Log log;
     
     @Inject
-    public CameraPreviewStateCallback(Log log) {
+    public CameraPreviewStateCallback(Log log, CameraActivity cameraActivity) {
         this.log = log;
+        this.cameraActivity = cameraActivity;
     }
     
     @Override
     public void onConfigured(@NonNull CameraCaptureSession captureSession) {
         log.d(TAG, "onConfigured");
-        if (null == cameraActivity.cameraDevice) {
+        if (null == cameraActivity.getCameraDevice()) {
             log.d(TAG, "no cameraDevice");
             return;
         }
@@ -41,9 +42,5 @@ public class CameraPreviewStateCallback extends CameraCaptureSession.StateCallba
     @Override
     public void onConfigureFailed(@NonNull CameraCaptureSession session) {
         log.e(TAG, "error while configurating CaptureSession");
-    }
-    
-    public void setCameraActivity(CameraActivity cameraActivity) {
-        this.cameraActivity = cameraActivity;
     }
 }

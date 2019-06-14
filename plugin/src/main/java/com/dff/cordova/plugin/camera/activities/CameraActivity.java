@@ -31,6 +31,7 @@ import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.dagger.annotations.PreviewActivityIntent;
 import com.dff.cordova.plugin.camera.helpers.CameraButtonHelper;
 import com.dff.cordova.plugin.camera.helpers.CallbackContextHelper;
+import com.dff.cordova.plugin.camera.helpers.CameraHelper;
 import com.dff.cordova.plugin.camera.helpers.ImageHelper;
 import com.dff.cordova.plugin.camera.helpers.PermissionHelper;
 import com.dff.cordova.plugin.camera.listeners.AvailableImageListener;
@@ -112,7 +113,11 @@ public class CameraActivity extends Activity {
     @Inject
     CameraManager cameraManager;
     
-    public CameraDevice cameraDevice;
+    @Inject
+    CameraHelper cameraHelper;
+    
+    private CameraDevice cameraDevice;
+    private Object cameraLock = new Object();
     private TextureView textureView;
     private Size previewSize;
     public CameraCaptureSession cameraCaptureSession;
@@ -129,11 +134,9 @@ public class CameraActivity extends Activity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //DaggerAppComponent.builder().build().activityComponentBuilder().build()
-        // .cameraActivityComponentBuilder().build().inject(this);
-    
         DaggerManager
             .getInstance()
+            .in(this)
             .inject(this);
     
         boolean hasCamera = packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA);
@@ -145,12 +148,6 @@ public class CameraActivity extends Activity {
         
         log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        
-        surfaceListener.setCameraActivity(this);
-        cameraStateCallback.setCameraActivity(this);
-        cameraPreviewStateCallback.setCameraActivity(this);
-        cameraCaptureStateCallback.setCamera2Activity(this);
-        availableImageListener.setCameraActivity(this);
         
         setContentView(r.getLayoutIdentifier(CAMERA_ACTIVITY_LAYOUT));
         buttonHelper.cameraManager = cameraManager;
@@ -257,7 +254,7 @@ public class CameraActivity extends Activity {
             log.d(TAG, "previewSize " + previewSize.toString());
             cameraManager.openCamera(cameraId, cameraStateCallback, null);
         } catch (CameraAccessException e) {
-            log.e(TAG, "error while getting cameraId");
+            log.e(TAG, "error while opening camera");
         }
     }
     
@@ -268,12 +265,15 @@ public class CameraActivity extends Activity {
         try {
             SurfaceTexture texture = textureView.getSurfaceTexture();
             texture.setDefaultBufferSize(previewSize.getWidth(), previewSize.getHeight());
-            captureRequest = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+            
+            captureRequest = getCameraDevice()
+                .createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+            
             Surface surface = new Surface(texture);
             captureRequest.addTarget(surface);
             
             log.d(TAG, "create CaptureSession");
-            cameraDevice.createCaptureSession(
+            getCameraDevice().createCaptureSession(
                 Arrays.asList(surface),
                 cameraPreviewStateCallback,
                 null
@@ -289,11 +289,12 @@ public class CameraActivity extends Activity {
      * This method closes the cameraDevice.
      */
     public void closeCamera() {
-        if (cameraDevice != null) {
-            log.d(TAG, "closing camera");
-            cameraDevice.close();
-            cameraDevice = null;
-            log.d(TAG, "closeCamera: cameraDevice is null? " + (cameraDevice == null));
+        synchronized (cameraLock) {
+            if (getCameraDevice() != null) {
+                log.d(TAG, "closing camera");
+                getCameraDevice().close();
+                setCameraDevice(null);
+            }
         }
     }
     
@@ -302,26 +303,26 @@ public class CameraActivity extends Activity {
      */
     public void updatePreview() {
         log.d(TAG, "updatePreview");
-        log.d(TAG, "updatePreview: cameraDevice is null? " + (cameraDevice == null));
-    
-        if (cameraDevice == null) {
-            log.e(TAG, "no cameraDevice");
-            return;
-        }
-        captureRequest.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
-        try {
-            cameraCaptureSession.setRepeatingRequest(
-                captureRequest.build(),
-                null,
-                null
-            );
-        } catch (CameraAccessException e) {
-            log.e(TAG, "error while setting repeating request", e);
+        synchronized (cameraLock) {
+            if (getCameraDevice() == null) {
+                log.e(TAG, "no cameraDevice / cameraDevice already closed");
+                return;
+            }
+            captureRequest.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
+            try {
+                cameraCaptureSession.setRepeatingRequest(
+                    captureRequest.build(),
+                    null,
+                    null
+                );
+            } catch (CameraAccessException e) {
+                log.e(TAG, "error while setting repeating request", e);
+            }
         }
     }
     
     private void takePicture() {
-        if (cameraDevice == null) {
+        if (getCameraDevice() == null) {
             log.e(TAG, "no cameraDevice");
             return;
         }
@@ -353,7 +354,7 @@ public class CameraActivity extends Activity {
             outputSurfaces.add(new Surface(textureView.getSurfaceTexture()));
             
             final CaptureRequest.Builder captureBuilder =
-                cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+                getCameraDevice().createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             captureBuilder.addTarget(reader.getSurface());
             captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
             
@@ -370,7 +371,7 @@ public class CameraActivity extends Activity {
             cameraCaptureStateCallback.handler = backgroundHandler;
             cameraCaptureStateCallback.captureBuilder = captureBuilder;
             
-            cameraDevice.createCaptureSession(
+            getCameraDevice().createCaptureSession(
                 outputSurfaces,
                 cameraCaptureStateCallback,
                 backgroundHandler
@@ -478,5 +479,13 @@ public class CameraActivity extends Activity {
             log.e(TAG, "base64Image is empty");
             contextHelper.sendAllError("unable to return image");
         }
+    }
+    
+    public CameraDevice getCameraDevice() {
+            return cameraDevice;
+    }
+    
+    public void setCameraDevice(CameraDevice cameraDevice) {
+            this.cameraDevice = cameraDevice;
     }
 }

@@ -23,15 +23,17 @@ public class CameraStateCallback extends CameraDevice.StateCallback {
     
     @Inject
     public CameraStateCallback(
-        Log log
+        Log log,
+        CameraActivity cameraActivity
     ) {
         this.log = log;
+        this.cameraActivity = cameraActivity;
     }
     
     @Override
     public void onOpened(@NonNull CameraDevice camera) {
         log.d(TAG, "starting camera preview");
-        cameraActivity.cameraDevice = camera;
+        cameraActivity.setCameraDevice(camera);
         cameraActivity.startCameraPreview();
     }
     
@@ -63,13 +65,9 @@ public class CameraStateCallback extends CameraDevice.StateCallback {
             default:
                 break;
         }
-        log.e(TAG, errorText + ". closing camera. errorCode: " + error);
+        log.e(TAG, errorText + ". closing camera and activity. errorCode: " + error);
         
         cameraActivity.closeCamera();
         cameraActivity.finish();
-    }
-    
-    public void setCameraActivity(CameraActivity cameraActivity) {
-        this.cameraActivity = cameraActivity;
     }
 }

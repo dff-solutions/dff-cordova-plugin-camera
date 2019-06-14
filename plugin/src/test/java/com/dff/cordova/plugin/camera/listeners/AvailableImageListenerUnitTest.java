@@ -38,10 +38,6 @@ public class AvailableImageListenerUnitTest {
     @InjectMocks
     AvailableImageListener imageListener;
     
-    @BeforeEach
-    public void setup() {
-        imageListener.setCameraActivity(cameraActivity);
-    }
     
     @Test
     public void onImageAvailableTest() {

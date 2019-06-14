@@ -25,8 +25,9 @@ public class CameraCaptureCallback extends CameraCaptureSession.CaptureCallback 
     private CameraActivity cameraActivity;
     
     @Inject
-    public CameraCaptureCallback(Log log) {
+    public CameraCaptureCallback(Log log, CameraActivity cameraActivity) {
         this.log = log;
+        this.cameraActivity = cameraActivity;
     }
     
     @Override
@@ -36,9 +37,5 @@ public class CameraCaptureCallback extends CameraCaptureSession.CaptureCallback 
         log.d(TAG, "onCaptureStarted");
         super.onCaptureStarted(session, request, timestamp, frameNumber);
         cameraActivity.startCameraPreview();
-    }
-    
-    public void setCameraActivity(CameraActivity cameraActivity) {
-        this.cameraActivity = cameraActivity;
     }
 }

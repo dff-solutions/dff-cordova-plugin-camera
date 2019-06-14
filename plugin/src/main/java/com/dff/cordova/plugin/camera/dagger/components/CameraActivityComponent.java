@@ -20,6 +20,8 @@ public interface CameraActivityComponent {
      */
     @Subcomponent.Builder
     interface Builder {
+        CameraActivityComponent.Builder cameraActivityModule(CameraActivityModule module);
+        
         CameraActivityComponent build();
     }
     

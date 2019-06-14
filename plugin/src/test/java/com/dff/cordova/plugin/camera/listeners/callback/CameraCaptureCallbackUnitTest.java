@@ -33,11 +33,6 @@ public class CameraCaptureCallbackUnitTest {
     @InjectMocks
     CameraCaptureCallback cameraCaptureCallback;
     
-    @BeforeEach
-    public void setup() {
-        cameraCaptureCallback.setCameraActivity(cameraActivity);
-    }
-    
     @Test
     public void onCaptureStartedTest() {
         cameraCaptureCallback.onCaptureStarted(cameraCaptureSession, request, 0,0);
