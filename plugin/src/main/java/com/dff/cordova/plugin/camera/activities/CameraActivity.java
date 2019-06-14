@@ -22,11 +22,8 @@ import android.util.Size;
 import android.view.Display;
 import android.view.Surface;
 import android.view.TextureView;
-import android.view.View;
-import android.widget.ImageButton;
 
 import com.dff.cordova.plugin.camera.actions.TakePhoto;
-import com.dff.cordova.plugin.camera.classes.CameraState;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.dagger.annotations.PreviewActivityIntent;
 import com.dff.cordova.plugin.camera.helpers.CameraButtonHelper;
@@ -114,7 +111,7 @@ public class CameraActivity extends Activity {
     CameraHelper cameraHelper;
     
     private CameraDevice cameraDevice;
-    public Object cameraLock = new Object();
+    private final Object cameraLock = new Object();
     private TextureView textureView;
     private Size previewSize;
     public CameraCaptureSession cameraCaptureSession;
@@ -259,6 +256,12 @@ public class CameraActivity extends Activity {
         }
     }
     
+    /**
+     * Method to take a picture with the current cameraDevice.
+     * Prepares the captureSession by setting size of the image, orientation and initializing the
+     * imageReader and captureRequest.
+     * The image format is jpg.
+     */
     public void takePicture() {
         if (getCameraDevice() == null) {
             log.e(TAG, "no cameraDevice");
@@ -387,5 +390,9 @@ public class CameraActivity extends Activity {
     
     public void setCameraDevice(CameraDevice cameraDevice) {
             this.cameraDevice = cameraDevice;
+    }
+    
+    public Object getCameraLock() {
+        return cameraLock;
     }
 }

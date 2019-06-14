@@ -11,12 +11,8 @@ import android.widget.ImageButton;
 
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.classes.CameraState;
-import com.dff.cordova.plugin.camera.dagger.annotations.CameraActivityScope;
 import com.dff.cordova.plugin.camera.log.Log;
 import com.dff.cordova.plugin.camera.res.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -34,14 +30,13 @@ public class CameraButtonHelper {
     private static final String IC_FLASH_AUTO = "camera_ic_flash_auto_white_24px";
     private static final String IC_FLASH_OFF = "camera_ic_flash_off_white_24px";
     private static final String IC_FLASH_ON = "camera_ic_flash_on_white_24px";
-    public static final String CAPTURE_BUTTON = "capture_button";
-    public static final String FLASH_BUTTON = "flash_button";
-    public static final String FLIP_BUTTON = "flip_button";
+    private static final String CAPTURE_BUTTON = "capture_button";
+    private static final String FLASH_BUTTON = "flash_button";
+    private static final String FLIP_BUTTON = "flip_button";
     
     private R r;
     private Log log;
     private int flashMode = 2;
-    private List<ImageButton> imageButtonList = new ArrayList<>();
     private PackageManager packageManager;
     private ImageButton captureButton;
     private ImageButton flashButton;
@@ -68,6 +63,10 @@ public class CameraButtonHelper {
         contextHelper = callbackContextHelper;
     }
     
+    /**
+     * Initializes the imageButtons on the screen, sets their onClick event and
+     * checks if the device as a front camera and flashMode available.
+     */
     public void initButtons()
     {
         captureButton = cameraActivity.findViewById(r.getIdIdentifier(CAPTURE_BUTTON));
@@ -111,12 +110,9 @@ public class CameraButtonHelper {
 
         rotateAnim.setDuration(250);
         rotateAnim.setFillAfter(true);
-
-        for (ImageButton imageButton : imageButtonList) {
-            if (imageButton.getVisibility() != View.GONE) {
-                imageButton.startAnimation(rotateAnim);
-            }
-        }
+        
+        flashButton.startAnimation(rotateAnim);
+        flipButton.startAnimation(rotateAnim);
     }
     
     /**
@@ -208,6 +204,9 @@ public class CameraButtonHelper {
         }
     }
     
+    /**
+     * The method changes between front and back camera.
+     */
     public void changeCamera() {
         if (cameraState == CameraState.FRONT) {
             log.d(TAG, "flip to back camera");

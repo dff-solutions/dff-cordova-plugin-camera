@@ -37,6 +37,11 @@ public class CallbackContextHelper {
         callbackContextList.add(callBackContext);
     }
     
+    /**
+     * Return a string message to the cordova app with callbackContext as success.
+     *
+     * @param success string message
+     */
     public void sendAllSuccess(String success) {
         log.d(TAG, "send result");
         for (CallbackContext callbackContext : callbackContextList) {
@@ -44,14 +49,23 @@ public class CallbackContextHelper {
         }
     }
     
+    /**
+     * Return a string message to the cordova app with callbackContext as error.
+     *
+     * @param error string message
+     */
     public void sendAllError(String error) {
         log.e(TAG, "send error: " + error);
         for (CallbackContext callbackContext : callbackContextList) {
             callbackContext.error(error);
-            
         }
     }
     
+    /**
+     * Return a thrown exception as json to the cordova app with callbackContext as error.
+     *
+     * @param e thrown exception
+     */
     public void sendAllException(Exception e) {
         try {
             JSONObject exception  = jsonThrowable.toJson(e);
