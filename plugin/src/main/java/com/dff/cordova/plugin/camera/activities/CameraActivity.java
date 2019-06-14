@@ -133,6 +133,7 @@ public class CameraActivity extends Activity {
         boolean hasCamera = packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA);
         if (!hasCamera) {
             log.e(TAG, "device has no camera");
+            contextHelper.sendAllError("device has no camera");
             setResult(R.RESULT_CANCELED);
             finish();
         }
@@ -189,6 +190,7 @@ public class CameraActivity extends Activity {
             cameraManager.openCamera(cameraId, cameraStateCallback, null);
         } catch (CameraAccessException e) {
             log.e(TAG, "error while opening camera");
+            contextHelper.sendAllException(e);
         }
     }
     
@@ -216,6 +218,7 @@ public class CameraActivity extends Activity {
             this.orientationEventListener.enable();
         } catch (CameraAccessException e) {
             log.e(TAG, "error while creating caputureRequest");
+            contextHelper.sendAllException(e);
         }
     }
     
@@ -251,6 +254,7 @@ public class CameraActivity extends Activity {
                 );
             } catch (CameraAccessException e) {
                 log.e(TAG, "error while setting repeating request", e);
+                contextHelper.sendAllException(e);
             }
         }
     }
@@ -313,6 +317,7 @@ public class CameraActivity extends Activity {
             );
         } catch (CameraAccessException e) {
             log.e(TAG, "error while accessing camera", e);
+            contextHelper.sendAllException(e);
         }
     }
     

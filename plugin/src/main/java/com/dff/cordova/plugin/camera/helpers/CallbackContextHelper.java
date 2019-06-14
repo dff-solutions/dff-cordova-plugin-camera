@@ -1,8 +1,11 @@
 package com.dff.cordova.plugin.camera.helpers;
 
+import com.dff.cordova.plugin.camera.classes.json.JsonThrowable;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import org.apache.cordova.CallbackContext;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -19,12 +22,15 @@ public class CallbackContextHelper {
     
     private Log log;
     private ArrayList<CallbackContext> callbackContextList = new ArrayList<CallbackContext>();
+    private JsonThrowable jsonThrowable;
     
     @Inject
     public CallbackContextHelper(
-        Log log
+        Log log,
+        JsonThrowable jsonThrowable
     ) {
         this.log = log;
+        this.jsonThrowable = jsonThrowable;
     }
     
     public void addCallBackContext(CallbackContext callBackContext) {
@@ -42,6 +48,19 @@ public class CallbackContextHelper {
         log.e(TAG, "send error: " + error);
         for (CallbackContext callbackContext : callbackContextList) {
             callbackContext.error(error);
+            
         }
+    }
+    
+    public void sendAllException(Exception e) {
+        try {
+            JSONObject exception  = jsonThrowable.toJson(e);
+            for (CallbackContext callbackContext : callbackContextList) {
+                callbackContext.error(exception);
+            }
+        } catch (JSONException e1) {
+            log.e(TAG, "unable to send exception as json", e1);
+        }
+       
     }
 }

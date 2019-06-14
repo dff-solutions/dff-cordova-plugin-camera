@@ -4,6 +4,7 @@ import android.hardware.camera2.CameraDevice;
 import android.support.annotation.NonNull;
 
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
+import com.dff.cordova.plugin.camera.helpers.CallbackContextHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import javax.inject.Inject;
@@ -20,14 +21,17 @@ public class CameraStateCallback extends CameraDevice.StateCallback {
     
     private CameraActivity cameraActivity;
     private Log log;
+    private CallbackContextHelper contextHelper;
     
     @Inject
     public CameraStateCallback(
         Log log,
-        CameraActivity cameraActivity
+        CameraActivity cameraActivity,
+        CallbackContextHelper callbackContextHelper
     ) {
         this.log = log;
         this.cameraActivity = cameraActivity;
+        contextHelper = callbackContextHelper;
     }
     
     @Override
@@ -66,6 +70,9 @@ public class CameraStateCallback extends CameraDevice.StateCallback {
                 break;
         }
         log.e(TAG, errorText + ". closing camera and activity. errorCode: " + error);
+        contextHelper.sendAllError(errorText +
+                                       ". closing camera and activity. errorCode: " +
+                                       error);
         
         cameraActivity.closeCamera();
         cameraActivity.finish();

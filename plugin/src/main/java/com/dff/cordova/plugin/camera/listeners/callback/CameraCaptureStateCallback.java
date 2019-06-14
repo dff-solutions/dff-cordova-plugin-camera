@@ -6,6 +6,7 @@ import android.hardware.camera2.CaptureRequest;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 
+import com.dff.cordova.plugin.camera.helpers.CallbackContextHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import javax.inject.Inject;
@@ -23,16 +24,19 @@ public class CameraCaptureStateCallback extends CameraCaptureSession.StateCallba
     public CaptureRequest.Builder captureBuilder;
     private Log log;
     public Handler handler;
+    private CallbackContextHelper contextHelper;
     
     @Inject
     public CameraCaptureStateCallback(
         CameraCaptureCallback cameraCaptureCallback,
         Handler handler,
-        Log log
+        Log log,
+        CallbackContextHelper callbackContextHelper
     ) {
         this.captureListener = cameraCaptureCallback;
         this.handler = handler;
         this.log = log;
+        contextHelper = callbackContextHelper;
     }
     
     @Override
@@ -43,6 +47,7 @@ public class CameraCaptureStateCallback extends CameraCaptureSession.StateCallba
                             handler);
         } catch (CameraAccessException e) {
             log.e(TAG, "error while accessing camera", e);
+            contextHelper.sendAllException(e);
         }
     }
     

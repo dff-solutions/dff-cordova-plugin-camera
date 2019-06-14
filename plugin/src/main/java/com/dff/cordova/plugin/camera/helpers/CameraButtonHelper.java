@@ -49,16 +49,23 @@ public class CameraButtonHelper {
     private CameraActivity cameraActivity;
     private CameraState cameraState = CameraState.BACK;
     private CameraManager cameraManager;
+    private CallbackContextHelper contextHelper;
     
     @Inject
-    public CameraButtonHelper(R r, Log log, PackageManager packageManager,
-                              CameraActivity cameraActivity, CameraManager cameraManager
-                              ) {
+    public CameraButtonHelper(
+        R r,
+        Log log,
+        PackageManager packageManager,
+        CameraActivity cameraActivity,
+        CameraManager cameraManager,
+        CallbackContextHelper callbackContextHelper
+    ) {
         this.r = r;
         this.log = log;
         this.packageManager = packageManager;
         this.cameraActivity = cameraActivity;
         this.cameraManager = cameraManager;
+        contextHelper = callbackContextHelper;
     }
     
     public void initButtons()
@@ -216,6 +223,7 @@ public class CameraButtonHelper {
                 }
             } catch (CameraAccessException e) {
                 log.e(TAG, "unable to access camera", e);
+                contextHelper.sendAllException(e);
             }
             cameraState = CameraState.BACK;
         } else {
@@ -232,6 +240,7 @@ public class CameraButtonHelper {
                 }
             } catch (CameraAccessException e) {
                 log.e(TAG, "unable to access camera", e);
+                contextHelper.sendAllException(e);
             }
             cameraState = CameraState.FRONT;
         }

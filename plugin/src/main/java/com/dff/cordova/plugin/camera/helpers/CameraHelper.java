@@ -20,12 +20,19 @@ public class CameraHelper {
     private CameraActivity cameraActivity;
     private CameraManager cameraManager;
     private int supportedHardwareLevel = 0;
+    private CallbackContextHelper contextHelper;
     
     @Inject
-    public CameraHelper(Log log, CameraActivity cameraActivity, CameraManager cameraManager) {
+    public CameraHelper(
+        Log log,
+        CameraActivity cameraActivity,
+        CameraManager cameraManager,
+        CallbackContextHelper callbackContextHelper
+    ) {
         this.log = log;
         this.cameraActivity = cameraActivity;
         this.cameraManager = cameraManager;
+        contextHelper = callbackContextHelper;
     }
     
     /**
@@ -48,6 +55,7 @@ public class CameraHelper {
             }
         } catch (Exception e) {
             log.e(TAG, "unable to access camera.", e);
+            contextHelper.sendAllException(e);
         }
     
         if (cameraActivity.cameraId == null) {
@@ -57,6 +65,7 @@ public class CameraHelper {
                 cameraActivity.cameraId = cameraManager.getCameraIdList()[0];
             } catch (CameraAccessException e) {
                 log.e(TAG, "unable to set cameraId from cameraIdList");
+                contextHelper.sendAllException(e);
             }
             supportedHardwareLevel =
                 CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED;
