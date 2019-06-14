@@ -3,6 +3,7 @@ package com.dff.cordova.plugin.camera.listeners.callback;
 import android.hardware.camera2.CameraDevice;
 
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
+import com.dff.cordova.plugin.camera.helpers.CallbackContextHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,9 @@ public class CameraStateCallbackUnitTest {
     
     @Mock
     Log log;
+    
+    @Mock
+    CallbackContextHelper contextHelper;
     
     @InjectMocks
     CameraStateCallback cameraStateCallback;

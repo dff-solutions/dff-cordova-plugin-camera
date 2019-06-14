@@ -32,14 +32,18 @@ public class CameraPreviewStateCallbackUnitTest {
     @Mock
     CameraCaptureSession cameraCaptureSession;
     
+    @Mock
+    Object cameraLock;
+    
     @InjectMocks
     CameraPreviewStateCallback cameraPreviewStateCallback;
     
     @Test
     public void onCofiguredTest() {
+        doReturn(cameraLock).when(cameraActivity).getCameraLock();
         cameraPreviewStateCallback.onConfigured(cameraCaptureSession);
         verify(cameraActivity, never()).updatePreview();
-        
+
         doReturn(device).when(cameraActivity).getCameraDevice();
         cameraPreviewStateCallback.onConfigured(cameraCaptureSession);
         verify(cameraActivity).updatePreview();

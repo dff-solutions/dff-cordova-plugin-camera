@@ -31,11 +31,6 @@ public class SurfaceListenerUnitTest {
     @InjectMocks
     SurfaceListener surfaceListener;
     
-    @BeforeEach
-    public void setup(){
-        surfaceListener.setCameraActivity(cameraActivity);
-    }
-    
     @Test
     public void surfaceAvailableTest() {
         surfaceListener.onSurfaceTextureAvailable(surfaceTexture, 0 , 0);
