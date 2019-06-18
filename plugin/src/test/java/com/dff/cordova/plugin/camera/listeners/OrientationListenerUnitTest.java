@@ -36,23 +36,24 @@ public class OrientationListenerUnitTest {
     
     @Test
     public void shouldChangeOrientation() {
+        listener.setButtonHelper(buttonHelper);
         listener.onOrientationChanged(90);
-        assertEquals(listener.currentRotaion, 270);
+        assertEquals(listener.currentRotation, 270);
     
         verify(buttonHelper).rotate(0, 270);
     
         listener.onOrientationChanged(180);
-        assertEquals(listener.currentRotaion, 180);
+        assertEquals(listener.currentRotation, 180);
     
         verify(buttonHelper).rotate(270, 180);
         
         listener.onOrientationChanged(270);
-        assertEquals(listener.currentRotaion, 90);
+        assertEquals(listener.currentRotation, 90);
     
         verify(buttonHelper).rotate(180, 90);
     
         listener.onOrientationChanged(0);
-        assertEquals(listener.currentRotaion, 0);
+        assertEquals(listener.currentRotation, 0);
     
         verify(buttonHelper).rotate(90, 0);
         

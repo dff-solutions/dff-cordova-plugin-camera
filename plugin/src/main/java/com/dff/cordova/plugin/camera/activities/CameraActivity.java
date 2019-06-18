@@ -145,6 +145,7 @@ public class CameraActivity extends Activity {
         textureView.setSurfaceTextureListener(surfaceListener);
         
         buttonHelper.initButtons();
+        orientationEventListener.setButtonHelper(buttonHelper);
         
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
@@ -296,7 +297,7 @@ public class CameraActivity extends Activity {
             outputSurfaces.add(new Surface(textureView.getSurfaceTexture()));
             
             final CaptureRequest.Builder captureBuilder =
-                getCameraDevice().createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+                getCameraDevice().createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             captureBuilder.addTarget(reader.getSurface());
             captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
             

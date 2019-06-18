@@ -21,19 +21,17 @@ public class OrientationListener extends OrientationEventListener {
     private static final String TAG = "OrientationListener";
     
     //should be between 0 and 45. Else it might cause errors.
-    private final int orientationRange = 15;
+    private final int orientationRange = 25;
     private CameraButtonHelper buttonHelper;
-    public int currentRotaion = 0;
+    public int currentRotation = 0;
     private Log log;
     
     @Inject
     public OrientationListener(
         @ApplicationContext Context context,
-        Log log,
-        CameraButtonHelper buttonHelper
+        Log log
     ) {
         super(context);
-        this.buttonHelper = buttonHelper;
         this.log = log;
         this.log.d(TAG, "init listener");
     }
@@ -48,38 +46,38 @@ public class OrientationListener extends OrientationEventListener {
         if ((
             orientation >= (360 - orientationRange) ||
             orientation <= (orientationRange)) &&
-            currentRotaion != 0
+            currentRotation != 0
         ) {
             log.d(TAG, "setting rotation to 0");
-            buttonHelper.rotate(currentRotaion, 0);
-            currentRotaion = 0;
+            buttonHelper.rotate(currentRotation, 0);
+            currentRotation = 0;
             
         } else if ((
             orientation >= 90 - orientationRange &&
             orientation <= 90 + orientationRange) &&
-            currentRotaion != 270
+            currentRotation != 270
         ) {
             log.d(TAG, "setting rotation to -90");
-            buttonHelper.rotate(currentRotaion, 270);
-            currentRotaion = 270;
+            buttonHelper.rotate(currentRotation, 270);
+            currentRotation = 270;
             
         } else if ((
             orientation >= 180 - orientationRange &&
             orientation <= 180 + orientationRange) &&
-            currentRotaion != 180
+            currentRotation != 180
         ) {
             log.d(TAG, "setting rotation to 180");
-            buttonHelper.rotate(currentRotaion, 180);
-            currentRotaion = 180;
+            buttonHelper.rotate(currentRotation, 180);
+            currentRotation = 180;
             
         } else if ((
             orientation >= 270 - orientationRange &&
             orientation <= 270 + orientationRange) &&
-            currentRotaion != 90
+            currentRotation != 90
         ) {
             log.d(TAG, "setting rotation to 90");
-            buttonHelper.rotate(currentRotaion, 90);
-            currentRotaion = 90;
+            buttonHelper.rotate(currentRotation, 90);
+            currentRotation = 90;
         }
     }
     
@@ -90,7 +88,7 @@ public class OrientationListener extends OrientationEventListener {
      */
     public int getImageRotation() {
         int screenRotation;
-        switch (currentRotaion) {
+        switch (currentRotation) {
             case 0:
                 screenRotation = 90;
                 break;
@@ -108,5 +106,9 @@ public class OrientationListener extends OrientationEventListener {
                 break;
         }
         return screenRotation;
+    }
+    
+    public void setButtonHelper(CameraButtonHelper buttonHelper) {
+        this.buttonHelper = buttonHelper;
     }
 }
