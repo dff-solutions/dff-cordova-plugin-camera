@@ -2,8 +2,12 @@ package com.dff.cordova.plugin.camera.dagger.components;
 
 import com.dff.cordova.plugin.camera.CameraPlugin;
 import com.dff.cordova.plugin.camera.dagger.annotations.PluginComponentScope;
+import com.dff.cordova.plugin.camera.dagger.annotations.PluginPermissions;
 import com.dff.cordova.plugin.camera.dagger.modules.PluginModule;
 
+import org.apache.cordova.CordovaInterface;
+
+import dagger.BindsInstance;
 import dagger.Subcomponent;
 
 /**
@@ -19,7 +23,16 @@ public interface PluginComponent {
     @Subcomponent.Builder
     interface Builder {
         Builder pluginModule(PluginModule module);
-
+    
+        @BindsInstance
+        Builder pluginPermissions(@PluginPermissions String[] permissions);
+        
+        @BindsInstance
+        Builder pluginCordovaInterface(CordovaInterface cordovaInterface);
+        
+        @BindsInstance
+        Builder pluginCameraPlugin(CameraPlugin cameraPlugin);
+        
         PluginComponent build();
     }
 

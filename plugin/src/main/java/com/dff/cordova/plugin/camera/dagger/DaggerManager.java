@@ -48,6 +48,9 @@ public class DaggerManager {
     private AppModule appModule;
     private PluginModule pluginModule;
     private CameraActivityModule cameraActivityModule;
+    
+    private CordovaInterface cordovaInterface;
+    private CameraPlugin cameraPlugin;
 
     private DaggerManager() {}
 
@@ -84,12 +87,10 @@ public class DaggerManager {
         CameraPlugin cameraPlugin
     ) {
         if (pluginModule == null) {
-            pluginModule = new PluginModule(
-                cordovaInterface,
-                PERMISSIONS,
-                cameraPlugin
-            );
+            pluginModule = new PluginModule();
         }
+        this.cordovaInterface = cordovaInterface;
+        this.cameraPlugin = cameraPlugin;
 
         return this;
     }
@@ -137,6 +138,9 @@ public class DaggerManager {
             pluginComponent = getAppComponent()
                 .pluginComponentBuilder()
                 .pluginModule(pluginModule)
+                .pluginPermissions(PERMISSIONS)
+                .pluginCameraPlugin(cameraPlugin)
+                .pluginCordovaInterface(cordovaInterface)
                 .build();
         }
         return pluginComponent;
