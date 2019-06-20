@@ -31,6 +31,10 @@ when making changes to the plugin.
 
 Issues are tracked by [YouTrack](https://dff.myjetbrains.com/youtrack/issues/DCP?q=plugin:Camera%20).
 
+## [Deployment]
+
+
 [Usage]: ./docs/USAGE.md
 [Contributing]: ./docs/CONTRIBUTING.md
 [Changelog]: CHANGELOG.md
+[Deployment]: Deployment.md
