@@ -72,6 +72,7 @@ public class CameraHelper {
     private void getCameraIdFromAndroid() {
         log.d(TAG, "receiving cameraId from android");
         try {
+            log.d(TAG, cameraManager.getCameraIdList().toString());
             for (String id : cameraManager.getCameraIdList()) {
                 CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(id);
                 int cameraOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
