@@ -51,6 +51,7 @@ public class DaggerManager {
     
     private CordovaInterface cordovaInterface;
     private CameraPlugin cameraPlugin;
+    private CameraActivity cameraActivity;
 
     private DaggerManager() {}
 
@@ -68,9 +69,17 @@ public class DaggerManager {
         return this;
     }
     
+    /**
+     * Creates a new CameraActivtyModule if it wasn't already and stores the cameraAcitivty.
+     *
+     * @param cameraActivity CameraActivity which is store in daggerManger to be provided in the
+     *                       component
+     * @return DaggerManager
+     */
     public DaggerManager in(CameraActivity cameraActivity) {
-        if (cameraActivity != null) {
-            cameraActivityModule = new CameraActivityModule(cameraActivity);
+        this.cameraActivity = cameraActivity;
+        if (cameraActivityModule == null) {
+            cameraActivityModule = new CameraActivityModule();
         }
         return this;
     }
@@ -168,13 +177,13 @@ public class DaggerManager {
     }
     
     private CameraActivityComponent getCameraActivityComponent() {
-       
-            cameraActivityComponent = getActivityComponent()
-                .cameraActivityComponentBuilder()
-                .cameraActivityModule(cameraActivityModule)
-                .build();
+        cameraActivityComponent = getActivityComponent()
+            .cameraActivityComponentBuilder()
+            .cameraActivityModule(cameraActivityModule)
+            .cameraAcitvity(cameraActivity)
+            .build();
         
-        return  cameraActivityComponent;
+        return cameraActivityComponent;
     }
     
     private PreviewActivityComponent getPreviewActivityComponent() {
