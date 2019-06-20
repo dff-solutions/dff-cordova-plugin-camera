@@ -1,10 +1,14 @@
 package com.dff.cordova.plugin.camera.helpers;
 
+import android.app.admin.DevicePolicyManager;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
+import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 import com.dff.cordova.plugin.camera.dagger.annotations.CameraActivityScope;
 import com.dff.cordova.plugin.camera.log.Log;
 
@@ -21,14 +25,20 @@ public class CameraHelper {
     private CameraManager cameraManager;
     private int supportedHardwareLevel = 0;
     private CallbackContextHelper contextHelper;
+    private PackageManager packageManager;
+    private Context context;
     
     @Inject
     public CameraHelper(
         Log log,
         CameraActivity cameraActivity,
         CameraManager cameraManager,
-        CallbackContextHelper callbackContextHelper
+        CallbackContextHelper callbackContextHelper,
+        PackageManager packageManager,
+        @ApplicationContext Context context
     ) {
+        this.context = context;
+        this.packageManager = packageManager;
         this.log = log;
         this.cameraActivity = cameraActivity;
         this.cameraManager = cameraManager;
@@ -42,6 +52,25 @@ public class CameraHelper {
      * features.
      */
     public void initCameraId() {
+        if (packageManager.hasSystemFeature(PackageManager.FEATURE_DEVICE_ADMIN)) {
+            log.d(TAG, "device has device policy.");
+            DevicePolicyManager devicePolicyManager =
+                (DevicePolicyManager)context.getSystemService(Context.DEVICE_POLICY_SERVICE);
+            if (devicePolicyManager.getCameraDisabled(null)) {
+                log.e(TAG, "camera is disabled by device policy.");
+                contextHelper.sendAllError("camera is disabled by device policy.");
+                cameraActivity.finish();
+            } else {
+                getCameraIdFromAndroid();
+            }
+        }
+        
+        log.d(TAG, "cameraId = " + cameraActivity.cameraId);
+        log.d(TAG, "supported hardware level = " + supportedHardwareLevel);
+    }
+    
+    private void getCameraIdFromAndroid() {
+        log.d(TAG, "receiving cameraId from android");
         try {
             for (String id : cameraManager.getCameraIdList()) {
                 CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(id);
@@ -53,11 +82,19 @@ public class CameraHelper {
                     break;
                 }
             }
-        } catch (Exception e) {
+        } catch (CameraAccessException e) {
             log.e(TAG, "unable to access camera.", e);
+            log.e(TAG, "CameraAccessExceptionReason = " + e.getReason());
             contextHelper.sendAllException(e);
+        } catch (NullPointerException e2) {
+            log.e(TAG, "Nullpointer when accessing characteristics", e2);
+            contextHelper.sendAllException(e2);
         }
     
+        checkIfCameraIdIsSet();
+    }
+    
+    private void checkIfCameraIdIsSet() {
         if (cameraActivity.cameraId == null) {
             log.d(TAG, "Unable to set cameraId automatically");
             log.d(TAG, "Set cameraId to first camera from cameraIdList");
@@ -66,12 +103,11 @@ public class CameraHelper {
             } catch (CameraAccessException e) {
                 log.e(TAG, "unable to set cameraId from cameraIdList");
                 contextHelper.sendAllException(e);
+                cameraActivity.finish();
             }
             supportedHardwareLevel =
                 CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED;
         }
-        log.d(TAG, "cameraId = " + cameraActivity.cameraId);
-        log.d(TAG, "supported hardware level = " + supportedHardwareLevel);
     }
     
     public int getSupportedHardwareLevel() {
