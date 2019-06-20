@@ -60,10 +60,10 @@ public class CameraHelper {
                 log.e(TAG, "camera is disabled by device policy.");
                 contextHelper.sendAllError("camera is disabled by device policy.");
                 cameraActivity.finish();
-            } else {
-                getCameraIdFromAndroid();
+                return;
             }
         }
+        getCameraIdFromAndroid();
         
         log.d(TAG, "cameraId = " + cameraActivity.cameraId);
         log.d(TAG, "supported hardware level = " + supportedHardwareLevel);
