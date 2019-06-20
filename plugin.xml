@@ -17,7 +17,7 @@
     </config-file>
     <config-file parent="/manifest" target="AndroidManifest.xml">
       <uses-permission android:name="android.permission.CAMERA"/>
-      <uses-feature android:name="android.hardware.camera"/>
+      <uses-feature android:name="android.hardware.camera" android:required="true"/>
       <uses-feature android:name="android.hardware.camera.flash"/>
     </config-file>
     <config-file parent="/manifest/application" target="AndroidManifest.xml">
