@@ -4,6 +4,7 @@ import android.media.Image;
 import android.media.ImageReader;
 
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
+import com.dff.cordova.plugin.camera.dagger.annotations.CameraActivityScope;
 import com.dff.cordova.plugin.camera.helpers.ImageHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 
@@ -17,6 +18,7 @@ import javax.inject.Inject;
  * @see <a href="https://developer.android.com/reference/android/view/OrientationEventListener"
  *     >https://developer.android.com/reference/android/view/OrientationEventListener</a>
  */
+@CameraActivityScope
 public class AvailableImageListener implements ImageReader.OnImageAvailableListener {
     private final String TAG = "AvailableImageListener";
     private Log log;

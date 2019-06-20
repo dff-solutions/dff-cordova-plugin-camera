@@ -84,12 +84,10 @@ public class ImageHelper {
      * @return optimal image size
      */
     public Size getOptimalImageSize(CameraCharacteristics characteristics) {
-        Size[] jpegSizes =
-            characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
-                .getOutputSizes(ImageFormat.JPEG);
         StreamConfigurationMap streamConfigurationMap =
             characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-    
+        
+        Size[] jpegSizes = streamConfigurationMap.getOutputSizes(ImageFormat.JPEG);
         Size previewSize = streamConfigurationMap.getOutputSizes(SurfaceTexture.class)[0];
         Size optimalSize = previewSize;
         

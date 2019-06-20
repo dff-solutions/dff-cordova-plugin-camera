@@ -5,6 +5,7 @@ import android.hardware.camera2.CaptureRequest;
 import android.support.annotation.NonNull;
 
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
+import com.dff.cordova.plugin.camera.dagger.annotations.CameraActivityScope;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import javax.inject.Inject;
@@ -19,6 +20,7 @@ import javax.inject.Inject;
  * @see <a href="https://developer.android.com/reference/android/hardware/camera2/CameraCaptureSession.CaptureCallback.html"
  *     >https://developer.android.com/reference/android/hardware/camera2/CameraCaptureSession.CaptureCallback.html</a>
  */
+@CameraActivityScope
 public class CameraCaptureCallback extends CameraCaptureSession.CaptureCallback {
     private static final String TAG = "CameraCaptureCallback";
     private Log log;

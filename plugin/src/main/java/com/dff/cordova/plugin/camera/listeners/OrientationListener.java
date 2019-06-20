@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.OrientationEventListener;
 
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
+import com.dff.cordova.plugin.camera.dagger.annotations.CameraActivityScope;
 import com.dff.cordova.plugin.camera.helpers.CameraButtonHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 
@@ -17,6 +18,7 @@ import javax.inject.Inject;
  * @see <a href="https://developer.android.com/reference/android/view/OrientationEventListener"
  *     >https://developer.android.com/reference/android/view/OrientationEventListener</a>
  */
+@CameraActivityScope
 public class OrientationListener extends OrientationEventListener {
     private static final String TAG = "OrientationListener";
     
@@ -42,7 +44,6 @@ public class OrientationListener extends OrientationEventListener {
           if orientation = 270 we need to rotate to 90
           if orientation = 90  we need to rotate to 270
         */
-        
         if ((
             orientation >= (360 - orientationRange) ||
             orientation <= (orientationRange)) &&
