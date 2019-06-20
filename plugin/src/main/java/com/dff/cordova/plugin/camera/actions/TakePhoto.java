@@ -46,7 +46,7 @@ public class TakePhoto extends PluginAction {
         super.checkJsonArgs(REQUIRED_ARGS);
 
         boolean withPreview = jsonArgs.getBoolean(JSON_ARG_WITH_PREVIEW);
-        cameraActivityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        cameraActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         cameraActivityIntent.putExtra(JSON_ARG_WITH_PREVIEW, withPreview);
         
         contextHelper.addCallBackContext(callbackContext);
