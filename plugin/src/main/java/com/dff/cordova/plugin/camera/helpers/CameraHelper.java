@@ -71,11 +71,7 @@ public class CameraHelper {
     
     private void getCameraIdFromAndroid() {
         log.d(TAG, "receiving cameraId from android");
-        
-        
-        //try {
-            cameraActivity.cameraId = "0";
-            /*
+        try {
             for (String id : cameraManager.getCameraIdList()) {
                 CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(id);
                 int cameraOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
@@ -86,7 +82,6 @@ public class CameraHelper {
                     break;
                 }
             }
-            
         } catch (CameraAccessException e) {
             log.e(TAG, "unable to access camera.", e);
             contextHelper.sendAllException(e);
@@ -94,7 +89,7 @@ public class CameraHelper {
             log.e(TAG, "Nullpointer when accessing characteristics", e2);
             contextHelper.sendAllException(e2);
         }
-        */
+        
         checkIfCameraIdIsSet();
     }
     
