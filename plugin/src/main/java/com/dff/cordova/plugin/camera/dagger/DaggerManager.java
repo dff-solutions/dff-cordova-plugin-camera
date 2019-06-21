@@ -169,13 +169,12 @@ public class DaggerManager {
     }
     
     private CameraActivityComponent getCameraActivityComponent() {
-        CameraActivityComponent cameraActivityComponent = getActivityComponent()
+        return getActivityComponent()
             .cameraActivityComponentBuilder()
             .cameraActivityModule(cameraActivityModule)
             .cameraAcitvity(cameraActivity)
             .build();
         
-        return cameraActivityComponent;
     }
     
     private PreviewActivityComponent getPreviewActivityComponent() {
