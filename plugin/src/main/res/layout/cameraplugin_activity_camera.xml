@@ -49,6 +49,6 @@
         android:layout_marginBottom="32dp"
         android:background="@null"
         android:gravity="center"
-        android:src="@drawable/camera_ic_switch_cam_front" />
+        android:src="@drawable/camera_ic_switch_cam_back" />
 
 </RelativeLayout>

@@ -23,7 +23,7 @@ public class OrientationListener extends OrientationEventListener {
     private static final String TAG = "OrientationListener";
     
     //should be between 0 and 45. Else it might cause errors.
-    private final int orientationRange = 25;
+    private final int orientationRange = 45;
     private CameraButtonHelper buttonHelper;
     public int currentRotation = 0;
     private Log log;

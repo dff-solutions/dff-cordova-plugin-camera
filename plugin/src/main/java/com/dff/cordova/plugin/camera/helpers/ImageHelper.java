@@ -28,7 +28,6 @@ import javax.inject.Singleton;
 public class ImageHelper {
     private static final String TAG = "ImageHelper";
     private final String imageName = "pic";
-    private final int sizeLimit = 1080;
     
     private byte[] bytes;
     private Log log;
@@ -77,13 +76,12 @@ public class ImageHelper {
     }
     
     /**
-     * Returns the optimal size for the image.
-     * The optimal size is limited to 1080 pixel height.
+     * Returns the biggest size for the image.
      *
      * @param characteristics properties describing a CameraDevice
      * @return optimal image size
      */
-    public Size getOptimalImageSize(CameraCharacteristics characteristics) {
+    public Size getBiggestSize(CameraCharacteristics characteristics) {
         StreamConfigurationMap streamConfigurationMap =
             characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
         
@@ -92,13 +90,12 @@ public class ImageHelper {
         Size optimalSize = previewSize;
         
         /*
-        Checks if a size is modulo to the preview size and smaller then the given sizeLimit
+        Checks if a size is modulo and bigger to the preview size
          */
         for (Size size : jpegSizes) {
             if ((size.getHeight() % previewSize.getHeight()) == 0 && (
                 size.getWidth() % previewSize.getWidth()) == 0 &&
-                size.getHeight() > optimalSize.getHeight() &&
-                size.getHeight() <= sizeLimit
+                size.getHeight() > optimalSize.getHeight()
             ) {
                 optimalSize = size;
                 log.d(TAG, "set size: " + optimalSize);
