@@ -208,41 +208,36 @@ public class CameraButtonHelper {
      * The method changes between front and back camera.
      */
     public void changeCamera() {
+        int cameraFacing = CameraCharacteristics.LENS_FACING_BACK;
         if (cameraState == CameraState.FRONT) {
             log.d(TAG, "flip to back camera");
-            try {
-                for (String id : cameraManager.getCameraIdList()) {
-                    CameraCharacteristics characteristics =
-                        cameraManager.getCameraCharacteristics(id);
-                    int cameraOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
-                    if (cameraOrientation == CameraCharacteristics.LENS_FACING_BACK) {
-                        cameraActivity.cameraId = id;
-                        log.d(TAG, "cameraId: " + id);
-                    }
-                }
-            } catch (CameraAccessException e) {
-                log.e(TAG, "unable to access camera", e);
-                contextHelper.sendAllException(e);
-            }
+            cameraFacing = CameraCharacteristics.LENS_FACING_BACK;
             cameraState = CameraState.BACK;
-        } else {
+        } else if (cameraState == CameraState.BACK) {
             log.d(TAG, "flip to front camera");
-            try {
-                for (String id : cameraManager.getCameraIdList()) {
-                    CameraCharacteristics characteristics =
-                        cameraManager.getCameraCharacteristics(id);
-                    int cameraOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
-                    if (cameraOrientation == CameraCharacteristics.LENS_FACING_FRONT) {
-                        cameraActivity.cameraId = id;
-                        log.d(TAG, "cameraId: " + id);
-                    }
-                }
-            } catch (CameraAccessException e) {
-                log.e(TAG, "unable to access camera", e);
-                contextHelper.sendAllException(e);
-            }
+            cameraFacing = CameraCharacteristics.LENS_FACING_FRONT;
             cameraState = CameraState.FRONT;
         }
+        
+        try {
+            for (String id : cameraManager.getCameraIdList()) {
+                CameraCharacteristics characteristics =
+                    cameraManager.getCameraCharacteristics(id);
+                
+                //should not throw null since any given camera id should face somewhere
+                int cameraOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
+                if (cameraOrientation == cameraFacing) {
+                    cameraActivity.cameraId = id;
+                    log.d(TAG, "cameraId: " + id);
+                }
+            }
+        } catch (CameraAccessException e) {
+            log.e(TAG, "unable to access camera", e);
+            contextHelper.sendAllException(e);
+        } catch (NullPointerException nullException) {
+            log.e(TAG, "unable to receive camera facing direction");
+        }
+        
         changeFlipButton(cameraState);
         cameraActivity.closeCamera();
         cameraActivity.openCamera();
