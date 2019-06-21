@@ -18,6 +18,9 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 /**
  * Helps handling plugin permissions.
+ *
+ * @see <a href="https://developer.android.com/training/permissions/requesting"
+ *      >https://developer.android.com/training/permissions/requesting</a>
  */
 @Singleton
 public class PermissionHelper {
@@ -33,10 +36,11 @@ public class PermissionHelper {
         this.log = log;
         this.context = context;
     }
-
+    
     /**
      * Checks if all required permissions are granted.
      *
+     * @param permissions String array of the needed permissions
      * @return True if all permissions are granted
      */
     public boolean hasAllPermissions(@NonNull String[] permissions) {
@@ -56,11 +60,13 @@ public class PermissionHelper {
 
         return true;
     }
-
+    
     /**
      * Checks if user has not selected the Don't ask again option in the permission request dialog
      * for at least one required permission.
      *
+     * @param activity current activity
+     * @param permissions String array of the permissions that need to be requested
      * @return True if request for permissions should be shown for at least one permission
      */
     public boolean shouldShowRequestPermissionRationale(

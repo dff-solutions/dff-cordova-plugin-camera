@@ -22,6 +22,14 @@ import ch.qos.logback.core.rolling.RollingFileAppender;
 import ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy;
 import ch.qos.logback.core.rolling.TriggeringPolicy;
 
+/**
+ * Log class.
+ *
+ * @see <a href="https://www.slf4j.org/api/org/slf4j/Logger.html"
+ *      >https://www.slf4j.org/api/org/slf4j/Logger.html</a>
+ * @see <a href="https://www.slf4j.org/apidocs/org/slf4j/LoggerFactory.html"
+ *      >https://www.slf4j.org/apidocs/org/slf4j/LoggerFactory.html</a>
+ */
 @Singleton
 public class Log {
     private static final String TAG = "Log";

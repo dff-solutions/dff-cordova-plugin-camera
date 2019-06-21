@@ -7,6 +7,10 @@ import org.json.JSONObject;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+/**
+ * This class provides new JSONObjects or JSONArrays.
+ * It can be mocked and makes testing easier.
+ */
 @Singleton
 public class JsonFactory {
     @Inject

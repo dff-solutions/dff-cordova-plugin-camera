@@ -7,6 +7,9 @@ import javax.inject.Scope;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+/**
+ * Annotation for the PluginComponent.
+ */
 @Scope
 @Documented
 @Retention(RUNTIME)

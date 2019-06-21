@@ -182,5 +182,16 @@
         <module name="AnnotationLocation">
             <property name="allowSamelineSingleParameterlessAnnotation" value="false"/>
         </module>
+
+        <module name="JavadocMethod">
+            <property name="scope" value="public"/>
+            <property name="minLineCount" value="4"/>
+            <property name="tokens" value="METHOD_DEF, ANNOTATION_FIELD_DEF"/>
+        </module>
+
+        <module name="JavadocType">
+            <property name="scope" value="public"/>
+        </module>
+
     </module>
 </module>

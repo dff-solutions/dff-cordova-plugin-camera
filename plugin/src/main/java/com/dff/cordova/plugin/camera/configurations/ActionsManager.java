@@ -22,6 +22,9 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+/**
+ * This class manages the actions. The ActionsManager createsAction and runs them.
+ */
 @PluginComponentScope
 public class ActionsManager implements ServiceConnection {
     private static final String TAG = "ActionsManager";
@@ -46,7 +49,15 @@ public class ActionsManager implements ServiceConnection {
         this.context.startService(serviceIntent);
         this.context.bindService(serviceIntent, this, Context.BIND_AUTO_CREATE);
     }
-
+    
+    /**
+     * Creates an action.
+     *
+     * @param action String of the actionname
+     * @param args JSONArray of the arguments
+     * @param callbackContext callbackContext
+     * @return PluginAction based on the actionname
+     */
     public PluginAction createAction(
         final String action,
         final JSONArray args,
@@ -68,7 +79,13 @@ public class ActionsManager implements ServiceConnection {
 
         return actionInstance;
     }
-
+    
+    /**
+     * Run the given action.
+     *
+     * @param action to run
+     * @return result of the execution of the action
+     */
     public boolean runAction(PluginAction action) {
         if (bound && actionHandlerService != null) {
             return actionHandlerService.execute(action);

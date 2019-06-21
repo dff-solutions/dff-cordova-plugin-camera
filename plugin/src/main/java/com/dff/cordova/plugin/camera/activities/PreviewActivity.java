@@ -2,17 +2,22 @@ package com.dff.cordova.plugin.camera.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.exceptions.UnexpectedExceptionHandler;
+import com.dff.cordova.plugin.camera.helpers.ImageHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 import com.dff.cordova.plugin.camera.res.R;
-import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 
 import javax.inject.Inject;
+
 
 /**
  * A preview of the taken image before it is saved.
@@ -26,7 +31,7 @@ import javax.inject.Inject;
 public class PreviewActivity extends Activity {
     private static final String TAG = "PreviewActivity";
 
-    private static final String PREVIEW_ACTIVITY_LAYOUT = "activity_preview";
+    private static final String PREVIEW_ACTIVITY_LAYOUT = "cameraplugin_activity_preview";
     private static final String IMAGE_VIEW_PREVIEW_ID = "image_view";
     private static final String BUTTON_CANCEL = "button_cancel";
     private static final String BUTTON_REPEAT = "button_repeat";
@@ -37,9 +42,12 @@ public class PreviewActivity extends Activity {
 
     @Inject
     R r;
-
+    
     @Inject
     UnexpectedExceptionHandler unexpectedExceptionHandler;
+    
+    @Inject
+    ImageHelper imageHelper;
 
     /**
      * On creating the activity, initialize all components needed to preview the taken image.
@@ -56,18 +64,21 @@ public class PreviewActivity extends Activity {
         DaggerManager
             .getInstance()
             .inject(this);
-
+        
         Thread.currentThread().setUncaughtExceptionHandler(unexpectedExceptionHandler);
 
-        log.d(TAG, "onCreate() - PreviewActivity");
+        log.d(TAG, "onCreate");
         setContentView(r.getLayoutIdentifier(PREVIEW_ACTIVITY_LAYOUT));
         ImageView imageView = findViewById(r.getIdIdentifier(IMAGE_VIEW_PREVIEW_ID));
-
-        if (r.sBitmap != null) {
-            imageView.setImageBitmap(r.sBitmap);
+    
+        byte[] imageBytes = imageHelper.getBytes();
+        Bitmap bitmap = BitmapFactory
+            .decodeByteArray(imageBytes, 0, imageBytes.length);
+        if (bitmap != null) {
+            imageView.setImageBitmap(bitmap);
         } else {
             Toast
-                .makeText(this,"Error while previewing the image 5125", Toast.LENGTH_LONG)
+                .makeText(this,"Error while previewing the image. ", Toast.LENGTH_LONG)
                 .show();
         }
 
@@ -75,21 +86,29 @@ public class PreviewActivity extends Activity {
         ImageButton repeatButton = findViewById(r.getIdIdentifier(BUTTON_REPEAT));
         ImageButton okButton = findViewById(r.getIdIdentifier(BUTTON_OK));
 
-        cancelButton.setOnClickListener(view -> {
-            setResult(RESULT_CANCELED, new Intent());
-            finish();
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(R.RESULT_CANCELED, new Intent());
+                log.d(TAG, "finish Preview Activity. Result = canceled");
+                finish();
+            }
         });
-        repeatButton.setOnClickListener(view -> {
-            setResult(R.RESULT_REPEAT);
-            finish();
+        repeatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(R.RESULT_REPEAT);
+                log.d(TAG, "finish Preview Activity. Result = repeat");
+                finish();
+            }
         });
-        okButton.setOnClickListener(view -> {
-            Intent intent = new Intent();
-            intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            setResult(RESULT_OK, intent);
-            finish();
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(R.RESULT_OK);
+                log.d(TAG, "finish Preview Activity. Result = ok");
+                finish();
+            }
         });
-
     }
 }

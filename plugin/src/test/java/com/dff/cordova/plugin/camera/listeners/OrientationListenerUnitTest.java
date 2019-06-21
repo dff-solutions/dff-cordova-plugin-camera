@@ -1,0 +1,62 @@
+package com.dff.cordova.plugin.camera.listeners;
+
+import android.content.Context;
+import android.widget.ImageButton;
+
+import com.dff.cordova.plugin.camera.helpers.CameraButtonHelper;
+import com.dff.cordova.plugin.camera.log.Log;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+
+@ExtendWith(MockitoExtension.class)
+public class OrientationListenerUnitTest {
+    
+    @Mock
+    Log log;
+    
+    @Mock
+    Context context;
+    
+    @Mock
+    CameraButtonHelper buttonHelper;
+    
+    @Mock
+    ImageButton button;
+    
+    @InjectMocks
+    OrientationListener listener;
+    
+    @Test
+    public void shouldChangeOrientation() {
+        listener.setButtonHelper(buttonHelper);
+        listener.onOrientationChanged(90);
+        assertEquals(listener.currentRotation, 270);
+    
+        verify(buttonHelper).rotate(0, 270);
+    
+        listener.onOrientationChanged(180);
+        assertEquals(listener.currentRotation, 180);
+    
+        verify(buttonHelper).rotate(270, 180);
+        
+        listener.onOrientationChanged(270);
+        assertEquals(listener.currentRotation, 90);
+    
+        verify(buttonHelper).rotate(180, 90);
+    
+        listener.onOrientationChanged(0);
+        assertEquals(listener.currentRotation, 0);
+    
+        verify(buttonHelper).rotate(90, 0);
+        
+    }
+    
+}

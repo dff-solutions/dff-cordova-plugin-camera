@@ -7,6 +7,9 @@ import com.dff.cordova.plugin.camera.dagger.annotations.ActionHandlerScope;
 import dagger.Module;
 import dagger.Provides;
 
+/**
+ * This class provides an ActionHandler with an already started ActionHandlerThread.
+ */
 @Module
 public class ActionHandlerServiceModule {
     @Provides

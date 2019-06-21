@@ -6,6 +6,9 @@ import javax.inject.Qualifier;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+/**
+ * Annotation for the PluginPermission.
+ */
 @Qualifier
 @Retention(RUNTIME)
 public @interface PluginPermissions {

@@ -8,6 +8,9 @@ import javax.inject.Singleton;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
 
+/**
+ * This class appends an ILoggingEvent to the EventBus if subscribed.
+ */
 @Singleton
 public class CallbackContextAppender extends AppenderBase<ILoggingEvent> {
     private EventBus eventBus;

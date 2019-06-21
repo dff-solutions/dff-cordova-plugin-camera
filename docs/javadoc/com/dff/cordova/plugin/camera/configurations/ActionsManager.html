@@ -48,7 +48,7 @@ var activeTableTab = "activeTableTab";
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../../../../com/dff/cordova/plugin/camera/configurations/ActionHandlerThread.html" title="class in com.dff.cordova.plugin.camera.configurations"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../../../../com/dff/cordova/plugin/camera/configurations/Config.html" title="class in com.dff.cordova.plugin.camera.configurations"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../../../com/dff/cordova/plugin/camera/configurations/CameraHandler.html" title="class in com.dff.cordova.plugin.camera.configurations"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../../index.html?com/dff/cordova/plugin/camera/configurations/ActionsManager.html" target="_top">Frames</a></li>
@@ -115,6 +115,7 @@ var activeTableTab = "activeTableTab";
 public class <span class="typeNameLabel">ActionsManager</span>
 extends java.lang.Object
 implements android.content.ServiceConnection</pre>
+<div class="block">This class manages the actions. The ActionsManager createsAction and runs them.</div>
 </li>
 </ul>
 </div>
@@ -157,7 +158,9 @@ implements android.content.ServiceConnection</pre>
 <td class="colFirst"><code><a href="../../../../../../com/dff/cordova/plugin/camera/actions/PluginAction.html" title="class in com.dff.cordova.plugin.camera.actions">PluginAction</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/configurations/ActionsManager.html#createAction-java.lang.String-org.json.JSONArray-CallbackContext-">createAction</a></span>(java.lang.String&nbsp;action,
             org.json.JSONArray&nbsp;args,
-            CallbackContext&nbsp;callbackContext)</code>&nbsp;</td>
+            CallbackContext&nbsp;callbackContext)</code>
+<div class="block">Creates an action.</div>
+</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
@@ -178,7 +181,9 @@ implements android.content.ServiceConnection</pre>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/configurations/ActionsManager.html#runAction-com.dff.cordova.plugin.camera.actions.PluginAction-">runAction</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/actions/PluginAction.html" title="class in com.dff.cordova.plugin.camera.actions">PluginAction</a>&nbsp;action)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/configurations/ActionsManager.html#runAction-com.dff.cordova.plugin.camera.actions.PluginAction-">runAction</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/actions/PluginAction.html" title="class in com.dff.cordova.plugin.camera.actions">PluginAction</a>&nbsp;action)</code>
+<div class="block">Run the given action.</div>
+</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -238,6 +243,15 @@ implements android.content.ServiceConnection</pre>
 <pre>public&nbsp;<a href="../../../../../../com/dff/cordova/plugin/camera/actions/PluginAction.html" title="class in com.dff.cordova.plugin.camera.actions">PluginAction</a>&nbsp;createAction(java.lang.String&nbsp;action,
                                  org.json.JSONArray&nbsp;args,
                                  CallbackContext&nbsp;callbackContext)</pre>
+<div class="block">Creates an action.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>action</code> - String of the actionname</dd>
+<dd><code>args</code> - JSONArray of the arguments</dd>
+<dd><code>callbackContext</code> - callbackContext</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>PluginAction based on the actionname</dd>
+</dl>
 </li>
 </ul>
 <a name="runAction-com.dff.cordova.plugin.camera.actions.PluginAction-">
@@ -247,6 +261,13 @@ implements android.content.ServiceConnection</pre>
 <li class="blockList">
 <h4>runAction</h4>
 <pre>public&nbsp;boolean&nbsp;runAction(<a href="../../../../../../com/dff/cordova/plugin/camera/actions/PluginAction.html" title="class in com.dff.cordova.plugin.camera.actions">PluginAction</a>&nbsp;action)</pre>
+<div class="block">Run the given action.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>action</code> - to run</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>result of the execution of the action</dd>
+</dl>
 </li>
 </ul>
 <a name="onDestroy--">
@@ -322,7 +343,7 @@ implements android.content.ServiceConnection</pre>
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../../../../com/dff/cordova/plugin/camera/configurations/ActionHandlerThread.html" title="class in com.dff.cordova.plugin.camera.configurations"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../../../../com/dff/cordova/plugin/camera/configurations/Config.html" title="class in com.dff.cordova.plugin.camera.configurations"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../../../com/dff/cordova/plugin/camera/configurations/CameraHandler.html" title="class in com.dff.cordova.plugin.camera.configurations"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../../index.html?com/dff/cordova/plugin/camera/configurations/ActionsManager.html" target="_top">Frames</a></li>
