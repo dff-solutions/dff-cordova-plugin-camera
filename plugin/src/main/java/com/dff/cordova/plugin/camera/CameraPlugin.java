@@ -52,7 +52,7 @@ public class CameraPlugin extends CordovaPlugin {
         DaggerManager
             .getInstance()
             .in(cordova.getActivity().getApplication())
-            .in(cordova, this)
+            .in(cordova)
             .inject(this);
     }
 

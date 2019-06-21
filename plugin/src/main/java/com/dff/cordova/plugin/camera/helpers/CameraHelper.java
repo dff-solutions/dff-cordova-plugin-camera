@@ -1,14 +1,12 @@
 package com.dff.cordova.plugin.camera.helpers;
 
 import android.app.admin.DevicePolicyManager;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
-import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 import com.dff.cordova.plugin.camera.dagger.annotations.CameraActivityScope;
 import com.dff.cordova.plugin.camera.log.Log;
 
@@ -26,7 +24,7 @@ public class CameraHelper {
     private int supportedHardwareLevel = 0;
     private CallbackContextHelper contextHelper;
     private PackageManager packageManager;
-    private Context context;
+    private DevicePolicyManager devicePolicyManager;
     
     @Inject
     public CameraHelper(
@@ -35,14 +33,14 @@ public class CameraHelper {
         CameraManager cameraManager,
         CallbackContextHelper callbackContextHelper,
         PackageManager packageManager,
-        @ApplicationContext Context context
+        DevicePolicyManager devicePolicyManager
     ) {
-        this.context = context;
         this.packageManager = packageManager;
         this.log = log;
         this.cameraActivity = cameraActivity;
         this.cameraManager = cameraManager;
         contextHelper = callbackContextHelper;
+        this.devicePolicyManager = devicePolicyManager;
     }
     
     /**
@@ -54,8 +52,6 @@ public class CameraHelper {
     public void initCameraId() {
         if (packageManager.hasSystemFeature(PackageManager.FEATURE_DEVICE_ADMIN)) {
             log.d(TAG, "device has device policy.");
-            DevicePolicyManager devicePolicyManager =
-                (DevicePolicyManager)context.getSystemService(Context.DEVICE_POLICY_SERVICE);
             if (devicePolicyManager.getCameraDisabled(null)) {
                 log.e(TAG, "camera is disabled by device policy.");
                 contextHelper.sendAllError("camera is disabled by device policy.");
@@ -90,31 +86,15 @@ public class CameraHelper {
             log.e(TAG, "Nullpointer when accessing characteristics", e2);
             contextHelper.sendAllException(e2);
         }
-        
-        checkIfCameraIdIsSet();
-    }
     
-    private void checkIfCameraIdIsSet() {
         if (cameraActivity.cameraId == null) {
-            log.d(TAG, "Unable to set cameraId automatically");
-            log.d(TAG, "Set cameraId to first camera from cameraIdList");
-            try {
-                cameraActivity.cameraId = cameraManager.getCameraIdList()[0];
-            } catch (CameraAccessException e) {
-                log.e(TAG, "unable to set cameraId from cameraIdList");
-                contextHelper.sendAllException(e);
-                cameraActivity.finish();
-            }
-            supportedHardwareLevel =
-                CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED;
+            log.e(TAG, "unable to set cameraId from cameraIdList");
+            contextHelper.sendAllError("unable to setCameraId");
+            cameraActivity.finish();
         }
     }
     
     public int getSupportedHardwareLevel() {
         return supportedHardwareLevel;
-    }
-    
-    public void setSupportedHardwareLevel(int supportedHardwareLevel) {
-        this.supportedHardwareLevel = supportedHardwareLevel;
     }
 }

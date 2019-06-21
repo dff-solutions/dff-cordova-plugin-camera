@@ -1,9 +1,10 @@
 package com.dff.cordova.plugin.camera.dagger.modules;
 
+import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.hardware.camera2.CameraManager;
-import android.os.Handler;
 
+import com.dff.cordova.plugin.camera.configurations.CameraHandler;
 import com.dff.cordova.plugin.camera.configurations.CameraHandlerThread;
 import com.dff.cordova.plugin.camera.dagger.annotations.ApplicationContext;
 
@@ -22,8 +23,13 @@ public class CameraActivityModule {
     }
     
     @Provides
-    Handler provideHandler(CameraHandlerThread cameraHandlerThread) {
+    DevicePolicyManager provideDevicePolicyManager(@ApplicationContext Context context) {
+        return (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
+    }
+    
+    @Provides
+    CameraHandler provideHandler(CameraHandlerThread cameraHandlerThread) {
         cameraHandlerThread.start();
-        return new Handler(cameraHandlerThread.getLooper());
+        return new CameraHandler(cameraHandlerThread.getLooper());
     }
 }

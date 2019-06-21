@@ -2,6 +2,7 @@ package com.dff.cordova.plugin.camera.dagger;
 
 import android.Manifest;
 import android.app.Application;
+import android.content.Context;
 
 import com.dff.cordova.plugin.camera.CameraPlugin;
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
@@ -15,7 +16,6 @@ import com.dff.cordova.plugin.camera.dagger.components.PluginComponent;
 import com.dff.cordova.plugin.camera.dagger.components.PreviewActivityComponent;
 import com.dff.cordova.plugin.camera.dagger.modules.ActionHandlerServiceModule;
 import com.dff.cordova.plugin.camera.dagger.modules.ActivityModule;
-import com.dff.cordova.plugin.camera.dagger.modules.AppModule;
 import com.dff.cordova.plugin.camera.dagger.modules.CameraActivityModule;
 import com.dff.cordova.plugin.camera.dagger.modules.PluginModule;
 import com.dff.cordova.plugin.camera.services.ActionHandlerService;
@@ -34,7 +34,7 @@ public class DaggerManager {
     
     // contains dangerous permissions
     // @see https://developer.android.com/guide/topics/permissions/overview.html#normal-dangerous
-    public static final String[] PERMISSIONS = new String[] {
+    private static final String[] PERMISSIONS = new String[] {
         Manifest.permission.CAMERA,
     };
 
@@ -42,15 +42,13 @@ public class DaggerManager {
     private ActionHandlerServiceComponent actionHandlerServiceComponent;
     private PluginComponent pluginComponent;
     private ActivityComponent activityComponent;
-    private CameraActivityComponent cameraActivityComponent;
     private PreviewActivityComponent previewActivityComponent;
 
-    private AppModule appModule;
+    private Context context;
     private PluginModule pluginModule;
     private CameraActivityModule cameraActivityModule;
     
     private CordovaInterface cordovaInterface;
-    private CameraPlugin cameraPlugin;
     private CameraActivity cameraActivity;
 
     private DaggerManager() {}
@@ -63,14 +61,12 @@ public class DaggerManager {
     }
 
     public DaggerManager in(Application application) {
-        if (appModule == null && application != null) {
-            appModule = new AppModule(application);
-        }
+        this.context = application;
         return this;
     }
     
     /**
-     * Creates a new CameraActivtyModule if it wasn't already and stores the cameraAcitivty.
+     * Creates a new cameraActivityModule if it wasn't already and stores the cameraActivity.
      *
      * @param cameraActivity CameraActivity which is store in daggerManger to be provided in the
      *                       component
@@ -87,19 +83,16 @@ public class DaggerManager {
     /**
      * Provides objects to the PluginModule.
      *
-     * @param cordovaInterface cordovaInterface
-     * @param cameraPlugin core class
-     * @return Daggermanager
+     * @param cordovaInterface CordovaInterface
+     * @return DaggerManager
      */
     public DaggerManager in(
-        CordovaInterface cordovaInterface,
-        CameraPlugin cameraPlugin
+        CordovaInterface cordovaInterface
     ) {
         if (pluginModule == null) {
             pluginModule = new PluginModule();
         }
         this.cordovaInterface = cordovaInterface;
-        this.cameraPlugin = cameraPlugin;
 
         return this;
     }
@@ -115,7 +108,7 @@ public class DaggerManager {
     }
     
     /**
-     * Injects the previewActivty.
+     * Injects the previewActivity.
      *
      * @param previewActivity the activity
      */
@@ -124,7 +117,7 @@ public class DaggerManager {
     }
     
     /**
-     * Injects the cameraActivty.
+     * Injects the cameraActivity.
      *
      * @param cameraActivity the activity
      */
@@ -136,7 +129,8 @@ public class DaggerManager {
         if (appComponent == null) {
             appComponent = DaggerAppComponent
                 .builder()
-                .appModule(appModule)
+                .context(context)
+                .pluginPermissions(PERMISSIONS)
                 .build();
         }
         return appComponent;
@@ -147,8 +141,6 @@ public class DaggerManager {
             pluginComponent = getAppComponent()
                 .pluginComponentBuilder()
                 .pluginModule(pluginModule)
-                .pluginPermissions(PERMISSIONS)
-                .pluginCameraPlugin(cameraPlugin)
                 .pluginCordovaInterface(cordovaInterface)
                 .build();
         }
@@ -177,7 +169,7 @@ public class DaggerManager {
     }
     
     private CameraActivityComponent getCameraActivityComponent() {
-        cameraActivityComponent = getActivityComponent()
+        CameraActivityComponent cameraActivityComponent = getActivityComponent()
             .cameraActivityComponentBuilder()
             .cameraActivityModule(cameraActivityModule)
             .cameraAcitvity(cameraActivity)

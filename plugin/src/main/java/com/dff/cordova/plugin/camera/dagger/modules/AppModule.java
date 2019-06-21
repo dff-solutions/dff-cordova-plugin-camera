@@ -31,20 +31,7 @@ import dagger.Provides;
     ActivityComponent.class
 })
 public class AppModule {
-    private Context applicationContext;
-    private PackageManager packageManager;
-
-    public AppModule(Context context) {
-        applicationContext = context;
-        packageManager = context.getPackageManager();
-    }
-
-    @Provides
-    @ApplicationContext
-    Context provideApplicationContext() {
-        return applicationContext;
-    }
-
+    
     @Provides
     @Singleton
     @ActionHandlerServiceIntent
@@ -70,7 +57,7 @@ public class AppModule {
     }
     
     @Provides
-    PackageManager providePackageManager() {
-        return packageManager;
+    PackageManager providePackageManager(@ApplicationContext Context context) {
+        return context.getPackageManager();
     }
 }
