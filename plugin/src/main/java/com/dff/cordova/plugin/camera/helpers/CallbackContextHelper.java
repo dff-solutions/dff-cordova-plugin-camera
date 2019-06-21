@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -16,12 +17,11 @@ import javax.inject.Singleton;
  * Helper to manage communication between plugin and cordova app via callbackContext.
  */
 @Singleton
-@SuppressWarnings("PMD.LooseCoupling")
 public class CallbackContextHelper {
     private final String TAG = "CallbackContextHelper";
     
     private Log log;
-    private ArrayList<CallbackContext> callbackContextList = new ArrayList<CallbackContext>();
+    private List<CallbackContext> callbackContextList = new ArrayList<CallbackContext>();
     private JsonThrowable jsonThrowable;
     
     @Inject
@@ -47,6 +47,7 @@ public class CallbackContextHelper {
         for (CallbackContext callbackContext : callbackContextList) {
             callbackContext.success(success);
         }
+        deleteAll();
     }
     
     /**
@@ -59,6 +60,7 @@ public class CallbackContextHelper {
         for (CallbackContext callbackContext : callbackContextList) {
             callbackContext.error(error);
         }
+        deleteAll();
     }
     
     /**
@@ -75,6 +77,10 @@ public class CallbackContextHelper {
         } catch (JSONException e1) {
             log.e(TAG, "unable to send exception as json", e1);
         }
-       
+        deleteAll();
+    }
+    
+    private void deleteAll() {
+        callbackContextList.clear();
     }
 }

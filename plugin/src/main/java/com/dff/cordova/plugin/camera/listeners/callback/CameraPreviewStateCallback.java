@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.dff.cordova.plugin.camera.activities.CameraActivity;
 import com.dff.cordova.plugin.camera.dagger.annotations.CameraActivityScope;
+import com.dff.cordova.plugin.camera.helpers.CallbackContextHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import javax.inject.Inject;
@@ -22,11 +23,17 @@ public class CameraPreviewStateCallback extends CameraCaptureSession.StateCallba
     
     private CameraActivity cameraActivity;
     private Log log;
+    private CallbackContextHelper contextHelper;
     
     @Inject
-    public CameraPreviewStateCallback(Log log, CameraActivity cameraActivity) {
+    public CameraPreviewStateCallback(
+        Log log,
+        CameraActivity cameraActivity,
+        CallbackContextHelper callbackContextHelper
+    ) {
         this.log = log;
         this.cameraActivity = cameraActivity;
+        this.contextHelper = callbackContextHelper;
     }
     
     @Override
@@ -45,5 +52,6 @@ public class CameraPreviewStateCallback extends CameraCaptureSession.StateCallba
     @Override
     public void onConfigureFailed(@NonNull CameraCaptureSession session) {
         log.e(TAG, "error while configurating CaptureSession");
+        contextHelper.sendAllError("error while configurating CaptureSession");
     }
 }
