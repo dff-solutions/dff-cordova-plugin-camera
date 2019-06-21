@@ -5,6 +5,7 @@ import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CaptureRequest;
 import android.os.Handler;
 
+import com.dff.cordova.plugin.camera.configurations.CameraHandler;
 import com.dff.cordova.plugin.camera.log.Log;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +30,7 @@ public class CameraCaptureStateCallbackUnitTest {
     CameraCaptureSession session;
     
     @Mock
-    Handler handler;
+    CameraHandler handler;
     
     @Mock
     CaptureRequest.Builder builder;

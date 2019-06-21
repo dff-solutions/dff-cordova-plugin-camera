@@ -3,9 +3,9 @@ package com.dff.cordova.plugin.camera.listeners.callback;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CaptureRequest;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 
+import com.dff.cordova.plugin.camera.configurations.CameraHandler;
 import com.dff.cordova.plugin.camera.dagger.annotations.CameraActivityScope;
 import com.dff.cordova.plugin.camera.helpers.CallbackContextHelper;
 import com.dff.cordova.plugin.camera.log.Log;
@@ -25,13 +25,13 @@ public class CameraCaptureStateCallback extends CameraCaptureSession.StateCallba
     private CameraCaptureCallback captureListener;
     public CaptureRequest.Builder captureBuilder;
     private Log log;
-    public Handler handler;
+    public CameraHandler handler;
     private CallbackContextHelper contextHelper;
     
     @Inject
     public CameraCaptureStateCallback(
         CameraCaptureCallback cameraCaptureCallback,
-        Handler handler,
+        CameraHandler handler,
         Log log,
         CallbackContextHelper callbackContextHelper
     ) {
@@ -58,5 +58,6 @@ public class CameraCaptureStateCallback extends CameraCaptureSession.StateCallba
         log.e(TAG, "configuration falled @ createCaptureSession");
         log.e(TAG, "onDevice: " + session.getDevice());
         log.e(TAG, "session to string: " + session.toString());
+        contextHelper.sendAllError("configuration falled @ createCaptureSession");
     }
 }
