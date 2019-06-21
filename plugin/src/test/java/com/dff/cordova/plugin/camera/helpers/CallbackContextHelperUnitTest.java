@@ -54,24 +54,34 @@ public class CallbackContextHelperUnitTest {
     public void shouldSendSuccess() {
         contextHelper.sendAllSuccess(successMessage);
         verify(context1).success(successMessage);
-        
+    
+        contextHelper.addCallBackContext(context1);
         contextHelper.addCallBackContext(context2);
         
         contextHelper.sendAllSuccess(successMessage);
         verify(context1, times(2)).success(successMessage);
         verify(context2).success(successMessage);
+    
+        contextHelper.addCallBackContext(context2);
+        contextHelper.sendAllSuccess(successMessage);
+        verify(context2, times(2)).success(successMessage);
     }
     
     @Test
     public void shouldSendError() {
         contextHelper.sendAllError(errorMessage);
         verify(context1).error(errorMessage);
-        
+    
+        contextHelper.addCallBackContext(context1);
         contextHelper.addCallBackContext(context2);
         
         contextHelper.sendAllError(errorMessage);
         verify(context1, times(2)).error(errorMessage);
         verify(context2).error(errorMessage);
+    
+        contextHelper.addCallBackContext(context2);
+        contextHelper.sendAllError(errorMessage);
+        verify(context2, times(2)).error(errorMessage);
     }
     
     @Test
@@ -81,10 +91,15 @@ public class CallbackContextHelperUnitTest {
         contextHelper.sendAllException(exception);
         verify(context1).error(jsonObject);
     
+        contextHelper.addCallBackContext(context1);
         contextHelper.addCallBackContext(context2);
         
         contextHelper.sendAllException(exception);
         verify(context1, times(2)).error(jsonObject);
         verify(context2).error(jsonObject);
+    
+        contextHelper.addCallBackContext(context2);
+        contextHelper.sendAllException(exception);
+        verify(context2, times(2)).error(jsonObject);
     }
 }

@@ -17,14 +17,15 @@ import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.media.ImageReader;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Size;
 import android.view.Display;
 import android.view.Surface;
 import android.view.TextureView;
 
 import com.dff.cordova.plugin.camera.actions.TakePhoto;
+import com.dff.cordova.plugin.camera.configurations.CameraHandler;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
+import com.dff.cordova.plugin.camera.dagger.annotations.PluginPermissions;
 import com.dff.cordova.plugin.camera.dagger.annotations.PreviewActivityIntent;
 import com.dff.cordova.plugin.camera.helpers.CameraButtonHelper;
 import com.dff.cordova.plugin.camera.helpers.CallbackContextHelper;
@@ -95,7 +96,7 @@ public class CameraActivity extends Activity {
     CallbackContextHelper contextHelper;
     
     @Inject
-    Handler backgroundHandler;
+    CameraHandler backgroundHandler;
     
     @Inject
     PackageManager packageManager;
@@ -109,6 +110,10 @@ public class CameraActivity extends Activity {
     
     @Inject
     CameraHelper cameraHelper;
+    
+    @Inject
+    @PluginPermissions
+    String[] pluginPermissions;
     
     private CameraDevice cameraDevice;
     private final Object cameraLock = new Object();
@@ -126,6 +131,7 @@ public class CameraActivity extends Activity {
             .getInstance()
             .in(this)
             .inject(this);
+        
     
         boolean hasCamera = packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA);
         if (!hasCamera) {
@@ -133,33 +139,39 @@ public class CameraActivity extends Activity {
             contextHelper.sendAllError("device has no camera");
             setResult(R.RESULT_CANCELED);
             finish();
+        } else {
+            log.d(TAG, "onCreate");
+            super.onCreate(savedInstanceState);
+    
+            setContentView(r.getLayoutIdentifier(CAMERA_ACTIVITY_LAYOUT));
+            cameraHelper.initCameraId();
+    
+            textureView = findViewById(r.getIdIdentifier(TEXTURE_VIEW_ID));
+            textureView.setSurfaceTextureListener(surfaceListener);
+    
+            buttonHelper.initButtons();
+            orientationEventListener.setButtonHelper(buttonHelper);
+    
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-        
-        log.d(TAG, "onCreate");
-        super.onCreate(savedInstanceState);
-        
-        setContentView(r.getLayoutIdentifier(CAMERA_ACTIVITY_LAYOUT));
-        cameraHelper.initCameraId();
-        
-        textureView = findViewById(r.getIdIdentifier(TEXTURE_VIEW_ID));
-        textureView.setSurfaceTextureListener(surfaceListener);
-        
-        buttonHelper.initButtons();
-        orientationEventListener.setButtonHelper(buttonHelper);
-        
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
     
     @Override
     protected void onResume() {
         log.d(TAG, "onResume");
         super.onResume();
-        orientationEventListener.enable();
-        
-        if (textureView.isAvailable()) {
-            openCamera();
-        } else {
-            textureView.setSurfaceTextureListener(surfaceListener);
+        if (permissionHelper.hasAllPermissions(pluginPermissions)) {
+            orientationEventListener.enable();
+    
+            if (textureView.isAvailable()) {
+                openCamera();
+            } else {
+                textureView.setSurfaceTextureListener(surfaceListener);
+            }
+        } else  {
+            log.e(TAG, "does not have all permissions");
+            contextHelper.sendAllError("Plugin does not have all permissions");
+            finish();
         }
     }
     
@@ -280,7 +292,7 @@ public class CameraActivity extends Activity {
                 characteristics = cameraManager
                     .getCameraCharacteristics(cameraId);
                 
-                optimalSize = imageHelper.getOptimalImageSize(characteristics);
+                optimalSize = imageHelper.getBiggestSize(characteristics);
                 log.d(TAG, "optimal Image Size = " + optimalSize.toString());
             } else {
                 optimalSize = previewSize;
