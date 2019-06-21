@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10};
+var methods = {"i0":10,"i1":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -144,8 +144,8 @@ extends android.hardware.camera2.CameraCaptureSession.StateCallback</pre>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../../com/dff/cordova/plugin/camera/listeners/callback/CameraCaptureStateCallback.html#captureBuilder">captureBuilder</a></span></code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>android.os.Handler</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../../com/dff/cordova/plugin/camera/listeners/callback/CameraCaptureStateCallback.html#mBackgroundHandler">mBackgroundHandler</a></span></code>&nbsp;</td>
+<td class="colFirst"><code><a href="../../../../../../../com/dff/cordova/plugin/camera/configurations/CameraHandler.html" title="class in com.dff.cordova.plugin.camera.configurations">CameraHandler</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../../com/dff/cordova/plugin/camera/listeners/callback/CameraCaptureStateCallback.html#handler">handler</a></span></code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -162,8 +162,10 @@ extends android.hardware.camera2.CameraCaptureSession.StateCallback</pre>
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../../../com/dff/cordova/plugin/camera/listeners/callback/CameraCaptureStateCallback.html#CameraCaptureStateCallback-com.dff.cordova.plugin.camera.listeners.callback.CameraCaptureCallback-com.dff.cordova.plugin.camera.log.Log-">CameraCaptureStateCallback</a></span>(<a href="../../../../../../../com/dff/cordova/plugin/camera/listeners/callback/CameraCaptureCallback.html" title="class in com.dff.cordova.plugin.camera.listeners.callback">CameraCaptureCallback</a>&nbsp;cameraCaptureCallback,
-                          <a href="../../../../../../../com/dff/cordova/plugin/camera/log/Log.html" title="class in com.dff.cordova.plugin.camera.log">Log</a>&nbsp;log)</code>&nbsp;</td>
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../../../com/dff/cordova/plugin/camera/listeners/callback/CameraCaptureStateCallback.html#CameraCaptureStateCallback-com.dff.cordova.plugin.camera.listeners.callback.CameraCaptureCallback-com.dff.cordova.plugin.camera.configurations.CameraHandler-com.dff.cordova.plugin.camera.log.Log-com.dff.cordova.plugin.camera.helpers.CallbackContextHelper-">CameraCaptureStateCallback</a></span>(<a href="../../../../../../../com/dff/cordova/plugin/camera/listeners/callback/CameraCaptureCallback.html" title="class in com.dff.cordova.plugin.camera.listeners.callback">CameraCaptureCallback</a>&nbsp;cameraCaptureCallback,
+                          <a href="../../../../../../../com/dff/cordova/plugin/camera/configurations/CameraHandler.html" title="class in com.dff.cordova.plugin.camera.configurations">CameraHandler</a>&nbsp;handler,
+                          <a href="../../../../../../../com/dff/cordova/plugin/camera/log/Log.html" title="class in com.dff.cordova.plugin.camera.log">Log</a>&nbsp;log,
+                          <a href="../../../../../../../com/dff/cordova/plugin/camera/helpers/CallbackContextHelper.html" title="class in com.dff.cordova.plugin.camera.helpers">CallbackContextHelper</a>&nbsp;callbackContextHelper)</code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -187,10 +189,6 @@ extends android.hardware.camera2.CameraCaptureSession.StateCallback</pre>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../../com/dff/cordova/plugin/camera/listeners/callback/CameraCaptureStateCallback.html#onConfigureFailed-android.hardware.camera2.CameraCaptureSession-">onConfigureFailed</a></span>(android.hardware.camera2.CameraCaptureSession&nbsp;session)</code>&nbsp;</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../../com/dff/cordova/plugin/camera/listeners/callback/CameraCaptureStateCallback.html#setCamera2Activity-com.dff.cordova.plugin.camera.activities.Camera2Activity-">setCamera2Activity</a></span>(<a href="../../../../../../../com/dff/cordova/plugin/camera/activities/Camera2Activity.html" title="class in com.dff.cordova.plugin.camera.activities">Camera2Activity</a>&nbsp;camera2Activity)</code>&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -230,13 +228,13 @@ extends android.hardware.camera2.CameraCaptureSession.StateCallback</pre>
 <pre>public&nbsp;android.hardware.camera2.CaptureRequest.Builder captureBuilder</pre>
 </li>
 </ul>
-<a name="mBackgroundHandler">
+<a name="handler">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>mBackgroundHandler</h4>
-<pre>public&nbsp;android.os.Handler mBackgroundHandler</pre>
+<h4>handler</h4>
+<pre>public&nbsp;<a href="../../../../../../../com/dff/cordova/plugin/camera/configurations/CameraHandler.html" title="class in com.dff.cordova.plugin.camera.configurations">CameraHandler</a> handler</pre>
 </li>
 </ul>
 </li>
@@ -247,14 +245,16 @@ extends android.hardware.camera2.CameraCaptureSession.StateCallback</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a name="CameraCaptureStateCallback-com.dff.cordova.plugin.camera.listeners.callback.CameraCaptureCallback-com.dff.cordova.plugin.camera.log.Log-">
+<a name="CameraCaptureStateCallback-com.dff.cordova.plugin.camera.listeners.callback.CameraCaptureCallback-com.dff.cordova.plugin.camera.configurations.CameraHandler-com.dff.cordova.plugin.camera.log.Log-com.dff.cordova.plugin.camera.helpers.CallbackContextHelper-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>CameraCaptureStateCallback</h4>
 <pre>public&nbsp;CameraCaptureStateCallback(<a href="../../../../../../../com/dff/cordova/plugin/camera/listeners/callback/CameraCaptureCallback.html" title="class in com.dff.cordova.plugin.camera.listeners.callback">CameraCaptureCallback</a>&nbsp;cameraCaptureCallback,
-                                  <a href="../../../../../../../com/dff/cordova/plugin/camera/log/Log.html" title="class in com.dff.cordova.plugin.camera.log">Log</a>&nbsp;log)</pre>
+                                  <a href="../../../../../../../com/dff/cordova/plugin/camera/configurations/CameraHandler.html" title="class in com.dff.cordova.plugin.camera.configurations">CameraHandler</a>&nbsp;handler,
+                                  <a href="../../../../../../../com/dff/cordova/plugin/camera/log/Log.html" title="class in com.dff.cordova.plugin.camera.log">Log</a>&nbsp;log,
+                                  <a href="../../../../../../../com/dff/cordova/plugin/camera/helpers/CallbackContextHelper.html" title="class in com.dff.cordova.plugin.camera.helpers">CallbackContextHelper</a>&nbsp;callbackContextHelper)</pre>
 </li>
 </ul>
 </li>
@@ -281,7 +281,7 @@ extends android.hardware.camera2.CameraCaptureSession.StateCallback</pre>
 <a name="onConfigureFailed-android.hardware.camera2.CameraCaptureSession-">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
 <h4>onConfigureFailed</h4>
 <pre>public&nbsp;void&nbsp;onConfigureFailed(android.hardware.camera2.CameraCaptureSession&nbsp;session)</pre>
@@ -289,15 +289,6 @@ extends android.hardware.camera2.CameraCaptureSession.StateCallback</pre>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>onConfigureFailed</code>&nbsp;in class&nbsp;<code>android.hardware.camera2.CameraCaptureSession.StateCallback</code></dd>
 </dl>
-</li>
-</ul>
-<a name="setCamera2Activity-com.dff.cordova.plugin.camera.activities.Camera2Activity-">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>setCamera2Activity</h4>
-<pre>public&nbsp;void&nbsp;setCamera2Activity(<a href="../../../../../../../com/dff/cordova/plugin/camera/activities/Camera2Activity.html" title="class in com.dff.cordova.plugin.camera.activities">Camera2Activity</a>&nbsp;camera2Activity)</pre>
 </li>
 </ul>
 </li>

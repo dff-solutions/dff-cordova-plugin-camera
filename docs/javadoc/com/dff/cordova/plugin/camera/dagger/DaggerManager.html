@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":9,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
+var methods = {"i0":9,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -142,30 +142,34 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html" title="class in com.dff.cordova.plugin.camera.dagger">DaggerManager</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#in-CordovaInterface-java.lang.String:A-com.dff.cordova.plugin.camera.CameraPlugin-">in</a></span>(CordovaInterface&nbsp;cordovaInterface,
-  java.lang.String[]&nbsp;pluginPermissions,
-  <a href="../../../../../../com/dff/cordova/plugin/camera/CameraPlugin.html" title="class in com.dff.cordova.plugin.camera">CameraPlugin</a>&nbsp;cameraPlugin)</code>
-<div class="block">Provides objects to the PluginModule.</div>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#in-com.dff.cordova.plugin.camera.activities.CameraActivity-">in</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html" title="class in com.dff.cordova.plugin.camera.activities">CameraActivity</a>&nbsp;cameraActivity)</code>
+<div class="block">Creates a new cameraActivityModule if it wasn't already and stores the cameraActivity.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#inject-com.dff.cordova.plugin.camera.services.ActionHandlerService-">inject</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/services/ActionHandlerService.html" title="class in com.dff.cordova.plugin.camera.services">ActionHandlerService</a>&nbsp;actionHandlerService)</code>&nbsp;</td>
+<td class="colFirst"><code><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html" title="class in com.dff.cordova.plugin.camera.dagger">DaggerManager</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#in-CordovaInterface-">in</a></span>(CordovaInterface&nbsp;cordovaInterface)</code>
+<div class="block">Provides objects to the PluginModule.</div>
+</td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#inject-com.dff.cordova.plugin.camera.activities.Camera2Activity-">inject</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/activities/Camera2Activity.html" title="class in com.dff.cordova.plugin.camera.activities">Camera2Activity</a>&nbsp;cameraActivity)</code>
-<div class="block">Injects the camera2Activty.</div>
-</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#inject-com.dff.cordova.plugin.camera.services.ActionHandlerService-">inject</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/services/ActionHandlerService.html" title="class in com.dff.cordova.plugin.camera.services">ActionHandlerService</a>&nbsp;actionHandlerService)</code>&nbsp;</td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#inject-com.dff.cordova.plugin.camera.CameraPlugin-">inject</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/CameraPlugin.html" title="class in com.dff.cordova.plugin.camera">CameraPlugin</a>&nbsp;cameraPlugin)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#inject-com.dff.cordova.plugin.camera.activities.CameraActivity-">inject</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html" title="class in com.dff.cordova.plugin.camera.activities">CameraActivity</a>&nbsp;cameraActivity)</code>
+<div class="block">Injects the cameraActivity.</div>
+</td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#inject-com.dff.cordova.plugin.camera.CameraPlugin-">inject</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/CameraPlugin.html" title="class in com.dff.cordova.plugin.camera">CameraPlugin</a>&nbsp;cameraPlugin)</code>&nbsp;</td>
+</tr>
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html#inject-com.dff.cordova.plugin.camera.activities.PreviewActivity-">inject</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/activities/PreviewActivity.html" title="class in com.dff.cordova.plugin.camera.activities">PreviewActivity</a>&nbsp;previewActivity)</code>
-<div class="block">Injects the previewActivty.</div>
+<div class="block">Injects the previewActivity.</div>
 </td>
 </tr>
 </table>
@@ -208,23 +212,36 @@ extends java.lang.Object</pre>
 <pre>public&nbsp;<a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html" title="class in com.dff.cordova.plugin.camera.dagger">DaggerManager</a>&nbsp;in(android.app.Application&nbsp;application)</pre>
 </li>
 </ul>
-<a name="in-CordovaInterface-java.lang.String:A-com.dff.cordova.plugin.camera.CameraPlugin-">
+<a name="in-com.dff.cordova.plugin.camera.activities.CameraActivity-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>in</h4>
-<pre>public&nbsp;<a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html" title="class in com.dff.cordova.plugin.camera.dagger">DaggerManager</a>&nbsp;in(CordovaInterface&nbsp;cordovaInterface,
-                        java.lang.String[]&nbsp;pluginPermissions,
-                        <a href="../../../../../../com/dff/cordova/plugin/camera/CameraPlugin.html" title="class in com.dff.cordova.plugin.camera">CameraPlugin</a>&nbsp;cameraPlugin)</pre>
+<pre>public&nbsp;<a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html" title="class in com.dff.cordova.plugin.camera.dagger">DaggerManager</a>&nbsp;in(<a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html" title="class in com.dff.cordova.plugin.camera.activities">CameraActivity</a>&nbsp;cameraActivity)</pre>
+<div class="block">Creates a new cameraActivityModule if it wasn't already and stores the cameraActivity.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>cameraActivity</code> - CameraActivity which is store in daggerManger to be provided in the
+                       component</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>DaggerManager</dd>
+</dl>
+</li>
+</ul>
+<a name="in-CordovaInterface-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>in</h4>
+<pre>public&nbsp;<a href="../../../../../../com/dff/cordova/plugin/camera/dagger/DaggerManager.html" title="class in com.dff.cordova.plugin.camera.dagger">DaggerManager</a>&nbsp;in(CordovaInterface&nbsp;cordovaInterface)</pre>
 <div class="block">Provides objects to the PluginModule.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>cordovaInterface</code> - cordovaInterface</dd>
-<dd><code>pluginPermissions</code> - needed permissions</dd>
-<dd><code>cameraPlugin</code> - core class</dd>
+<dd><code>cordovaInterface</code> - CordovaInterface</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Daggermanager</dd>
+<dd>DaggerManager</dd>
 </dl>
 </li>
 </ul>
@@ -246,31 +263,31 @@ extends java.lang.Object</pre>
 <pre>public&nbsp;void&nbsp;inject(<a href="../../../../../../com/dff/cordova/plugin/camera/services/ActionHandlerService.html" title="class in com.dff.cordova.plugin.camera.services">ActionHandlerService</a>&nbsp;actionHandlerService)</pre>
 </li>
 </ul>
-<a name="inject-com.dff.cordova.plugin.camera.activities.Camera2Activity-">
+<a name="inject-com.dff.cordova.plugin.camera.activities.PreviewActivity-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>inject</h4>
-<pre>public&nbsp;void&nbsp;inject(<a href="../../../../../../com/dff/cordova/plugin/camera/activities/Camera2Activity.html" title="class in com.dff.cordova.plugin.camera.activities">Camera2Activity</a>&nbsp;cameraActivity)</pre>
-<div class="block">Injects the camera2Activty.</div>
+<pre>public&nbsp;void&nbsp;inject(<a href="../../../../../../com/dff/cordova/plugin/camera/activities/PreviewActivity.html" title="class in com.dff.cordova.plugin.camera.activities">PreviewActivity</a>&nbsp;previewActivity)</pre>
+<div class="block">Injects the previewActivity.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>cameraActivity</code> - camera2Activity</dd>
+<dd><code>previewActivity</code> - the activity</dd>
 </dl>
 </li>
 </ul>
-<a name="inject-com.dff.cordova.plugin.camera.activities.PreviewActivity-">
+<a name="inject-com.dff.cordova.plugin.camera.activities.CameraActivity-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>inject</h4>
-<pre>public&nbsp;void&nbsp;inject(<a href="../../../../../../com/dff/cordova/plugin/camera/activities/PreviewActivity.html" title="class in com.dff.cordova.plugin.camera.activities">PreviewActivity</a>&nbsp;previewActivity)</pre>
-<div class="block">Injects the previewActivty.</div>
+<pre>public&nbsp;void&nbsp;inject(<a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html" title="class in com.dff.cordova.plugin.camera.activities">CameraActivity</a>&nbsp;cameraActivity)</pre>
+<div class="block">Injects the cameraActivity.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>previewActivity</code> - the activity</dd>
+<dd><code>cameraActivity</code> - the activity</dd>
 </dl>
 </li>
 </ul>

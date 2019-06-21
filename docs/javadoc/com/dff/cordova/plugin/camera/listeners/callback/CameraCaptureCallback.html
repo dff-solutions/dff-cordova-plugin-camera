@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10};
+var methods = {"i0":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -142,7 +142,8 @@ extends android.hardware.camera2.CameraCaptureSession.CaptureCallback</pre>
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../../../com/dff/cordova/plugin/camera/listeners/callback/CameraCaptureCallback.html#CameraCaptureCallback-com.dff.cordova.plugin.camera.log.Log-">CameraCaptureCallback</a></span>(<a href="../../../../../../../com/dff/cordova/plugin/camera/log/Log.html" title="class in com.dff.cordova.plugin.camera.log">Log</a>&nbsp;log)</code>&nbsp;</td>
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../../../com/dff/cordova/plugin/camera/listeners/callback/CameraCaptureCallback.html#CameraCaptureCallback-com.dff.cordova.plugin.camera.log.Log-com.dff.cordova.plugin.camera.activities.CameraActivity-">CameraCaptureCallback</a></span>(<a href="../../../../../../../com/dff/cordova/plugin/camera/log/Log.html" title="class in com.dff.cordova.plugin.camera.log">Log</a>&nbsp;log,
+                     <a href="../../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html" title="class in com.dff.cordova.plugin.camera.activities">CameraActivity</a>&nbsp;cameraActivity)</code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -165,10 +166,6 @@ extends android.hardware.camera2.CameraCaptureSession.CaptureCallback</pre>
                 android.hardware.camera2.CaptureRequest&nbsp;request,
                 long&nbsp;timestamp,
                 long&nbsp;frameNumber)</code>&nbsp;</td>
-</tr>
-<tr id="i1" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../../com/dff/cordova/plugin/camera/listeners/callback/CameraCaptureCallback.html#setCamera2Activity-com.dff.cordova.plugin.camera.activities.Camera2Activity-">setCamera2Activity</a></span>(<a href="../../../../../../../com/dff/cordova/plugin/camera/activities/Camera2Activity.html" title="class in com.dff.cordova.plugin.camera.activities">Camera2Activity</a>&nbsp;camera2Activity)</code>&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -199,13 +196,14 @@ extends android.hardware.camera2.CameraCaptureSession.CaptureCallback</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a name="CameraCaptureCallback-com.dff.cordova.plugin.camera.log.Log-">
+<a name="CameraCaptureCallback-com.dff.cordova.plugin.camera.log.Log-com.dff.cordova.plugin.camera.activities.CameraActivity-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>CameraCaptureCallback</h4>
-<pre>public&nbsp;CameraCaptureCallback(<a href="../../../../../../../com/dff/cordova/plugin/camera/log/Log.html" title="class in com.dff.cordova.plugin.camera.log">Log</a>&nbsp;log)</pre>
+<pre>public&nbsp;CameraCaptureCallback(<a href="../../../../../../../com/dff/cordova/plugin/camera/log/Log.html" title="class in com.dff.cordova.plugin.camera.log">Log</a>&nbsp;log,
+                             <a href="../../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html" title="class in com.dff.cordova.plugin.camera.activities">CameraActivity</a>&nbsp;cameraActivity)</pre>
 </li>
 </ul>
 </li>
@@ -219,7 +217,7 @@ extends android.hardware.camera2.CameraCaptureSession.CaptureCallback</pre>
 <a name="onCaptureStarted-android.hardware.camera2.CameraCaptureSession-android.hardware.camera2.CaptureRequest-long-long-">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
 <h4>onCaptureStarted</h4>
 <pre>public&nbsp;void&nbsp;onCaptureStarted(android.hardware.camera2.CameraCaptureSession&nbsp;session,
@@ -230,15 +228,6 @@ extends android.hardware.camera2.CameraCaptureSession.CaptureCallback</pre>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>onCaptureStarted</code>&nbsp;in class&nbsp;<code>android.hardware.camera2.CameraCaptureSession.CaptureCallback</code></dd>
 </dl>
-</li>
-</ul>
-<a name="setCamera2Activity-com.dff.cordova.plugin.camera.activities.Camera2Activity-">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>setCamera2Activity</h4>
-<pre>public&nbsp;void&nbsp;setCamera2Activity(<a href="../../../../../../../com/dff/cordova/plugin/camera/activities/Camera2Activity.html" title="class in com.dff.cordova.plugin.camera.activities">Camera2Activity</a>&nbsp;camera2Activity)</pre>
 </li>
 </ul>
 </li>

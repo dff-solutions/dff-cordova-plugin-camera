@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -139,7 +139,8 @@ implements android.view.TextureView.SurfaceTextureListener</pre>
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/listeners/SurfaceListener.html#SurfaceListener-com.dff.cordova.plugin.camera.log.Log-">SurfaceListener</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/log/Log.html" title="class in com.dff.cordova.plugin.camera.log">Log</a>&nbsp;log)</code>&nbsp;</td>
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/listeners/SurfaceListener.html#SurfaceListener-com.dff.cordova.plugin.camera.log.Log-com.dff.cordova.plugin.camera.activities.CameraActivity-">SurfaceListener</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/log/Log.html" title="class in com.dff.cordova.plugin.camera.log">Log</a>&nbsp;log,
+               <a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html" title="class in com.dff.cordova.plugin.camera.activities">CameraActivity</a>&nbsp;cameraActivity)</code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -176,10 +177,6 @@ implements android.view.TextureView.SurfaceTextureListener</pre>
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/listeners/SurfaceListener.html#onSurfaceTextureUpdated-android.graphics.SurfaceTexture-">onSurfaceTextureUpdated</a></span>(android.graphics.SurfaceTexture&nbsp;surface)</code>&nbsp;</td>
 </tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/listeners/SurfaceListener.html#setCamera2Activity-com.dff.cordova.plugin.camera.activities.Camera2Activity-">setCamera2Activity</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/activities/Camera2Activity.html" title="class in com.dff.cordova.plugin.camera.activities">Camera2Activity</a>&nbsp;camera2Activity)</code>&nbsp;</td>
-</tr>
 </table>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -202,13 +199,14 @@ implements android.view.TextureView.SurfaceTextureListener</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a name="SurfaceListener-com.dff.cordova.plugin.camera.log.Log-">
+<a name="SurfaceListener-com.dff.cordova.plugin.camera.log.Log-com.dff.cordova.plugin.camera.activities.CameraActivity-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>SurfaceListener</h4>
-<pre>public&nbsp;SurfaceListener(<a href="../../../../../../com/dff/cordova/plugin/camera/log/Log.html" title="class in com.dff.cordova.plugin.camera.log">Log</a>&nbsp;log)</pre>
+<pre>public&nbsp;SurfaceListener(<a href="../../../../../../com/dff/cordova/plugin/camera/log/Log.html" title="class in com.dff.cordova.plugin.camera.log">Log</a>&nbsp;log,
+                       <a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html" title="class in com.dff.cordova.plugin.camera.activities">CameraActivity</a>&nbsp;cameraActivity)</pre>
 </li>
 </ul>
 </li>
@@ -265,7 +263,7 @@ implements android.view.TextureView.SurfaceTextureListener</pre>
 <a name="onSurfaceTextureUpdated-android.graphics.SurfaceTexture-">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
 <h4>onSurfaceTextureUpdated</h4>
 <pre>public&nbsp;void&nbsp;onSurfaceTextureUpdated(android.graphics.SurfaceTexture&nbsp;surface)</pre>
@@ -273,15 +271,6 @@ implements android.view.TextureView.SurfaceTextureListener</pre>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>onSurfaceTextureUpdated</code>&nbsp;in interface&nbsp;<code>android.view.TextureView.SurfaceTextureListener</code></dd>
 </dl>
-</li>
-</ul>
-<a name="setCamera2Activity-com.dff.cordova.plugin.camera.activities.Camera2Activity-">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>setCamera2Activity</h4>
-<pre>public&nbsp;void&nbsp;setCamera2Activity(<a href="../../../../../../com/dff/cordova/plugin/camera/activities/Camera2Activity.html" title="class in com.dff.cordova.plugin.camera.activities">Camera2Activity</a>&nbsp;camera2Activity)</pre>
 </li>
 </ul>
 </li>

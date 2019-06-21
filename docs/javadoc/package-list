@@ -1,6 +1,7 @@
 com.dff.cordova.plugin.camera
 com.dff.cordova.plugin.camera.actions
 com.dff.cordova.plugin.camera.activities
+com.dff.cordova.plugin.camera.classes
 com.dff.cordova.plugin.camera.classes.json
 com.dff.cordova.plugin.camera.configurations
 com.dff.cordova.plugin.camera.dagger

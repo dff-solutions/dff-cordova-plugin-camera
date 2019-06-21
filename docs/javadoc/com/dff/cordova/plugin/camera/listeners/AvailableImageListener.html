@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10};
+var methods = {"i0":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -116,7 +116,7 @@ extends java.lang.Object
 implements android.media.ImageReader.OnImageAvailableListener</pre>
 <div class="block">Callback interface for being notified that a new image is available.
  When a new image is available, it will be stored in the ImageHelper and the
- startPrewviewActivity method from Camera2Activity is called.</div>
+ startPrewviewActivity method from CameraActivity is called.</div>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
 <dd><a href="https://developer.android.com/reference/android/view/OrientationEventListener"
@@ -140,8 +140,9 @@ implements android.media.ImageReader.OnImageAvailableListener</pre>
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/listeners/AvailableImageListener.html#AvailableImageListener-com.dff.cordova.plugin.camera.log.Log-com.dff.cordova.plugin.camera.helpers.ImageHelper-">AvailableImageListener</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/log/Log.html" title="class in com.dff.cordova.plugin.camera.log">Log</a>&nbsp;log,
-                      <a href="../../../../../../com/dff/cordova/plugin/camera/helpers/ImageHelper.html" title="class in com.dff.cordova.plugin.camera.helpers">ImageHelper</a>&nbsp;imageHelper)</code>&nbsp;</td>
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/listeners/AvailableImageListener.html#AvailableImageListener-com.dff.cordova.plugin.camera.log.Log-com.dff.cordova.plugin.camera.helpers.ImageHelper-com.dff.cordova.plugin.camera.activities.CameraActivity-">AvailableImageListener</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/log/Log.html" title="class in com.dff.cordova.plugin.camera.log">Log</a>&nbsp;log,
+                      <a href="../../../../../../com/dff/cordova/plugin/camera/helpers/ImageHelper.html" title="class in com.dff.cordova.plugin.camera.helpers">ImageHelper</a>&nbsp;imageHelper,
+                      <a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html" title="class in com.dff.cordova.plugin.camera.activities">CameraActivity</a>&nbsp;cameraActivity)</code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -161,10 +162,6 @@ implements android.media.ImageReader.OnImageAvailableListener</pre>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/listeners/AvailableImageListener.html#onImageAvailable-android.media.ImageReader-">onImageAvailable</a></span>(android.media.ImageReader&nbsp;reader)</code>&nbsp;</td>
-</tr>
-<tr id="i1" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/listeners/AvailableImageListener.html#setCamera2Activity-com.dff.cordova.plugin.camera.activities.Camera2Activity-">setCamera2Activity</a></span>(<a href="../../../../../../com/dff/cordova/plugin/camera/activities/Camera2Activity.html" title="class in com.dff.cordova.plugin.camera.activities">Camera2Activity</a>&nbsp;camera2Activity)</code>&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -188,14 +185,15 @@ implements android.media.ImageReader.OnImageAvailableListener</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a name="AvailableImageListener-com.dff.cordova.plugin.camera.log.Log-com.dff.cordova.plugin.camera.helpers.ImageHelper-">
+<a name="AvailableImageListener-com.dff.cordova.plugin.camera.log.Log-com.dff.cordova.plugin.camera.helpers.ImageHelper-com.dff.cordova.plugin.camera.activities.CameraActivity-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>AvailableImageListener</h4>
 <pre>public&nbsp;AvailableImageListener(<a href="../../../../../../com/dff/cordova/plugin/camera/log/Log.html" title="class in com.dff.cordova.plugin.camera.log">Log</a>&nbsp;log,
-                              <a href="../../../../../../com/dff/cordova/plugin/camera/helpers/ImageHelper.html" title="class in com.dff.cordova.plugin.camera.helpers">ImageHelper</a>&nbsp;imageHelper)</pre>
+                              <a href="../../../../../../com/dff/cordova/plugin/camera/helpers/ImageHelper.html" title="class in com.dff.cordova.plugin.camera.helpers">ImageHelper</a>&nbsp;imageHelper,
+                              <a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html" title="class in com.dff.cordova.plugin.camera.activities">CameraActivity</a>&nbsp;cameraActivity)</pre>
 </li>
 </ul>
 </li>
@@ -209,7 +207,7 @@ implements android.media.ImageReader.OnImageAvailableListener</pre>
 <a name="onImageAvailable-android.media.ImageReader-">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
 <h4>onImageAvailable</h4>
 <pre>public&nbsp;void&nbsp;onImageAvailable(android.media.ImageReader&nbsp;reader)</pre>
@@ -217,15 +215,6 @@ implements android.media.ImageReader.OnImageAvailableListener</pre>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>onImageAvailable</code>&nbsp;in interface&nbsp;<code>android.media.ImageReader.OnImageAvailableListener</code></dd>
 </dl>
-</li>
-</ul>
-<a name="setCamera2Activity-com.dff.cordova.plugin.camera.activities.Camera2Activity-">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>setCamera2Activity</h4>
-<pre>public&nbsp;void&nbsp;setCamera2Activity(<a href="../../../../../../com/dff/cordova/plugin/camera/activities/Camera2Activity.html" title="class in com.dff.cordova.plugin.camera.activities">Camera2Activity</a>&nbsp;camera2Activity)</pre>
 </li>
 </ul>
 </li>

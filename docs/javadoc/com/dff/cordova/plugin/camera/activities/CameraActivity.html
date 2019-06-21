@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -158,32 +158,16 @@ extends android.app.Activity</pre>
 <th class="colLast" scope="col">Field and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>android.os.Handler</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#backgroundHandler">backgroundHandler</a></span></code>&nbsp;</td>
-</tr>
-<tr class="rowColor">
 <td class="colFirst"><code>static java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#CAMERA_ACTIVITY_LAYOUT">CAMERA_ACTIVITY_LAYOUT</a></span></code>&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>android.hardware.camera2.CameraCaptureSession</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#cameraCaptureSession">cameraCaptureSession</a></span></code>&nbsp;</td>
 </tr>
-<tr class="rowColor">
-<td class="colFirst"><code>android.hardware.camera2.CameraDevice</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#cameraDevice">cameraDevice</a></span></code>&nbsp;</td>
-</tr>
 <tr class="altColor">
-<td class="colFirst"><code>static java.lang.String</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#CAPTURE_BUTTON">CAPTURE_BUTTON</a></span></code>&nbsp;</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>static java.lang.String</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#FLASH_BUTTON">FLASH_BUTTON</a></span></code>&nbsp;</td>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>static java.lang.String</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#FLIP_BUTTON">FLIP_BUTTON</a></span></code>&nbsp;</td>
+<td class="colFirst"><code>java.lang.String</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#cameraId">cameraId</a></span></code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>static java.lang.String</code></td>
@@ -244,55 +228,69 @@ extends android.app.Activity</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#changeFlashMode--">changeFlashMode</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i1" class="rowColor">
+<td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#closeCamera--">closeCamera</a></span>()</code>
 <div class="block">This method closes the cameraDevice.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>android.hardware.camera2.CameraDevice</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#getCameraDevice--">getCameraDevice</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>java.lang.Object</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#getCameraLock--">getCameraLock</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>protected void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#onActivityResult-int-int-android.content.Intent-">onActivityResult</a></span>(int&nbsp;requestCode,
                 int&nbsp;resultCode,
                 android.content.Intent&nbsp;data)</code>&nbsp;</td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>protected void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#onCreate-android.os.Bundle-">onCreate</a></span>(android.os.Bundle&nbsp;savedInstanceState)</code>&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>protected void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#onPause--">onPause</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>protected void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#onResume--">onResume</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#openCamera--">openCamera</a></span>()</code>
 <div class="block">This methods opens the camera on the camera Manager.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>protected void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#startBackgroundThread--">startBackgroundThread</a></span>()</code>&nbsp;</td>
+<tr id="i9" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#setCameraDevice-android.hardware.camera2.CameraDevice-">setCameraDevice</a></span>(android.hardware.camera2.CameraDevice&nbsp;cameraDevice)</code>&nbsp;</td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#startCameraPreview--">startCameraPreview</a></span>()</code>
 <div class="block">This method start the camera preview.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#startPreviewActivity--">startPreviewActivity</a></span>()</code>
 <div class="block">When the picture is captured, this method starts the previewActivity.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
-<td class="colFirst"><code>protected void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#stopBackgroundThread--">stopBackgroundThread</a></span>()</code>&nbsp;</td>
+<tr id="i12" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#takePicture--">takePicture</a></span>()</code>
+<div class="block">Method to take a picture with the current cameraDevice.</div>
+</td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/dff/cordova/plugin/camera/activities/CameraActivity.html#updatePreview--">updatePreview</a></span>()</code>
 <div class="block">This method updates the Preview.</div>
@@ -381,54 +379,6 @@ extends android.app.Activity</pre>
 </dl>
 </li>
 </ul>
-<a name="CAPTURE_BUTTON">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>CAPTURE_BUTTON</h4>
-<pre>public static final&nbsp;java.lang.String CAPTURE_BUTTON</pre>
-<dl>
-<dt><span class="seeLabel">See Also:</span></dt>
-<dd><a href="../../../../../../constant-values.html#com.dff.cordova.plugin.camera.activities.CameraActivity.CAPTURE_BUTTON">Constant Field Values</a></dd>
-</dl>
-</li>
-</ul>
-<a name="FLASH_BUTTON">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>FLASH_BUTTON</h4>
-<pre>public static final&nbsp;java.lang.String FLASH_BUTTON</pre>
-<dl>
-<dt><span class="seeLabel">See Also:</span></dt>
-<dd><a href="../../../../../../constant-values.html#com.dff.cordova.plugin.camera.activities.CameraActivity.FLASH_BUTTON">Constant Field Values</a></dd>
-</dl>
-</li>
-</ul>
-<a name="FLIP_BUTTON">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>FLIP_BUTTON</h4>
-<pre>public static final&nbsp;java.lang.String FLIP_BUTTON</pre>
-<dl>
-<dt><span class="seeLabel">See Also:</span></dt>
-<dd><a href="../../../../../../constant-values.html#com.dff.cordova.plugin.camera.activities.CameraActivity.FLIP_BUTTON">Constant Field Values</a></dd>
-</dl>
-</li>
-</ul>
-<a name="cameraDevice">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>cameraDevice</h4>
-<pre>public&nbsp;android.hardware.camera2.CameraDevice cameraDevice</pre>
-</li>
-</ul>
 <a name="cameraCaptureSession">
 <!--   -->
 </a>
@@ -438,13 +388,13 @@ extends android.app.Activity</pre>
 <pre>public&nbsp;android.hardware.camera2.CameraCaptureSession cameraCaptureSession</pre>
 </li>
 </ul>
-<a name="backgroundHandler">
+<a name="cameraId">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>backgroundHandler</h4>
-<pre>public&nbsp;android.os.Handler backgroundHandler</pre>
+<h4>cameraId</h4>
+<pre>public&nbsp;java.lang.String cameraId</pre>
 </li>
 </ul>
 </li>
@@ -551,6 +501,19 @@ extends android.app.Activity</pre>
 <div class="block">This method updates the Preview. Changes on the setting affect after the update.</div>
 </li>
 </ul>
+<a name="takePicture--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>takePicture</h4>
+<pre>public&nbsp;void&nbsp;takePicture()</pre>
+<div class="block">Method to take a picture with the current cameraDevice.
+ Prepares the captureSession by setting size of the image, orientation and initializing the
+ imageReader and captureRequest.
+ The image format is jpg.</div>
+</li>
+</ul>
 <a name="startPreviewActivity--">
 <!--   -->
 </a>
@@ -562,28 +525,19 @@ extends android.app.Activity</pre>
  If the flag withPreview isn't set, the activity will return the image without preview.</div>
 </li>
 </ul>
-<a name="startBackgroundThread--">
+<a name="changeFlashMode--">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>startBackgroundThread</h4>
-<pre>protected&nbsp;void&nbsp;startBackgroundThread()</pre>
-</li>
-</ul>
-<a name="stopBackgroundThread--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>stopBackgroundThread</h4>
-<pre>protected&nbsp;void&nbsp;stopBackgroundThread()</pre>
+<h4>changeFlashMode</h4>
+<pre>public&nbsp;void&nbsp;changeFlashMode()</pre>
 </li>
 </ul>
 <a name="onActivityResult-int-int-android.content.Intent-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>onActivityResult</h4>
 <pre>protected&nbsp;void&nbsp;onActivityResult(int&nbsp;requestCode,
@@ -593,6 +547,33 @@ extends android.app.Activity</pre>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>onActivityResult</code>&nbsp;in class&nbsp;<code>android.app.Activity</code></dd>
 </dl>
+</li>
+</ul>
+<a name="getCameraDevice--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getCameraDevice</h4>
+<pre>public&nbsp;android.hardware.camera2.CameraDevice&nbsp;getCameraDevice()</pre>
+</li>
+</ul>
+<a name="setCameraDevice-android.hardware.camera2.CameraDevice-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setCameraDevice</h4>
+<pre>public&nbsp;void&nbsp;setCameraDevice(android.hardware.camera2.CameraDevice&nbsp;cameraDevice)</pre>
+</li>
+</ul>
+<a name="getCameraLock--">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getCameraLock</h4>
+<pre>public&nbsp;java.lang.Object&nbsp;getCameraLock()</pre>
 </li>
 </ul>
 </li>
