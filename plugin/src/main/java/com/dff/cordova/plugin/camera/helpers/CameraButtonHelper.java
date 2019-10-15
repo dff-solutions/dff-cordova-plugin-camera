@@ -34,7 +34,7 @@ public class CameraButtonHelper {
     private static final String FLASH_BUTTON = "flash_button";
     private static final String FLIP_BUTTON = "flip_button";
     
-    private R r;
+    private R res;
     private Log log;
     private int flashMode = 2;
     private PackageManager packageManager;
@@ -55,7 +55,7 @@ public class CameraButtonHelper {
         CameraManager cameraManager,
         CallbackContextHelper callbackContextHelper
     ) {
-        this.r = r;
+        this.res = r;
         this.log = log;
         this.packageManager = packageManager;
         this.cameraActivity = cameraActivity;
@@ -69,9 +69,9 @@ public class CameraButtonHelper {
      */
     public void initButtons()
     {
-        captureButton = cameraActivity.findViewById(r.getIdIdentifier(CAPTURE_BUTTON));
-        flashButton = cameraActivity.findViewById(r.getIdIdentifier(FLASH_BUTTON));
-        flipButton = cameraActivity.findViewById(r.getIdIdentifier(FLIP_BUTTON));
+        captureButton = cameraActivity.findViewById(res.getIdIdentifier(CAPTURE_BUTTON));
+        flashButton = cameraActivity.findViewById(res.getIdIdentifier(FLASH_BUTTON));
+        flipButton = cameraActivity.findViewById(res.getIdIdentifier(FLIP_BUTTON));
     
         captureButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +125,7 @@ public class CameraButtonHelper {
         switch (flashMode) {
             case 0:
                 log.d(TAG, "single flash / flash on");
-                flashButton.setImageResource(r.getDrawableIdentifier(IC_FLASH_ON));
+                flashButton.setImageResource(res.getDrawableIdentifier(IC_FLASH_ON));
                 captureRequest.set(CaptureRequest.CONTROL_AE_MODE,
                                    CaptureRequest.CONTROL_AE_MODE_ON_ALWAYS_FLASH);
                 captureRequest.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_SINGLE);
@@ -133,7 +133,7 @@ public class CameraButtonHelper {
                 break;
             case 1:
                 log.d(TAG, "flash off");
-                flashButton.setImageResource(r.getDrawableIdentifier(IC_FLASH_OFF));
+                flashButton.setImageResource(res.getDrawableIdentifier(IC_FLASH_OFF));
                 captureRequest.set(CaptureRequest.CONTROL_AE_MODE,
                                    CaptureRequest.CONTROL_AE_MODE_ON);
                 captureRequest.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
@@ -141,7 +141,7 @@ public class CameraButtonHelper {
                 break;
             case 2:
                 log.d(TAG, "auto flash");
-                flashButton.setImageResource(r.getDrawableIdentifier(IC_FLASH_AUTO));
+                flashButton.setImageResource(res.getDrawableIdentifier(IC_FLASH_AUTO));
                 captureRequest.set(CaptureRequest.CONTROL_AE_MODE,
                                    CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
                 captureRequest.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
@@ -160,9 +160,9 @@ public class CameraButtonHelper {
     public void changeFlipButton(CameraState flipMode) {
         log.d(TAG, "changeCamera");
         if (flipMode == CameraState.BACK) {
-            flipButton.setImageResource(r.getDrawableIdentifier(IC_CAMERA_BACK));
+            flipButton.setImageResource(res.getDrawableIdentifier(IC_CAMERA_BACK));
         } else {
-            flipButton.setImageResource(r.getDrawableIdentifier(IC_CAMERA_FRONT));
+            flipButton.setImageResource(res.getDrawableIdentifier(IC_CAMERA_FRONT));
         }
     }
     

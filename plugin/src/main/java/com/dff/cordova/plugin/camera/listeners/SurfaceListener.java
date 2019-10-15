@@ -18,7 +18,7 @@ import javax.inject.Inject;
  */
 @CameraActivityScope
 public class SurfaceListener implements TextureView.SurfaceTextureListener {
-    private final String TAG = "SurfaceListener";
+    private static final String TAG = "SurfaceListener";
     
     private CameraActivity cameraActivity;
     private Log log;

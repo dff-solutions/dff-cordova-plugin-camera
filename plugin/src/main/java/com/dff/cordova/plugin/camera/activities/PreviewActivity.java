@@ -41,7 +41,7 @@ public class PreviewActivity extends Activity {
     Log log;
 
     @Inject
-    R r;
+    R res;
     
     @Inject
     UnexpectedExceptionHandler unexpectedExceptionHandler;
@@ -68,8 +68,8 @@ public class PreviewActivity extends Activity {
         Thread.currentThread().setUncaughtExceptionHandler(unexpectedExceptionHandler);
 
         log.d(TAG, "onCreate");
-        setContentView(r.getLayoutIdentifier(PREVIEW_ACTIVITY_LAYOUT));
-        ImageView imageView = findViewById(r.getIdIdentifier(IMAGE_VIEW_PREVIEW_ID));
+        setContentView(res.getLayoutIdentifier(PREVIEW_ACTIVITY_LAYOUT));
+        ImageView imageView = findViewById(res.getIdIdentifier(IMAGE_VIEW_PREVIEW_ID));
     
         byte[] imageBytes = imageHelper.getBytes();
         Bitmap bitmap = BitmapFactory
@@ -82,9 +82,9 @@ public class PreviewActivity extends Activity {
                 .show();
         }
 
-        ImageButton cancelButton = findViewById(r.getIdIdentifier(BUTTON_CANCEL));
-        ImageButton repeatButton = findViewById(r.getIdIdentifier(BUTTON_REPEAT));
-        ImageButton okButton = findViewById(r.getIdIdentifier(BUTTON_OK));
+        ImageButton cancelButton = findViewById(res.getIdIdentifier(BUTTON_CANCEL));
+        ImageButton repeatButton = findViewById(res.getIdIdentifier(BUTTON_REPEAT));
+        ImageButton okButton = findViewById(res.getIdIdentifier(BUTTON_OK));
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override

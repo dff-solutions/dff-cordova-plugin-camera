@@ -20,7 +20,7 @@ import javax.inject.Inject;
  */
 @CameraActivityScope
 public class AvailableImageListener implements ImageReader.OnImageAvailableListener {
-    private final String TAG = "AvailableImageListener";
+    private static final String TAG = "AvailableImageListener";
     private Log log;
     private CameraActivity cameraActivity;
     private ImageHelper imageHelper;

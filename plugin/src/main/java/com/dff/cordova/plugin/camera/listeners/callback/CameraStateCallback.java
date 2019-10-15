@@ -19,7 +19,7 @@ import javax.inject.Inject;
  */
 @CameraActivityScope
 public class CameraStateCallback extends CameraDevice.StateCallback {
-    private final String TAG = "CameraStateCallback";
+    private static final String TAG = "CameraStateCallback";
     
     private CameraActivity cameraActivity;
     private Log log;

@@ -72,7 +72,7 @@ public class CameraActivity extends Activity {
     Log log;
     
     @Inject
-    R r;
+    R res;
     
     @Inject
     OrientationListener orientationEventListener;
@@ -143,10 +143,10 @@ public class CameraActivity extends Activity {
             log.d(TAG, "onCreate");
             super.onCreate(savedInstanceState);
     
-            setContentView(r.getLayoutIdentifier(CAMERA_ACTIVITY_LAYOUT));
+            setContentView(res.getLayoutIdentifier(CAMERA_ACTIVITY_LAYOUT));
             cameraHelper.initCameraId();
     
-            textureView = findViewById(r.getIdIdentifier(TEXTURE_VIEW_ID));
+            textureView = findViewById(res.getIdIdentifier(TEXTURE_VIEW_ID));
             textureView.setSurfaceTextureListener(surfaceListener);
     
             buttonHelper.initButtons();

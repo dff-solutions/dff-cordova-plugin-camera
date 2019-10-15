@@ -18,7 +18,7 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class CallbackContextHelper {
-    private final String TAG = "CallbackContextHelper";
+    private static final String TAG = "CallbackContextHelper";
     
     private Log log;
     private List<CallbackContext> callbackContextList = new ArrayList<CallbackContext>();
