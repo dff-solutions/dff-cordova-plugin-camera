@@ -1,0 +1,3 @@
+rootProject.name = 'dff-cordova-plugin-camera'
+
+include 'plugin'
