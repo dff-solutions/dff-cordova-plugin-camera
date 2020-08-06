@@ -49,7 +49,19 @@ public class CallbackContextHelper {
         }
         deleteAll();
     }
-    
+
+    /**
+     * Return nothing to the cordova app with callbackContext as success.
+     *
+     */
+    public void sendAllSuccess() {
+        log.d(TAG, "send result");
+        for (CallbackContext callbackContext : callbackContextList) {
+            callbackContext.success();
+        }
+        deleteAll();
+    }
+
     /**
      * Return a string message to the cordova app with callbackContext as error.
      *

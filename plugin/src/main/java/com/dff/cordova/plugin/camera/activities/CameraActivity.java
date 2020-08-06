@@ -391,8 +391,10 @@ public class CameraActivity extends Activity {
     private void returnImage() {
         if (imageHelper.getBase64Image() != null) {
             contextHelper.sendAllSuccess(imageHelper.getBase64Image());
+        } else if (imageHelper.getImageUri() != null) {
+            contextHelper.sendAllSuccess(imageHelper.getImageUri().toString());
         } else {
-            log.e(TAG, "base64Image is empty");
+            log.e(TAG, "image is empty");
             contextHelper.sendAllError("unable to return image");
         }
     }

@@ -31,6 +31,7 @@
     </config-file>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/CameraPlugin.java" target-dir="src/com/dff/cordova/plugin/camera"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/actions/PluginAction.java" target-dir="src/com/dff/cordova/plugin/camera/actions"/>
+    <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/actions/SetImagePath.java" target-dir="src/com/dff/cordova/plugin/camera/actions"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/actions/TakePhoto.java" target-dir="src/com/dff/cordova/plugin/camera/actions"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/activities/CameraActivity.java" target-dir="src/com/dff/cordova/plugin/camera/activities"/>
     <source-file src="plugin/src/main/java/com/dff/cordova/plugin/camera/activities/PreviewActivity.java" target-dir="src/com/dff/cordova/plugin/camera/activities"/>

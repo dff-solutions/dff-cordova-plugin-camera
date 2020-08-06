@@ -1,11 +1,13 @@
 package com.dff.cordova.plugin.camera;
 
 import android.content.pm.PackageManager;
+import android.os.Environment;
 
 import com.dff.cordova.plugin.camera.actions.PluginAction;
 import com.dff.cordova.plugin.camera.configurations.ActionsManager;
 import com.dff.cordova.plugin.camera.dagger.DaggerManager;
 import com.dff.cordova.plugin.camera.dagger.annotations.PluginPermissions;
+import com.dff.cordova.plugin.camera.helpers.ImageHelper;
 import com.dff.cordova.plugin.camera.helpers.PermissionHelper;
 import com.dff.cordova.plugin.camera.log.Log;
 
@@ -13,6 +15,7 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 
+import java.io.File;
 import java.util.Arrays;
 
 import javax.inject.Inject;
@@ -39,6 +42,9 @@ public class CameraPlugin extends CordovaPlugin {
     PermissionHelper permissionHelper;
     
     @Inject
+    ImageHelper imageHelper;
+
+    @Inject
     @PluginPermissions
     String[] pluginPermissions;
     
@@ -54,6 +60,8 @@ public class CameraPlugin extends CordovaPlugin {
             .in(cordova.getActivity().getApplication())
             .in(cordova)
             .inject(this);
+
+        setTempPath();
     }
 
     @Override
@@ -151,5 +159,18 @@ public class CameraPlugin extends CordovaPlugin {
         }
 
         return allGranted;
+    }
+
+    private void setTempPath() {
+        File cache = null;
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            cache = cordova.getActivity().getExternalCacheDir();
+        } else {
+            cache = cordova.getActivity().getCacheDir();
+        }
+        cache.mkdirs();
+
+        log.d(TAG, "imagePath: " + cache.getAbsolutePath());
+        imageHelper.setImagePath(cache.getAbsolutePath());
     }
 }

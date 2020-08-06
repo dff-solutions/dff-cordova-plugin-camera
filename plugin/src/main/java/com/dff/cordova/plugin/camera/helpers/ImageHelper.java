@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.Date;
 
@@ -32,7 +33,10 @@ public class ImageHelper {
     private byte[] bytes;
     private Log log;
     private String base64Image;
-    
+    private URI imageUri;
+    private String imagePath;
+    private boolean asBase64 = false;
+
     @Inject
     public ImageHelper(Log log) {
         this.log = log;
@@ -48,8 +52,16 @@ public class ImageHelper {
         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
         bytes = new byte[buffer.capacity()];
         buffer.get(bytes);
-        
-        base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+        if (asBase64) {
+            base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+        } else {
+            base64Image = null;
+            try {
+                saveImage();
+            } catch (IOException e) {
+                log.e(TAG, "unable to save image ", e);
+            }
+        }
     }
     
     /**
@@ -59,8 +71,9 @@ public class ImageHelper {
      */
     public void saveImage() throws IOException {
         log.d(TAG, "saveImage");
-        
-        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        log.d(TAG, "ToPath: " + imagePath);
+
+        File path = Environment.getExternalStoragePublicDirectory(imagePath);
         String name = imageName + new Date().getTime() + ".jpg";
         final File file = new File(path, name);
         OutputStream output = null;
@@ -73,6 +86,8 @@ public class ImageHelper {
                 output.close();
             }
         }
+        imageUri = file.toURI();
+        log.d(TAG, "URI: " + imageUri);
     }
     
     /**
@@ -112,5 +127,18 @@ public class ImageHelper {
     public byte[] getBytes() {
         byte[] copy = bytes.clone();
         return copy;
+    }
+
+    public void setImagePath(String imagePath) {
+        log.d(TAG, "set imagePath: " + imagePath);
+        this.imagePath = imagePath;
+    }
+
+    public void setAsBase64(boolean asBase64) {
+        this.asBase64 = asBase64;
+    }
+
+    public URI getImageUri() {
+        return imageUri;
     }
 }
