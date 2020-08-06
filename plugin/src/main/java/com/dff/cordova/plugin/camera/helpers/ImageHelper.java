@@ -73,9 +73,8 @@ public class ImageHelper {
         log.d(TAG, "saveImage");
         log.d(TAG, "ToPath: " + imagePath);
 
-        File path = Environment.getExternalStoragePublicDirectory(imagePath);
         String name = imageName + new Date().getTime() + ".jpg";
-        final File file = new File(path, name);
+        final File file = new File(imagePath, name);
         OutputStream output = null;
         try {
             output = new FileOutputStream(file);

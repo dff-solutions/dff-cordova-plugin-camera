@@ -162,13 +162,15 @@ public class CameraPlugin extends CordovaPlugin {
     }
 
     private void setTempPath() {
-        File cache = null;
+        File cache;
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             cache = cordova.getActivity().getExternalCacheDir();
         } else {
             cache = cordova.getActivity().getCacheDir();
         }
-        cache.mkdirs();
+        if (cache != null) {
+            cache.mkdirs();
+        }
 
         log.d(TAG, "imagePath: " + cache.getAbsolutePath());
         imageHelper.setImagePath(cache.getAbsolutePath());
